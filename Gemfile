@@ -27,4 +27,6 @@ group :development do
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'guard-migrate'
+
+  gem 'annotate'
 end
