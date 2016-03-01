@@ -1,0 +1,29 @@
+<%= form_for(@category) do |f| %>
+  <% if @category.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h2>
+
+      <ul>
+      <% @category.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="fields">
+    <div class="field">
+      <%= f.label :sort_order %><br>
+      <%= f.number_field :sort_order %>
+    </div>
+    <div class="field">
+      <%= f.fields_for :category_locales do |clf| %>
+        <%= render partial: "category_locale_form", locals: {f: clf } %>
+      <% end %>
+      <%= link_to_add_field("Add", f, :category_locales, {}) %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  </div>
+<% end %>

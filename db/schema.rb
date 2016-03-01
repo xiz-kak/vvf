@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301080552) do
+ActiveRecord::Schema.define(version: 20160301121759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,32 @@ ActiveRecord::Schema.define(version: 20160301080552) do
   end
 
   add_index "authentications", ["provider", "uid"], name: "index_authentications_on_provider_and_uid", using: :btree
+
+  create_table "categories", force: :cascade do |t|
+    t.integer  "sort_order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "category_locales", force: :cascade do |t|
+    t.integer  "category_id"
+    t.string   "name"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "language_id"
+  end
+
+  add_index "category_locales", ["category_id"], name: "index_category_locales_on_category_id", using: :btree
+  add_index "category_locales", ["language_id"], name: "index_category_locales_on_language_id", using: :btree
+
+  create_table "languages", force: :cascade do |t|
+    t.string   "code"
+    t.string   "name"
+    t.string   "name_en"
+    t.integer  "sort_order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "people", force: :cascade do |t|
     t.string   "email",            null: false
@@ -49,4 +75,6 @@ ActiveRecord::Schema.define(version: 20160301080552) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
+  add_foreign_key "category_locales", "categories"
+  add_foreign_key "category_locales", "languages"
 end

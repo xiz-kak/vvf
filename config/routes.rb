@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :languages
+  resources :category_locales
+  resources :categories
   scope '(:locale)', locale: /en|vi|ja/ do
     root :to => 'users#index'
     resources :user_sessions

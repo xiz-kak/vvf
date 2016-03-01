@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Category Locales</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Name</th>
+      <th>Language</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @category_locales.each do |category_locale| %>
+      <tr>
+        <td><%= category_locale.category %></td>
+        <td><%= category_locale.name %></td>
+        <td><%= category_locale.language %></td>
+        <td><%= link_to 'Show', category_locale %></td>
+        <td><%= link_to 'Edit', edit_category_locale_path(category_locale) %></td>
+        <td><%= link_to 'Destroy', category_locale, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Category locale', new_category_locale_path %>

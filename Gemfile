@@ -8,14 +8,14 @@ gem 'coffee-rails', '~> 4.1.0'
 
 gem 'jquery-rails'
 gem 'turbolinks'
-gem 'jbuilder', '~> 2.0'
+# gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'sorcery'
 gem 'dotenv-rails'
 
 group :development, :test do
-  gem 'byebug'
+  # gem 'byebug'
 
   gem 'rspec-rails', '~> 3.0'
   gem 'factory_girl_rails'
@@ -34,6 +34,7 @@ group :development do
   gem 'annotate'
 
   gem 'pry-rails'
+  gem 'pry-byebug'
   gem 'better_errors'
   gem 'binding_of_caller'
 end

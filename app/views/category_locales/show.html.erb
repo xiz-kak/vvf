@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @category_locale.category %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @category_locale.name %>
+</p>
+
+<p>
+  <strong>Language:</strong>
+  <%= @category_locale.language %>
+</p>
+
+<%= link_to 'Edit', edit_category_locale_path(@category_locale) %> |
+<%= link_to 'Back', category_locales_path %>
