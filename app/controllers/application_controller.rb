@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_action :require_login
+  before_action :require_login, :set_locale
 
   # 例外ハンドル
   if !Rails.env.development?
@@ -45,6 +45,15 @@ class ApplicationController < ActionController::Base
       render file: Rails.root.join('public/500.html'), 
         status: 500, layout: false, content_type: 'text/html'
     end
+  end
+
+  # override- set locale to all url
+  def default_url_options(options = {})
+    {locale: I18n.locale == I18n.default_locale ? nil : I18n.locale}.merge options
+  end
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
   end
 
   protected
