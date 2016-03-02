@@ -22,7 +22,6 @@ class CategoriesController < ApplicationController
 
   # POST /categories
   def create
-    binding.pry
     @category = Category.new(category_params)
 
     if @category.save
