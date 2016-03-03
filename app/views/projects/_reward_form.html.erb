@@ -1,0 +1,18 @@
+<div class="field-group">
+  <div class="field">
+    <%= f.label :price %><br>
+    <%= f.text_field :price %>
+  </div>
+  <div class="field">
+    <%= f.label :count %><br>
+    <%= f.text_field :count %>
+  </div>
+  <div class="field">
+    <%= f.fields_for :reward_contents do |rcf| %>
+      <%= render partial: "reward_content_form", locals: {f: rcf } %>
+    <% end %>
+  </div>
+  <%= link_to_add_field("Add Reward Content", f, :reward_contents, {}) %><br>
+  <%= link_to_remove_field("Remove", f, {}) %>
+  <%= f.hidden_field :id %>
+</div>

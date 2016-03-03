@@ -13,4 +13,6 @@
 
 class Language < ActiveRecord::Base
   has_many :category_locales
+  has_many :project_headers
+  has_many :project_contents
 end

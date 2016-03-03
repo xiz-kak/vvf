@@ -1,0 +1,49 @@
+<%= form_for(@project) do |f| %>
+  <% if @project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+      <ul>
+      <% @project.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field-group">
+    <div class="field">
+      <%= f.label :category_id %><br>
+      <%= f.text_field :category_id %>
+    </div>
+    <div class="field">
+      <%= f.label :goal_amount %><br>
+      <%= f.text_field :goal_amount %>
+    </div>
+    <div class="field">
+      <%= f.label :duration_days %><br>
+      <%= f.number_field :duration_days %>
+    </div>
+    <div class="field">
+      <%= f.fields_for :project_headers do |phf| %>
+        <%= render partial: "project_header_form", locals: {f: phf } %>
+      <% end %>
+    </div>
+    <%= link_to_add_field("Add Project Header", f, :project_headers, {}) %>
+    <div class="field">
+      <%= f.fields_for :project_contents do |pcf| %>
+        <%= render partial: "project_content_form", locals: {f: pcf } %>
+      <% end %>
+    </div>
+    <%= link_to_add_field("Add Project Content", f, :project_contents, {}) %>
+    <div class="field">
+      <%= f.fields_for :rewards do |rf| %>
+        <%= render partial: "reward_form", locals: {f: rf } %>
+      <% end %>
+    </div>
+    <%= link_to_add_field("Add Reward", f, :rewards, {}) %>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  </div>
+<% end %>

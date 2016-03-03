@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301121759) do
+ActiveRecord::Schema.define(version: 20160303125349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,62 @@ ActiveRecord::Schema.define(version: 20160301121759) do
 
   add_index "people", ["email"], name: "index_people_on_email", unique: true, using: :btree
 
+  create_table "project_contents", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "language_id"
+    t.text     "body"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "project_contents", ["language_id"], name: "index_project_contents_on_language_id", using: :btree
+  add_index "project_contents", ["project_id"], name: "index_project_contents_on_project_id", using: :btree
+
+  create_table "project_headers", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "language_id"
+    t.string   "title"
+    t.string   "image_path"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "project_headers", ["language_id"], name: "index_project_headers_on_language_id", using: :btree
+  add_index "project_headers", ["project_id"], name: "index_project_headers_on_project_id", using: :btree
+
+  create_table "projects", force: :cascade do |t|
+    t.integer  "category_id"
+    t.float    "goal_amount"
+    t.integer  "duration_days"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "projects", ["category_id"], name: "index_projects_on_category_id", using: :btree
+
+  create_table "reward_contents", force: :cascade do |t|
+    t.integer  "reward_id"
+    t.integer  "language_id"
+    t.string   "title"
+    t.string   "image_path"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "reward_contents", ["language_id"], name: "index_reward_contents_on_language_id", using: :btree
+  add_index "reward_contents", ["reward_id"], name: "index_reward_contents_on_reward_id", using: :btree
+
+  create_table "rewards", force: :cascade do |t|
+    t.integer  "project_id"
+    t.float    "price"
+    t.integer  "count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "rewards", ["project_id"], name: "index_rewards_on_project_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                            null: false
     t.string   "crypted_password"
@@ -77,4 +133,12 @@ ActiveRecord::Schema.define(version: 20160301121759) do
 
   add_foreign_key "category_locales", "categories"
   add_foreign_key "category_locales", "languages"
+  add_foreign_key "project_contents", "languages"
+  add_foreign_key "project_contents", "projects"
+  add_foreign_key "project_headers", "languages"
+  add_foreign_key "project_headers", "projects"
+  add_foreign_key "projects", "categories"
+  add_foreign_key "reward_contents", "languages"
+  add_foreign_key "reward_contents", "rewards"
+  add_foreign_key "rewards", "projects"
 end
