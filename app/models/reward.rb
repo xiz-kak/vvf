@@ -22,4 +22,15 @@ class Reward < ActiveRecord::Base
   belongs_to :project
   has_many :reward_contents
   accepts_nested_attributes_for :reward_contents, allow_destroy: true
+  after_initialize :build_children, if: :new_record?
+
+  def price_f
+    ApplicationController.helpers.number_with_precision(self.price, precision: 2)
+  end
+
+  private
+
+  def build_children
+    reward_contents.build
+  end
 end

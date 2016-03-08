@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160303125349) do
+ActiveRecord::Schema.define(version: 20160304094951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,17 @@ ActiveRecord::Schema.define(version: 20160303125349) do
   add_index "project_headers", ["language_id"], name: "index_project_headers_on_language_id", using: :btree
   add_index "project_headers", ["project_id"], name: "index_project_headers_on_project_id", using: :btree
 
+  create_table "project_locales", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "language_id"
+    t.boolean  "is_main"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "project_locales", ["language_id"], name: "index_project_locales_on_language_id", using: :btree
+  add_index "project_locales", ["project_id"], name: "index_project_locales_on_project_id", using: :btree
+
   create_table "projects", force: :cascade do |t|
     t.integer  "category_id"
     t.float    "goal_amount"
@@ -137,6 +148,8 @@ ActiveRecord::Schema.define(version: 20160303125349) do
   add_foreign_key "project_contents", "projects"
   add_foreign_key "project_headers", "languages"
   add_foreign_key "project_headers", "projects"
+  add_foreign_key "project_locales", "languages"
+  add_foreign_key "project_locales", "projects"
   add_foreign_key "projects", "categories"
   add_foreign_key "reward_contents", "languages"
   add_foreign_key "reward_contents", "rewards"

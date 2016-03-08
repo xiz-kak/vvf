@@ -1,16 +1,10 @@
-<div class="field-group">
-  <div class="field">
-    <%= f.label :language_id %><br>
-    <%= f.text_field :language_id %>
-  </div>
-  <div class="field">
-    <%= f.label :image_path %><br>
-    <%= f.text_field :image_path %>
-  </div>
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
-  </div>
-  <%= f.hidden_field :id %>
-  <%= link_to_remove_field("Remove", f, {}) %>
+<div class="field">
+  <%= f.label :title %><br>
+  <%= f.text_field :title %>
 </div>
+<div class="field">
+  <%= f.label :image_path %><br>
+  <%= f.text_field :image_path %>
+</div>
+<%= f.hidden_field :language_id %>
+<%= f.hidden_field :id %>

@@ -23,4 +23,6 @@
 class CategoryLocale < ActiveRecord::Base
   belongs_to :category
   belongs_to :language
+
+  include LocaleBase
 end
