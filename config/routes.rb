@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   scope '(:locale)', locale: /en|vi|ja/ do
-    root :to => 'users#index'
+    root 'projects#index'
     resources :user_sessions
     resources :users
     resources :languages

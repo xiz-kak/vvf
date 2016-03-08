@@ -23,6 +23,12 @@
 #
 
 class RewardContent < ActiveRecord::Base
-  belongs_to :reward
+  belongs_to :reward, inverse_of: :reward_contents
   belongs_to :language
+
+  validates :reward, presence: true
+  validates :language, presence: true, uniqueness: { scope: :reward_id }
+  validates :title, presence: true
+  validates :image_path, presence: true
+  validates :description, presence: true
 end

@@ -13,17 +13,13 @@
 
   <div class="field-group">
     <div class="field">
-      <%= f.label :language_id %><br>
-      <%= f.select :language_id, Language.all.map{|l| [l.name_en, l.id]}, selected: @project.main_language %>
+      <%= f.label :main_language_id %><br>
+      <%= f.select :main_language_id, Language.all.map{|l| [l.name_en, l.id]}, selected: @project.main_language.id %>
     </div>
     <div class="field">
       <%= f.label :category_id %><br>
       <%= f.select :category_id, Category.all.map{|c| [c.name(locale), c.id]} %>
     </div>
-    <% ph = @project.get_or_new_header(@project.main_language.code) %>
-    <%= f.fields_for :project_headers, ph do |phf| %>
-      <%= render partial: "project_header_form", locals: {f: phf} %>
-    <% end %>
     <div class="field">
       <%= f.label :goal_amount %><br>
       <%= f.number_field :goal_amount, step: 0.01, value: @project.goal_amount_f %>
@@ -32,13 +28,15 @@
       <%= f.label :duration_days %><br>
       <%= f.number_field :duration_days %>
     </div>
-    <% pc = @project.get_or_new_content(@project.main_language.code)%>
-    <%= f.fields_for :project_contents, pc do |pcf| %>
-      <%= render partial: "project_content_form", locals: {f: pcf } %>
-    <% end %>
 
-    <% Language.where.not(id: @project.main_language).order(:sort_order).each do |l| %>
+    <% # Language.where.not(id: @project.main_language).order(:sort_order).each do |l| %>
+    <% Language.sorted.each do |l| %>
       <hr>
+      <strong><%= f.label :language_id, l.name_en %></strong>
+      <% pl = @project.get_or_new_locale(l.code) %>
+      <%= f.fields_for :project_locales, pl do |plf| %>
+        <%= render partial: "project_locale_form", locals: {f: plf, pl: pl} %>
+      <% end %>
       <% ph = @project.get_or_new_header(l.code) %>
       <%= f.fields_for :project_headers, ph do |phf| %>
         <%= render partial: "project_header_form", locals: {f: phf} %>

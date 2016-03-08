@@ -17,8 +17,8 @@ class ProjectsController < ApplicationController
     # langs.each do |l|
     #   @project.project_locales.build(language_id: l.id)
     # end
-    @project.project_headers.build
-    @project.project_contents.build
+    # @project.project_headers.build
+    # @project.project_contents.build
   end
 
   # GET /projects/1/edit
@@ -69,18 +69,20 @@ class ProjectsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def project_params
-      # params[:project][:project_locales_attributes].each { |index, hash| \
-      #   hash[:_destroy] = hash[:language_id].blank? }
+      params[:project][:project_locales_attributes].each do |index, hash|
+        hash[:_destroy] = hash[:use_this_language] != "1"
+        hash[:is_main] = hash[:language_id] == params[:project][:main_language_id]
+      end
       params.require(:project).permit(
         :id,
         :category_id,
         :goal_amount,
         :duration_days,
-        :is_last_step,
         project_locales_attributes: [
           :id,
           :language_id,
           :is_main,
+          :use_this_language,
           :_destroy
         ],
         project_headers_attributes: [

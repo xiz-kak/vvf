@@ -15,7 +15,7 @@
   <tbody>
     <% @projects.each do |project| %>
       <tr>
-        <td><%= project.category %></td>
+        <td><%= project.category.name(locale) %></td>
         <td><%= project.goal_amount %></td>
         <td><%= project.duration_days %></td>
         <td><%= link_to 'Show', project %></td>

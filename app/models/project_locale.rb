@@ -26,4 +26,8 @@ class ProjectLocale < ActiveRecord::Base
 
   validates :project, presence: true
   validates :language, presence: true, uniqueness: { scope: :project_id }
+
+  include LocaleBase
+
+  attr_accessor :use_this_language
 end

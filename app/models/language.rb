@@ -17,11 +17,14 @@ class Language < ActiveRecord::Base
   has_many :project_headers
   has_many :project_contents
 
+  scope :sorted, -> { order(:sort_order) }
+  scope :coded, -> (code) { find_by(code: code) }
+
   def self.locale_to_lang(locale)
-    if locale
-      language_id = Language.find_by(code: locale.to_s[0,2]).id
-    else
+    if locale.blank?
       language_id = Language.find_by(code: 'en').id
+    else
+      language_id = Language.find_by(code: locale.to_s[0,2]).id
     end
     language_id
   end

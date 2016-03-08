@@ -24,5 +24,7 @@ class CategoryLocale < ActiveRecord::Base
   belongs_to :category
   belongs_to :language
 
+  validates :language, presence: true, uniqueness: { scope: :category_id }
+
   include LocaleBase
 end

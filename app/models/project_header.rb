@@ -22,8 +22,13 @@
 #
 
 class ProjectHeader < ActiveRecord::Base
-  belongs_to :project
+  belongs_to :project, inverse_of: :project_headers
   belongs_to :language
+
+  validates :project, presence: true
+  validates :language, presence: true, uniqueness: { scope: :project_id }
+  validates :title, presence: true
+  validates :image_path, presence: true
 
   include LocaleBase
 end

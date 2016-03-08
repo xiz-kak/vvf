@@ -19,12 +19,17 @@ group :development, :test do
 
   gem 'rspec-rails', '~> 3.0'
   gem 'factory_girl_rails'
+
+  gem 'spring'
+
+  gem 'pry-rails'
+  gem 'pry-byebug'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :development do
   gem 'web-console', '~> 2.0'
-
-  gem 'spring'
 
   gem 'guard-bundler'
   gem 'guard-rspec'
@@ -32,9 +37,4 @@ group :development do
   gem 'guard-migrate'
 
   gem 'annotate'
-
-  gem 'pry-rails'
-  gem 'pry-byebug'
-  gem 'better_errors'
-  gem 'binding_of_caller'
 end

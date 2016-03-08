@@ -17,11 +17,11 @@ ActiveRecord::Schema.define(version: 20160304094951) do
   enable_extension "plpgsql"
 
   create_table "authentications", force: :cascade do |t|
-    t.string   "provider",               null: false
-    t.string   "uid",                    null: false
+    t.integer  "user_id",    null: false
+    t.string   "provider",   null: false
+    t.string   "uid",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id",    default: 1, null: false
   end
 
   add_index "authentications", ["provider", "uid"], name: "index_authentications_on_provider_and_uid", using: :btree
@@ -51,17 +51,6 @@ ActiveRecord::Schema.define(version: 20160304094951) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  create_table "people", force: :cascade do |t|
-    t.string   "email",            null: false
-    t.string   "crypted_password"
-    t.string   "salt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "type"
-  end
-
-  add_index "people", ["email"], name: "index_people_on_email", unique: true, using: :btree
 
   create_table "project_contents", force: :cascade do |t|
     t.integer  "project_id"

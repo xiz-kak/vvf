@@ -20,12 +20,21 @@
 
 class Reward < ActiveRecord::Base
   belongs_to :project
-  has_many :reward_contents
+  has_many :reward_contents, dependent: :destroy, inverse_of: :reward
   accepts_nested_attributes_for :reward_contents, allow_destroy: true
   after_initialize :build_children, if: :new_record?
 
+  validates :project, presence: true
+  validates :price, presence: true
+  validates :count, presence: true
+
   def price_f
-    ApplicationController.helpers.number_with_precision(self.price, precision: 2)
+    ApplicationController.helpers.number_with_delimiter(
+      ApplicationController.helpers.number_with_precision(self.price, precision: 2))
+  end
+
+  def count_f
+    ApplicationController.helpers.number_with_delimiter(self.count)
   end
 
   private

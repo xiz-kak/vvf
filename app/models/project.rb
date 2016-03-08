@@ -21,13 +21,17 @@
 class Project < ActiveRecord::Base
   belongs_to :category
   has_many :project_locales, dependent: :destroy, inverse_of: :project
-  has_many :project_headers, dependent: :destroy
-  has_many :project_contents, dependent: :destroy
-  has_many :rewards, -> { order(:price, :count, :id) }
+  has_many :project_headers, dependent: :destroy, inverse_of: :project
+  has_many :project_contents, dependent: :destroy, inverse_of: :project
+  has_many :rewards, -> { order(:price, :count, :id) }, dependent: :destroy, inverse_of: :project
   accepts_nested_attributes_for :project_locales, allow_destroy: true
   accepts_nested_attributes_for :project_headers, allow_destroy: true
   accepts_nested_attributes_for :project_contents, allow_destroy: true
   accepts_nested_attributes_for :rewards, allow_destroy: true
+
+  validates :category, presence: true
+  validates :goal_amount, presence: true
+  validates :duration_days, presence: true
 
   def main_language
     pl = self.project_locales.find_by(is_main: true)
@@ -39,7 +43,14 @@ class Project < ActiveRecord::Base
   end
 
   def goal_amount_f
-    ApplicationController.helpers.number_with_precision(self.goal_amount, precision: 2)
+    ApplicationController.helpers.number_with_delimiter(
+      ApplicationController.helpers.number_with_precision(self.goal_amount, precision: 2))
+  end
+
+  def get_or_new_locale(locale)
+    pl = self.project_locales.localed(locale)
+    pl = self.project_locales.build(language_id: Language.locale_to_lang(locale)) if pl.blank?
+    pl
   end
 
   def get_or_new_header(locale)

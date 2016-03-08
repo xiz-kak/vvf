@@ -21,8 +21,12 @@
 #
 
 class ProjectContent < ActiveRecord::Base
-  belongs_to :project
+  belongs_to :project, inverse_of: :project_contents
   belongs_to :language
+
+  validates :project, presence: true
+  validates :language, presence: true, uniqueness: { scope: :project_id }
+  validates :body, presence: true
 
   include LocaleBase
 end

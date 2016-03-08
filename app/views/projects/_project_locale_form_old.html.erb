@@ -1,0 +1,59 @@
+<%= form_for(@project) do |f| %>
+  <% if @project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+      <ul>
+      <% @project.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @project.project_locales.count > 0 %>
+    <% project_locales = @project.project_locales.map { |record| [record.language_id, record] }.to_h %>
+  <% else %>
+    <% project_locales = Hash.new %>
+  <% end %>
+
+  <% Language.all.order(:sort_order).each_with_index do |l, index| %>
+    <label>
+      <% project_locale = project_locales[l.id] %>
+      <% name_prefix = "project[project_locales_attributes][#{index}]" %>
+      <%= hidden_field_tag "#{name_prefix}[id]", project_locale.try(:id) %>
+      <% checked = project_locale.present? && !project_locale.marked_for_destruction? %>
+      <%= check_box_tag "#{name_prefix}[language_id]", l.id, checked %>
+      <%= l.name_en %>
+    </label>
+    <br>
+  <% end %>
+
+  <!--
+  <% Language.all.order(:sort_order).each do |l| %>
+    <div class="field">
+      <% if @project.project_locales.where(language_id: l.id).count > 0 %>
+        <%= check_box 'languages', l.id, checked: true %>
+      <% else %>
+        <%= check_box 'languages', l.id %>
+      <% end %>
+      <%= label 'languages', l.name_en %>
+    </div>
+  <% end %>
+  -->
+
+  <!--
+  <%= f.fields_for :project_locales do |plf| %>
+    <div class="field">
+      <%= plf.check_box :id %>
+      <%= plf.label Language.find(plf.object.language_id).name_en %>
+    </div>
+  <% end %>
+  -->
+
+  <%= f.hidden_field :next_view, value: 'edit' %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
