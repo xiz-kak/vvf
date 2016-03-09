@@ -19,8 +19,9 @@
     </div>
     <%= link_to_add_field("Add Reward", f, :rewards, {}) %>
 
+    <%= hidden_field_tag :update_rewards, :true %>
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit 'Update Rewards' %>
     </div>
   </div>
 <% end %>

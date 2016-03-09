@@ -32,9 +32,10 @@ class Project < ActiveRecord::Base
   validates :category, presence: true
   validates :goal_amount, presence: true
   validates :duration_days, presence: true
+  validate :main_language_is_used
 
   def main_language
-    pl = self.project_locales.find_by(is_main: true)
+    pl = project_locales.find_by(is_main: true)
     if pl.blank?
       return Language.find_by(code: :en)
     else
@@ -43,25 +44,40 @@ class Project < ActiveRecord::Base
   end
 
   # Set 2 decimal places
-  def goal_amount_f
-    ApplicationController.helpers.number_with_precision(self.goal_amount, precision: 2)
+  def goal_amount_z
+    ApplicationController.helpers.number_with_precision(goal_amount, precision: 2)
+  end
+
+  def project_locales_sorted
+    self.project_locales.joins(:language).order('languages.sort_order')
   end
 
   def get_or_new_locale(locale)
-    pl = self.project_locales.localed(locale)
-    pl = self.project_locales.build(language_id: Language.locale_to_lang(locale)) if pl.blank?
+    pl = project_locales.find { |r| r.language_id == Language.locale_to_lang(locale) }
+    pl = project_locales.localed(locale) if pl.blank?
+    pl = project_locales.build(language_id: Language.locale_to_lang(locale)) if pl.blank?
     pl
   end
 
   def get_or_new_header(locale)
-    header = self.project_headers.localed(locale)
-    header = self.project_headers.build(language_id: Language.locale_to_lang(locale)) if header.blank?
-    header
+    ph = project_headers.find { |r| r.language_id == Language.locale_to_lang(locale) }
+    ph = project_headers.localed(locale) if ph.blank?
+    ph = project_headers.build(language_id: Language.locale_to_lang(locale)) if ph.blank?
+    ph
   end
 
   def get_or_new_content(locale)
-    content = self.project_contents.localed(locale)
-    content = self.project_contents.build(language_id: Language.locale_to_lang(locale)) if content.blank?
-    content
+    pc = project_contents.find { |r| r.language_id == Language.locale_to_lang(locale) }
+    pc = project_contents.localed(locale) if pc.blank?
+    pc = project_contents.build(language_id: Language.locale_to_lang(locale)) if pc.blank?
+    pc
+  end
+
+  private
+
+  def main_language_is_used
+    if project_locales.count > 0
+      errors.add(:main_language_id, 'must be selected from used languages') if project_locales.find(&:is_main).blank?
+    end
   end
 end

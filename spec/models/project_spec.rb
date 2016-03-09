@@ -9,10 +9,10 @@ RSpec.describe Project, type: :model do
     end
   end
 
-  describe '#goal_amount_f' do
+  describe '#goal_amount_z' do
     it 'rounds to 2 digits of decimal places' do
       p = create(:project)
-      expect(p.goal_amount_f).to eq '1300.50'
+      expect(p.goal_amount_z).to eq '1300.50'
     end
   end
 
@@ -57,4 +57,5 @@ RSpec.describe Project, type: :model do
       expect(p.get_or_new_content(:ja)).to be_new_record
     end
   end
+
 end

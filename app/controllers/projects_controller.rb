@@ -45,13 +45,12 @@ class ProjectsController < ApplicationController
   def update
     if @project.update(project_params)
       redirect_to @project, notice: 'Project was successfully updated.'
-      # if params[:next_view] == 'edit'
-      #   render :edit
-      # else
-      #   redirect_to @project, notice: 'Project was successfully updated.'
-      # end
     else
-      render :edit
+      if params[:update_rewards].present?
+        render :edit_rewards
+      else
+        render :edit
+      end
     end
   end
 
@@ -70,7 +69,7 @@ class ProjectsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def project_params
       logger.debug(params)
-      params[:project][:project_locales_attributes].each do |index, hash|
+      params[:project][:project_locales_attributes].try(:each) do |index, hash|
         if hash[:use_this_language] == "0"
           hash[:_destroy] = true
           params[:project][:project_headers_attributes][index][:_destroy] = true

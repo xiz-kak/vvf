@@ -1,6 +1,10 @@
 <div class="field">
   <label>
-    <% checked = pl.persisted? && !pl.marked_for_destruction? %>
+    <% if params['action'] == 'update' %>
+      <% checked = pl.use_this_language == "1" %>
+    <% else %>
+      <% checked = pl.persisted? && !pl.marked_for_destruction? %>
+    <% end %>
     <%= f.check_box :use_this_language, checked: checked %>
     <span>Use this language</span>
   </label>

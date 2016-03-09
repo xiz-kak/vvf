@@ -31,4 +31,6 @@ class RewardContent < ActiveRecord::Base
   validates :title, presence: true
   validates :image_path, presence: true
   validates :description, presence: true
+
+  include LocaleBase
 end

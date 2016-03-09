@@ -1,14 +1,21 @@
 <div class="field-group">
+  <% r = f.object %>
   <div class="field">
     <%= f.label :price %><br>
-    <%= f.number_field :price_f, step: 0.01 %>
+    <%= f.number_field :price, step: 0.01, value: r.price_z %>
   </div>
   <div class="field">
     <%= f.label :count %><br>
     <%= f.number_field :count %>
   </div>
-  <%= f.fields_for :reward_contents do |rcf| %>
-    <%= render partial: "reward_content_form", locals: {f: rcf} %>
+  <% @project.project_locales_sorted.each do |pl| %>
+    <% l = Language.find(pl.language_id) %>
+    <hr>
+    <strong><%= f.label :language_id, l.name_en %></strong>
+    <% rc = r.get_or_new_content(l.code) %>
+    <%= f.fields_for :reward_contents, rc do |rcf| %>
+      <%= render partial: "reward_content_form", locals: {f: rcf} %>
+    <% end %>
   <% end %>
   <%= link_to_remove_field("Remove", f, {}) %>
   <%= f.hidden_field :id %>
