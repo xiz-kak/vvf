@@ -29,12 +29,7 @@ class Reward < ActiveRecord::Base
   validates :count, presence: true
 
   def price_f
-    ApplicationController.helpers.number_with_delimiter(
-      ApplicationController.helpers.number_with_precision(self.price, precision: 2))
-  end
-
-  def count_f
-    ApplicationController.helpers.number_with_delimiter(self.count)
+    ApplicationController.helpers.number_with_precision(self.price, precision: 2)
   end
 
   private

@@ -69,8 +69,14 @@ class ProjectsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def project_params
+      logger.debug(params)
       params[:project][:project_locales_attributes].each do |index, hash|
-        hash[:_destroy] = hash[:use_this_language] != "1"
+        if hash[:use_this_language] == "0"
+          hash[:_destroy] = true
+          params[:project][:project_headers_attributes][index][:_destroy] = true
+          params[:project][:project_contents_attributes][index][:_destroy] = true
+        end
+        # hash[:_destroy] = hash[:use_this_language] != "1"
         hash[:is_main] = hash[:language_id] == params[:project][:main_language_id]
       end
       params.require(:project).permit(

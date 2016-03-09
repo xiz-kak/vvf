@@ -42,9 +42,9 @@ class Project < ActiveRecord::Base
     end
   end
 
+  # Set 2 decimal places
   def goal_amount_f
-    ApplicationController.helpers.number_with_delimiter(
-      ApplicationController.helpers.number_with_precision(self.goal_amount, precision: 2))
+    ApplicationController.helpers.number_with_precision(self.goal_amount, precision: 2)
   end
 
   def get_or_new_locale(locale)

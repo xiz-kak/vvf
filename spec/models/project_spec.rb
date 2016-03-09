@@ -10,9 +10,9 @@ RSpec.describe Project, type: :model do
   end
 
   describe '#goal_amount_f' do
-    it 'places delimiters and rounds to 2 digits of decimal places' do
+    it 'rounds to 2 digits of decimal places' do
       p = create(:project)
-      expect(p.goal_amount_f).to eq '1,300.50'
+      expect(p.goal_amount_f).to eq '1300.50'
     end
   end
 
