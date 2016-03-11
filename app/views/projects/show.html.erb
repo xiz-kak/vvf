@@ -1,19 +1,36 @@
-<p id="notice"><%= notice %></p>
+<p>
+  <strong>Title</strong>
+  <%= @project.title(locale) %>
+</p>
 
 <p>
   <strong>Category:</strong>
-  <%= @project.category %>
+  <%= @project.category.name(locale) %>
 </p>
 
 <p>
   <strong>Goal amount:</strong>
-  <%= @project.goal_amount %>
+  <%= @project.goal_amount_f %>
 </p>
 
 <p>
   <strong>Duration days:</strong>
   <%= @project.duration_days %>
 </p>
+
+<p>
+  <strong>Image Path</strong>
+  <%= @project.image_path(locale) %>
+</p>
+
+<p>
+  <strong>Detail</strong>
+  <%= simple_format(@project.body(locale)) %>
+</p>
+
+<% @project.rewards.each_with_index do |r, idx| %>
+  <%= render partial: 'show_reward', locals: {r: r, idx: idx} %>
+<% end%>
 
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Project List', projects_path %> |

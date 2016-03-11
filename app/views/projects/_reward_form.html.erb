@@ -1,5 +1,10 @@
 <div class="field-group">
   <% r = f.object %>
+  <% if r.new_record? %>
+    <h2>New Reward</h2>
+  <% else %>
+    <h2>Reward #<%= f.options[:child_index]+1 %></h2>
+  <% end%>
   <div class="field">
     <%= f.label :price %><br>
     <%= f.number_field :price, step: 0.01, value: r.price_z %>
@@ -12,7 +17,7 @@
     <% l = Language.find(pl.language_id) %>
     <hr>
     <strong><%= f.label :language_id, l.name_en %></strong>
-    <% rc = r.get_or_new_content(l.code) %>
+    <% rc = r.get_or_new_content(l.id) %>
     <%= f.fields_for :reward_contents, rc do |rcf| %>
       <%= render partial: "reward_content_form", locals: {f: rcf} %>
     <% end %>

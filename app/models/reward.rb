@@ -27,15 +27,40 @@ class Reward < ActiveRecord::Base
   validates :price, presence: true
   validates :count, presence: true
 
-  def price_z
-    ApplicationController.helpers.number_with_precision(self.price, precision: 2)
+  def title(locale)
+    localed_content(locale).title
   end
 
-  def get_or_new_content(locale)
-    rc = reward_contents.find { |r| r.language_id == Language.locale_to_lang(locale) }
-    rc = reward_contents.localed(locale)
-    rc = reward_contents.build(language_id: Language.locale_to_lang(locale)) if rc.blank?
+  def image_path(locale)
+    localed_content(locale).image_path
+  end
+
+  def description(locale)
+    localed_content(locale).description
+  end
+
+  def price_z
+    ApplicationController.helpers.number_with_precision(self.price,
+                                                        precision: 2, separator: '.')
+  end
+
+  def price_f
+    ApplicationController.helpers.number_with_delimiter(price_z,
+                                                        delimiter: ',', separator: '.')
+  end
+
+  def get_or_new_content(language_id)
+    rc = reward_contents.find { |r| r.language_id == language_id }
+    rc = reward_contents.langed(language_id)
+    rc = reward_contents.build(language_id: language_id) if rc.blank?
     rc
   end
 
+  private
+
+  def localed_content(locale)
+    rc = reward_contents.localed(locale)
+    rc = reward_contents.find_by(language_id: project.main_language.id) if rc.blank?
+    rc
+  end
 end

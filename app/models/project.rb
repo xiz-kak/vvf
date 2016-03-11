@@ -34,6 +34,29 @@ class Project < ActiveRecord::Base
   validates :duration_days, presence: true
   validate :main_language_is_used
 
+  def title(locale)
+    localed_header(locale).title
+  end
+
+  def image_path(locale)
+    localed_header(locale).image_path
+  end
+
+  def body(locale)
+    localed_content(locale).body
+  end
+
+  # Set 2 decimal places
+  def goal_amount_z
+    ApplicationController.helpers.number_with_precision(goal_amount,
+                                                        precision: 2, separator: '.')
+  end
+
+  def goal_amount_f
+    ApplicationController.helpers.number_with_delimiter(goal_amount_z,
+                                                        delimiter: ',', separator: '.')
+  end
+
   def main_language
     pl = project_locales.find_by(is_main: true)
     if pl.blank?
@@ -43,41 +66,52 @@ class Project < ActiveRecord::Base
     end
   end
 
-  # Set 2 decimal places
-  def goal_amount_z
-    ApplicationController.helpers.number_with_precision(goal_amount, precision: 2)
+  def languages
+    project_locales_sorted.pluck('languages.name_en')
   end
 
   def project_locales_sorted
-    self.project_locales.joins(:language).order('languages.sort_order')
+    project_locales.joins(:language).order('languages.sort_order')
   end
 
-  def get_or_new_locale(locale)
-    pl = project_locales.find { |r| r.language_id == Language.locale_to_lang(locale) }
-    pl = project_locales.localed(locale) if pl.blank?
-    pl = project_locales.build(language_id: Language.locale_to_lang(locale)) if pl.blank?
+  def get_or_new_locale(language_id)
+    pl = project_locales.find { |r| r.language_id == language_id }
+    pl = project_locales.langed(language_id) if pl.blank?
+    pl = project_locales.build(language_id: language_id) if pl.blank?
     pl
   end
 
-  def get_or_new_header(locale)
-    ph = project_headers.find { |r| r.language_id == Language.locale_to_lang(locale) }
-    ph = project_headers.localed(locale) if ph.blank?
-    ph = project_headers.build(language_id: Language.locale_to_lang(locale)) if ph.blank?
+  def get_or_new_header(language_id)
+    ph = project_headers.find { |r| r.language_id == language_id }
+    ph = project_headers.langed(language_id) if ph.blank?
+    ph = project_headers.build(language_id: language_id) if ph.blank?
     ph
   end
 
-  def get_or_new_content(locale)
-    pc = project_contents.find { |r| r.language_id == Language.locale_to_lang(locale) }
-    pc = project_contents.localed(locale) if pc.blank?
-    pc = project_contents.build(language_id: Language.locale_to_lang(locale)) if pc.blank?
+  def get_or_new_content(language_id)
+    pc = project_contents.find { |r| r.language_id == language_id }
+    pc = project_contents.langed(language_id) if pc.blank?
+    pc = project_contents.build(language_id: language_id) if pc.blank?
     pc
   end
 
   private
 
   def main_language_is_used
-    if project_locales.count > 0
+    if project_locales.size > 0
       errors.add(:main_language_id, 'must be selected from used languages') if project_locales.find(&:is_main).blank?
     end
+  end
+
+  def localed_header(locale)
+    ph = project_headers.localed(locale)
+    ph = project_headers.find_by(language_id: main_language.id) if ph.blank?
+    ph
+  end
+
+  def localed_content(locale)
+    pc = project_contents.localed(locale)
+    pc = project_contents.find_by(language_id: main_language.id) if pc.blank?
+    pc
   end
 end

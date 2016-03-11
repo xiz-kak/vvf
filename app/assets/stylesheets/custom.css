@@ -4,3 +4,7 @@
   padding: 10px;
   margin: 10px;
 }
+
+header {
+  border-bottom: solid 1px #a0a0a0;
+}

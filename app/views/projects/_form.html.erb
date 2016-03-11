@@ -12,6 +12,7 @@
   <% end %>
 
   <div class="field-group">
+    <h2>- Project Info -</h2>
     <div class="field">
       <%= f.label :main_language_id %><br>
       <%= f.select :main_language_id, Language.all.map{|l| [l.name_en, l.id]}, selected: @project.main_language.id %>
@@ -33,15 +34,15 @@
     <% Language.sorted.each do |l| %>
       <hr>
       <strong><%= f.label :language_id, l.name_en %></strong>
-      <% pl = @project.get_or_new_locale(l.code) %>
+      <% pl = @project.get_or_new_locale(l.id) %>
       <%= f.fields_for :project_locales, pl do |plf| %>
         <%= render partial: "project_locale_form", locals: {f: plf, pl: pl} %>
       <% end %>
-      <% ph = @project.get_or_new_header(l.code) %>
+      <% ph = @project.get_or_new_header(l.id) %>
       <%= f.fields_for :project_headers, ph do |phf| %>
         <%= render partial: "project_header_form", locals: {f: phf} %>
       <% end %>
-      <% pc = @project.get_or_new_content(l.code)%>
+      <% pc = @project.get_or_new_content(l.id)%>
       <%= f.fields_for :project_contents, pc do |pcf| %>
         <%= render partial: "project_content_form", locals: {f: pcf } %>
       <% end %>

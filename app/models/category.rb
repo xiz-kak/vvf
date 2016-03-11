@@ -15,4 +15,11 @@ class Category < ActiveRecord::Base
   def name(locale)
     category_locales.localed(locale).name
   end
+
+  def get_or_new_locale(language_id)
+    cl = category_locales.find { |r| r.language_id == language_id }
+    cl = category_locales.langed(language_id) if cl.blank?
+    cl = category_locales.build(language_id: language_id) if cl.blank?
+    cl
+  end
 end

@@ -1,0 +1,30 @@
+<header>
+  <div id="nav">
+    <span><strong>Login actions:</strong></span>
+    <% if current_user %>
+      <%= link_to 'Edit Profile', edit_user_path(current_user.id) %> |
+      <%= link_to 'Logout', :logout, method: :post %>
+    <% else %>
+      <%= link_to 'Register', new_user_path %> |
+      <%= link_to 'Login', :login %>
+    <% end %>
+    | <%= link_to 'Login with Twitter', auth_at_provider_path(:provider => :twitter) %> |
+    <%= link_to 'Login with Facebook', auth_at_provider_path(:provider => :facebook) %>
+  </div>
+  <div id="nav">
+    <span><strong>Languages:</strong></span>
+    <%= link_to_if (params[:locale] != 'en' && !params[:locale].blank?), 'English', url_for(locale: :en) %> |
+    <%= link_to_if params[:locale] != 'vi', 'Tiếng Việt', url_for(locale: :vi) %> |
+    <%= link_to_if params[:locale] != 'ja', '日本語', url_for(locale: :ja) %>
+  </div>
+  <div id="nav">
+    <span><strong>Master maintenance:</strong></span>
+    <%= link_to 'Languages', languages_path %> |
+    <%= link_to 'Categories', categories_path %> |
+    <%= link_to 'Users', users_path %>
+  </div>
+  <div id="nav">
+    <span><strong>Links:</strong></span>
+    <%= link_to 'Projects', projects_path %>
+  </div>
+</header>

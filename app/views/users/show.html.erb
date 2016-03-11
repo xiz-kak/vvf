@@ -1,4 +1,7 @@
-<p id="notice"><%= notice %></p>
+<p>
+  <strong>Name:</strong>
+  <%= @user.name %>
+</p>
 
 <p>
   <strong>Email:</strong>
@@ -6,13 +9,13 @@
 </p>
 
 <p>
-  <strong>Crypted password:</strong>
-  <%= @user.crypted_password %>
+  <strong>Twitter User:</strong>
+  <%= @user.uses_twitter?.to_s %>
 </p>
 
 <p>
-  <strong>Salt:</strong>
-  <%= @user.salt %>
+  <strong>Facebook User:</strong>
+  <%= @user.uses_facebook?.to_s %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

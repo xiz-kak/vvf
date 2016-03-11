@@ -25,4 +25,12 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true
   has_many :authentications, :dependent => :destroy
   accepts_nested_attributes_for :authentications
+
+  def uses_twitter?
+    authentications.exists?(provider: :twitter)
+  end
+
+  def uses_facebook?
+    authentications.exists?(provider: :facebook)
+  end
 end

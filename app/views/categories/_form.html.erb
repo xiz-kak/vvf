@@ -16,12 +16,14 @@
       <%= f.label :sort_order %><br>
       <%= f.number_field :sort_order %>
     </div>
-    <div class="field">
-      <%= f.fields_for :category_locales do |clf| %>
-        <%= render partial: "category_locale_form", locals: {f: clf } %>
+    <% Language.sorted.each do |l| %>
+      <hr>
+      <strong><%= f.label :language_id, l.name_en %></strong>
+      <% cl = @category.get_or_new_locale(l.id) %>
+      <%= f.fields_for :category_locales, cl do |clf| %>
+        <%= render partial: "category_locale_form", locals: {f: clf, cl: cl} %>
       <% end %>
-      <%= link_to_add_field("Add", f, :category_locales, {}) %>
-    </div>
+    <% end %>
     <div class="actions">
       <%= f.submit %>
     </div>
