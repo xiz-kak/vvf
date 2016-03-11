@@ -14,6 +14,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'sorcery'
 gem 'dotenv-rails'
 
+gem 'ckeditor'
+
+gem 'carrierwave'
+gem 'mini_magick'
+
 group :development, :test do
   # gem 'byebug'
 

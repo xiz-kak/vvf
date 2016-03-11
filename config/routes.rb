@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  mount Ckeditor::Engine => '/ckeditor'
   scope '(:locale)', locale: /en|vi|ja/ do
     root 'projects#index'
     resources :user_sessions
