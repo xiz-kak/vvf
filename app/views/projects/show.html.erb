@@ -25,7 +25,8 @@
 
 <p>
   <strong>Detail</strong>
-  <%= simple_format(@project.body(locale)) %>
+  <!--<%= simple_format(@project.body(locale)) %>-->
+  <%= @project.body(locale).html_safe %>
 </p>
 
 <% @project.rewards.each_with_index do |r, idx| %>
