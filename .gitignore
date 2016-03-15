@@ -42,3 +42,4 @@ bower.json
 .env
 *.swp
 /public/uploads
+/public/assets

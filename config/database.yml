@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: vvf_production
-  username: vvf
-  password: <%= ENV['VVF_DATABASE_PASSWORD'] %>
+  # username: vvf
+  # password: <%= ENV['VVF_DATABASE_PASSWORD'] %>

@@ -15,7 +15,6 @@ gem 'sorcery'
 gem 'dotenv-rails'
 
 gem 'ckeditor'
-gem 'non-stupid-digest-assets'
 
 gem 'carrierwave'
 gem 'mini_magick'
@@ -43,7 +42,4 @@ group :development do
   gem 'guard-migrate'
 
   gem 'annotate'
-end
-group :production do
-  gem 'rails_12factor'
 end
