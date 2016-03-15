@@ -33,4 +33,18 @@ class User < ActiveRecord::Base
   def uses_facebook?
     authentications.exists?(provider: :facebook)
   end
+
+  def email=(val)
+    write_attribute(:email, encryptor.encrypt_and_sign(val))
+  end
+
+  def email
+    encryptor.decrypt_and_verify(read_attribute(:email)) if read_attribute(:email).present?
+  end
+
+  private
+
+  def encryptor
+    ActiveSupport::MessageEncryptor.new(ENV['ENCRYPTOR_KEY'])
+  end
 end
