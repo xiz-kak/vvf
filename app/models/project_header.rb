@@ -6,7 +6,7 @@
 #  project_id  :integer
 #  language_id :integer
 #  title       :string
-#  image_path  :string
+#  image       :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
@@ -28,7 +28,9 @@ class ProjectHeader < ActiveRecord::Base
   validates :project, presence: true
   validates :language, presence: true, uniqueness: { scope: :project_id }
   validates :title, presence: true
-  validates :image_path, presence: true
+  validates :image, presence: true
+
+  mount_uploader :image, ImageUploader
 
   include LocaleBase
 end

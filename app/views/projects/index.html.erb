@@ -7,7 +7,7 @@
       <th>Category</th>
       <th>Goal amount</th>
       <th>Duration days</th>
-      <th>Image Path</th>
+      <th>Image</th>
       <th>Languages</th>
       <th>Rewards</th>
       <th colspan="4"></th>
@@ -21,7 +21,7 @@
         <td><%= project.category.name(locale) %></td>
         <td><%= project.goal_amount_f %></td>
         <td><%= project.duration_days %></td>
-        <td><%= project.image_path(locale) %></td>
+        <td><%= image_tag project.image(locale).thumb.url %></td>
         <td><%= project.languages.join(',') %></td>
         <td><%= project.rewards.size %></td>
         <td><%= link_to 'Show', project %></td>

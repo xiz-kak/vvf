@@ -46,4 +46,8 @@ Ckeditor.setup do |config|
   # Used when CKEditor CDN enabled
   # By default: "/assets/ckeditor/config.js"
   # config.js_config_url = "/assets/ckeditor/config.js"
+
+  Ckeditor::ApplicationController.send :define_method, :ckeditor_filebrowser_scope do |o|
+    super(o.merge(assetable_type: "User", assetable_id: current_user.try(:id)))
+  end
 end

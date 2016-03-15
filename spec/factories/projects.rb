@@ -6,5 +6,9 @@ FactoryGirl.define do
     project_locales { [build(:project_locale_en), build(:project_locale_vi)] }
     project_headers { [build(:project_header_en), build(:project_header_vi)] }
     project_contents { [build(:project_content_en), build(:project_content_vi)] }
+
+    factory :project_wo_validation do
+      to_create {|instance| instance.save(validate: false) }
+    end
   end
 end

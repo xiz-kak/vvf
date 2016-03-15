@@ -31,8 +31,8 @@ class Reward < ActiveRecord::Base
     localed_content(locale).title
   end
 
-  def image_path(locale)
-    localed_content(locale).image_path
+  def image(locale)
+    localed_content(locale).image
   end
 
   def description(locale)

@@ -65,4 +65,7 @@ CKEDITOR.editorConfig = function( config )
     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline' ] },
     { name: 'insert', items: [ 'Image', 'HorizontalRule' ] }
   ];
+
+  config.removePlugins = 'elementspath';
+  // config.resize_enabled = false;
 };

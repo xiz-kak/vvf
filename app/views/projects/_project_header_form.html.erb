@@ -3,8 +3,12 @@
   <%= f.text_field :title %>
 </div>
 <div class="field">
-  <%= f.label :image_path %><br>
-  <%= f.text_field :image_path %>
+  <%= f.label :image %><br>
+  <% if f.object.image.present? %>
+    <%= image_tag f.object.image.url, height: 300 %>
+  <% end %>
+  <%= f.file_field :image %>
+  <%= f.hidden_field :image_cache %>
 </div>
 <%= f.hidden_field :language_id %>
 <%= f.hidden_field :id %>

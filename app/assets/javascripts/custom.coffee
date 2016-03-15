@@ -12,4 +12,4 @@ $(document).on 'ready page:load', ->
 
 $(document).bind 'page:change', ->
   $('.ckeditor').each ->
-    CKEDITOR.replace($(this).attr('id'))
+    CKEDITOR.replace($(this).attr('id'), {"toolbar":"mini"})

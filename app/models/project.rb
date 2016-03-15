@@ -38,8 +38,8 @@ class Project < ActiveRecord::Base
     localed_header(locale).title
   end
 
-  def image_path(locale)
-    localed_header(locale).image_path
+  def image(locale)
+    localed_header(locale).image
   end
 
   def body(locale)

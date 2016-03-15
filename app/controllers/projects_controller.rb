@@ -93,7 +93,8 @@ class ProjectsController < ApplicationController
         project_headers_attributes: [
           :id,
           :language_id,
-          :image_path,
+          :image,
+          :image_cache,
           :title,
           :_destroy
         ],
@@ -112,7 +113,8 @@ class ProjectsController < ApplicationController
             :id,
             :language_id,
             :title,
-            :image_path,
+            :image,
+            :image_cache,
             :description,
             :_destroy
           ]

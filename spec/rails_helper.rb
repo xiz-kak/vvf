@@ -27,8 +27,17 @@ require 'rspec/rails'
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  # For file upload test
+  # config.include ActionDispatch::TestProcess
+
+  # For factorygirl which indlude file upload
+  # FactoryGirl::SyntaxRunner.class_eval do
+  #   include ActionDispatch::TestProcess
+  # end
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  # config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_path = "#{Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

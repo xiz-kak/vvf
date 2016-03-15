@@ -19,8 +19,8 @@
 </p>
 
 <p>
-  <strong>Image Path</strong>
-  <%= @project.image_path(locale) %>
+  <strong>Image</strong>
+  <%= image_tag @project.image(locale), height: 300 %>
 </p>
 
 <p>

@@ -3,7 +3,7 @@ FactoryGirl.define do
     reward nil
     language Language.coded(:en)
     title "MyString"
-    image_path "MyString"
+    image "MyString"
     description "MyText"
   end
 
@@ -11,7 +11,7 @@ FactoryGirl.define do
     reward nil
     language Language.coded(:vi)
     title "MyString"
-    image_path "MyString"
+    image "MyString"
     description "MyText"
   end
 
@@ -19,7 +19,7 @@ FactoryGirl.define do
     reward nil
     language Language.coded(:ja)
     title "MyString"
-    image_path "MyString"
+    image "MyString"
     description "MyText"
   end
 end
