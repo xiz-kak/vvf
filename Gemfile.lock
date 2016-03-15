@@ -141,6 +141,8 @@ GEM
     nenv (0.3.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    non-stupid-digest-assets (1.0.8)
+      sprockets (>= 2.0)
     notiffany (0.0.8)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -291,6 +293,7 @@ DEPENDENCIES
   guard-rubocop
   jquery-rails
   mini_magick
+  non-stupid-digest-assets
   pg (~> 0.15)
   pry-byebug
   pry-rails

@@ -15,6 +15,7 @@ gem 'sorcery'
 gem 'dotenv-rails'
 
 gem 'ckeditor'
+gem 'non-stupid-digest-assets'
 
 gem 'carrierwave'
 gem 'mini_magick'
