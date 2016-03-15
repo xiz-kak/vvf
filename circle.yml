@@ -8,11 +8,7 @@ database:
     - mv config/database.yml.ci config/database.yml
     - bundle exec rake db:create db:migrate db:seed --trace
 deployment:
-  production:
+  staging:
     branch: master
-    commands:
-      - heroku maintenance:on --app application_name
-      - heroku scale worker=0 --app application_name
-      - git push -f git@heroku.com:application_name.git $CIRCLE_SHA1:refs/heads/master
-      - heroku run 'rake db:migrate; rake db:seed' --app application_name
-      - heroku maintenance:off --app application_name
+    heroku:
+      appname: vvf-dec
