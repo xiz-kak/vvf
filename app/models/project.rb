@@ -2,24 +2,29 @@
 #
 # Table name: projects
 #
-#  id            :integer          not null, primary key
-#  category_id   :integer
-#  goal_amount   :float
-#  duration_days :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id                 :integer          not null, primary key
+#  category_id        :integer
+#  goal_amount        :float
+#  duration_days      :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  user_id            :integer
+#  applied_begin_date :datetime
 #
 # Indexes
 #
 #  index_projects_on_category_id  (category_id)
+#  index_projects_on_user_id      (user_id)
 #
 # Foreign Keys
 #
 #  fk_rails_2ad2693164  (category_id => categories.id)
+#  fk_rails_b872a6760a  (user_id => users.id)
 #
 
 class Project < ActiveRecord::Base
   belongs_to :category
+  belongs_to :user
   has_many :project_locales, dependent: :destroy, inverse_of: :project
   has_many :project_headers, dependent: :destroy, inverse_of: :project
   has_many :project_contents, dependent: :destroy, inverse_of: :project
@@ -55,6 +60,10 @@ class Project < ActiveRecord::Base
   def goal_amount_f
     ApplicationController.helpers.number_with_delimiter(goal_amount_z,
                                                         delimiter: ',', separator: '.')
+  end
+
+  def applied_begin_date_f
+    applied_begin_date # [wip]apply format
   end
 
   def main_language

@@ -2,7 +2,8 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  # before_action :require_login
+
+  before_action :set_time_zone
   before_action :set_locale
 
   # 例外ハンドル
@@ -53,10 +54,6 @@ class ApplicationController < ActionController::Base
     {locale: I18n.locale == I18n.default_locale ? nil : I18n.locale}.merge options
   end
 
-  def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
-  end
-
   protected
 
   def is_admin?
@@ -67,10 +64,24 @@ class ApplicationController < ActionController::Base
     render_404 unless is_admin?
   end
 
+  # Filter: admin user
+  def require_admin
+    render_404 unless logged_in? && current_user.is_admin
+  end
 
   private
 
+  # Callback of require_login
   def not_authenticated
     redirect_to login_path, alert: "Please login first"
+  end
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
+
+  # Set time zone to Time.zone
+  def set_time_zone
+    Time.zone = - cookies[:tzoffset].to_i / 60
   end
 end

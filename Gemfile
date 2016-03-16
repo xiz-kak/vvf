@@ -19,6 +19,8 @@ gem 'ckeditor'
 gem 'carrierwave'
 gem 'mini_magick'
 
+gem 'js_cookie_rails'
+
 group :development, :test do
   # gem 'byebug'
 

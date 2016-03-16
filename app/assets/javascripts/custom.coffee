@@ -10,6 +10,8 @@ $(document).on 'ready page:load', ->
     $(this).closest('div').hide()
     event.preventDefault()
 
+  Cookies.set('tzoffset', (new Date()).getTimezoneOffset())
+
 $(document).bind 'page:change', ->
   $('.ckeditor').each ->
     CKEDITOR.replace($(this).attr('id'), {"toolbar":"mini"})
