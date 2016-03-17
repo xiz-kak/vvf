@@ -30,6 +30,7 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     @project.user = current_user
+    @project.status_div = Division.div(:project_status, :draft)
 
     if @project.save
       redirect_to @project, notice: 'Project was successfully created.'
