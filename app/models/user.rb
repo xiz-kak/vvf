@@ -24,10 +24,13 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :authentications
 
+  validates :email, presence: true
+  validate :unique_email, if: -> { new_record? }
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes["password"] }
   validates :password, confirmation: true, if: -> { new_record? || changes["password"] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes["password"] }
-  validates :email, uniqueness: true
+
+  include Encryptor
 
   def uses_twitter?
     authentications.exists?(provider: :twitter)
@@ -38,16 +41,16 @@ class User < ActiveRecord::Base
   end
 
   def email=(val)
-    write_attribute(:email, encryptor.encrypt_and_sign(val))
+    write_attribute(:email, encrypt(val))
   end
 
   def email
-    encryptor.decrypt_and_verify(read_attribute(:email)) if read_attribute(:email).present?
+    decrypt(read_attribute(:email)) if read_attribute(:email).present?
   end
 
   private
 
-  def encryptor
-    ActiveSupport::MessageEncryptor.new(ENV['ENCRYPTOR_KEY'])
+  def unique_email
+    errors.add(:email, 'already exists') if User.exists?(email: read_attribute(:email))
   end
 end

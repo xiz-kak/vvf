@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :users
     resources :languages
     resources :categories
+    resources :divisions
     resources :projects do
       member do
         get 'edit_rewards' => 'projects#edit_rewards'
