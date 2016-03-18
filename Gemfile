@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.3.0'
 
 gem 'rails', '4.2.5.1'
 gem 'pg', '~> 0.15'
@@ -44,4 +45,8 @@ group :development do
   gem 'guard-migrate'
 
   gem 'annotate'
+end
+
+group :production do
+  gem 'rails_12factor'
 end
