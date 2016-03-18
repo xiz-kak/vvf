@@ -12,11 +12,9 @@
   <% end %>
 
   <div class="field-group">
-    <div class="field">
-      <%= f.fields_for :rewards do |rf| %>
-        <%= render partial: "reward_form", locals: {f: rf } %>
-      <% end %>
-    </div>
+    <%= f.fields_for :rewards do |rf| %>
+      <%= render partial: "reward_form", locals: {f: rf} %>
+    <% end %>
     <%= link_to_add_field("Add Reward", f, :rewards, {}) %>
 
     <%= hidden_field_tag :update_rewards, :true %>

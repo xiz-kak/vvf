@@ -1,0 +1,29 @@
+<h1>Listing Payment Vendors</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sort order</th>
+      <th>Logo image</th>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @payment_vendors.each do |payment_vendor| %>
+      <tr>
+        <td><%= payment_vendor.sort_order %></td>
+        <td><%= image_tag payment_vendor.logo_image(locale).thumb.url %></td>
+        <td><%= payment_vendor.name(locale) %></td>
+        <td><%= link_to 'Show', payment_vendor %></td>
+        <td><%= link_to 'Edit', edit_payment_vendor_path(payment_vendor) %></td>
+        <td><%= link_to 'Destroy', payment_vendor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Payment vendor', new_payment_vendor_path %>

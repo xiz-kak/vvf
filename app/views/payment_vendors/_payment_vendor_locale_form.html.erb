@@ -1,0 +1,14 @@
+<div class="field">
+  <%= f.label :logo_image %><br>
+  <% if f.object.logo_image.present? %>
+    <%= image_tag f.object.logo_image.url, height: 300 %>
+  <% end %>
+  <%= f.file_field :logo_image %>
+  <%= f.hidden_field :logo_image_cache %>
+</div>
+<div class="field">
+  <%= f.label :name %><br>
+  <%= f.text_field :name %>
+</div>
+<%= f.hidden_field :language_id %>
+<%= f.hidden_field :id %>

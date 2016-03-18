@@ -1,0 +1,17 @@
+<p>
+  <strong>Sort order:</strong>
+  <%= @payment_vendor.sort_order %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @payment_vendor.name(locale) %>
+</p>
+
+<p>
+  <strong>Logo:</strong>
+  <%= image_tag @payment_vendor.logo_image(locale), height: 200 %>
+</p>
+
+<%= link_to 'Edit', edit_payment_vendor_path(@payment_vendor) %> |
+<%= link_to 'Back', payment_vendors_path %>

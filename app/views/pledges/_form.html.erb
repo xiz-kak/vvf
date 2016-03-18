@@ -1,0 +1,90 @@
+<%= form_for(@pledge) do |f| %>
+  <% if @pledge.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@pledge.errors.count, "error") %> prohibited this pledge from being saved:</h2>
+
+      <ul>
+      <% @pledge.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :reward_id %><br>
+    <%= f.text_field :reward_id %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br>
+    <%= f.text_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :pledged_at %><br>
+    <%= f.date_select :pledged_at %>
+  </div>
+
+  <!-- Pledge Payment -->
+  <%= f.fields_for :pledge_payment do |ppf| %>
+    <div class="field">
+      <%= ppf.label :amount %><br>
+      <%= ppf.number_field :amount, step: 0.01, value: @pledge.pledge_payment.amount %>
+    </div>
+    <div class="field">
+      <%= ppf.label :shipping_rate %><br>
+      <%= ppf.number_field :shipping_rate, step: 0.01, value: @pledge.pledge_payment.shipping_rate %>
+    </div>
+    <div class="field">
+      <%= ppf.label :total_amount %><br>
+      <%= ppf.number_field :total_amount, step: 0.01, value: @pledge.pledge_payment.total_amount %>
+    </div>
+    <div class="field">
+      <%= ppf.label :payment_method_id %><br>
+      <%= ppf.number_field :payment_method_id %>
+    </div>
+    <div class="field">
+      <%= ppf.label :payment_vendor_id %><br>
+      <%= ppf.number_field :payment_vendor_id %>
+    </div>
+  <% end %>
+
+  <!-- Pledge Shipping -->
+  <%= f.fields_for :pledge_shipping do |psf| %>
+    <div class="field">
+      <%= psf.label :first_name %><br>
+      <%= psf.text_field :first_name %>
+    </div>
+    <div class="field">
+      <%= psf.label :last_name %><br>
+      <%= psf.text_field :last_name %>
+    </div>
+    <div class="field">
+      <%= psf.label :tel %><br>
+      <%= psf.text_field :tel %>
+    </div>
+    <div class="field">
+      <%= psf.label :zip_code %><br>
+      <%= psf.text_field :zip_code %>
+    </div>
+    <div class="field">
+      <%= psf.label :address1 %><br>
+      <%= psf.text_field :address1 %>
+    </div>
+    <div class="field">
+      <%= psf.label :address2 %><br>
+      <%= psf.text_field :address2 %>
+    </div>
+    <div class="field">
+      <%= psf.label :address3 %><br>
+      <%= psf.text_field :address3 %>
+    </div>
+    <div class="field">
+      <%= psf.label :address4 %><br>
+      <%= psf.text_field :address4 %>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

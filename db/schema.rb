@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317134418) do
+ActiveRecord::Schema.define(version: 20160318074142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,65 @@ ActiveRecord::Schema.define(version: 20160317134418) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "payment_vendor_locales", force: :cascade do |t|
+    t.integer  "payment_vendor_id"
+    t.integer  "language_id"
+    t.string   "logo_image"
+    t.string   "name"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "payment_vendor_locales", ["language_id"], name: "index_payment_vendor_locales_on_language_id", using: :btree
+  add_index "payment_vendor_locales", ["payment_vendor_id"], name: "index_payment_vendor_locales_on_payment_vendor_id", using: :btree
+
+  create_table "payment_vendors", force: :cascade do |t|
+    t.integer  "sort_order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "pledge_payments", force: :cascade do |t|
+    t.integer  "pledge_id"
+    t.float    "amount"
+    t.float    "shipping_rate"
+    t.float    "total_amount"
+    t.integer  "payment_method_div"
+    t.integer  "payment_vendor_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "pledge_payments", ["payment_vendor_id"], name: "index_pledge_payments_on_payment_vendor_id", using: :btree
+  add_index "pledge_payments", ["pledge_id"], name: "index_pledge_payments_on_pledge_id", using: :btree
+
+  create_table "pledge_shippings", force: :cascade do |t|
+    t.integer  "pledge_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "tel"
+    t.string   "zip_code"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "address3"
+    t.string   "address4"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "pledge_shippings", ["pledge_id"], name: "index_pledge_shippings_on_pledge_id", using: :btree
+
+  create_table "pledges", force: :cascade do |t|
+    t.integer  "reward_id"
+    t.integer  "user_id"
+    t.datetime "pledged_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "pledges", ["reward_id"], name: "index_pledges_on_reward_id", using: :btree
+  add_index "pledges", ["user_id"], name: "index_pledges_on_user_id", using: :btree
 
   create_table "project_contents", force: :cascade do |t|
     t.integer  "project_id"
@@ -177,6 +236,13 @@ ActiveRecord::Schema.define(version: 20160317134418) do
   add_foreign_key "category_locales", "languages"
   add_foreign_key "division_locales", "divisions"
   add_foreign_key "division_locales", "languages"
+  add_foreign_key "payment_vendor_locales", "languages"
+  add_foreign_key "payment_vendor_locales", "payment_vendors"
+  add_foreign_key "pledge_payments", "payment_vendors"
+  add_foreign_key "pledge_payments", "pledges"
+  add_foreign_key "pledge_shippings", "pledges"
+  add_foreign_key "pledges", "rewards"
+  add_foreign_key "pledges", "users"
   add_foreign_key "project_contents", "languages"
   add_foreign_key "project_contents", "projects"
   add_foreign_key "project_headers", "languages"

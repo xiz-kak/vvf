@@ -1,0 +1,17 @@
+<p>
+  <strong>Reward:</strong>
+  <%= @pledge.reward %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @pledge.user %>
+</p>
+
+<p>
+  <strong>Pledged at:</strong>
+  <%= @pledge.pledged_at %>
+</p>
+
+<%= link_to 'Edit', edit_pledge_path(@pledge) %> |
+<%= link_to 'Back', pledges_path %>

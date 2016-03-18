@@ -31,7 +31,7 @@
     </div>
     <div class="field">
       <%= f.label :applied_begin_date, 'Begin Date' %><br>
-      <%= f.date_field :applied_begin_date %>
+      <%= f.date_select :applied_begin_date %>
     </div>
 
     <% # Language.where.not(id: @project.main_language).order(:sort_order).each do |l| %>

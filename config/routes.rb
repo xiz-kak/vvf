@@ -8,11 +8,13 @@ Rails.application.routes.draw do
     resources :languages
     resources :categories
     resources :divisions
+    resources :payment_vendors
     resources :projects do
       member do
         get 'edit_rewards' => 'projects#edit_rewards'
       end
     end
+    resources :pledges
 
     get 'login' => 'user_sessions#new', :as => :login
     post 'logout' => 'user_sessions#destroy', :as => :logout

@@ -1,0 +1,31 @@
+<%= form_for(@payment_vendor) do |f| %>
+  <% if @payment_vendor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@payment_vendor.errors.count, "error") %> prohibited this payment_vendor from being saved:</h2>
+
+      <ul>
+      <% @payment_vendor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field-group">
+    <div class="field">
+      <%= f.label :sort_order %><br>
+      <%= f.number_field :sort_order %>
+    </div>
+    <% Language.sorted.each do |l| %>
+      <hr>
+      <strong><%= f.label :language_id, l.name_en %></strong>
+      <% pvl = @payment_vendor.get_or_new_locale(l.id) %>
+      <%= f.fields_for :payment_vendor_locales, pvl do |pvlf| %>
+        <%= render partial: "payment_vendor_locale_form", locals: {f: pvlf, pvl: pvl} %>
+      <% end %>
+    <% end %>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  </div>
+<% end %>
