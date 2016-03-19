@@ -25,5 +25,8 @@ class Pledge < ActiveRecord::Base
   belongs_to :user
 
   has_one :pledge_payment, dependent: :destroy, inverse_of: :pledge
+  accepts_nested_attributes_for :pledge_payment, allow_destroy: true
+
   has_one :pledge_shipping, dependent: :destroy, inverse_of: :pledge
+  accepts_nested_attributes_for :pledge_shipping, allow_destroy: true
 end

@@ -20,7 +20,7 @@
 
 <p>
   <strong>Begin Date:</strong>
-  <%= @project.applied_begin_date_f %>
+  <%= l @project.applied_begin_date, format: :date %>
 </p>
 
 <p>
@@ -38,6 +38,7 @@
   <%= render partial: 'show_reward', locals: {r: r, idx: idx} %>
 <% end%>
 
+<br>
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Project List', projects_path %> |
 <%= link_to 'Edit Rewards', edit_rewards_project_path(@project) %>

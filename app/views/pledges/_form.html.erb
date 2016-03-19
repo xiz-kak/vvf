@@ -12,12 +12,9 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :reward_id %><br>
-    <%= f.text_field :reward_id %>
-  </div>
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.text_field :user_id %>
+    <%= label :pledge, :reward_id %><br>
+    <%= @pledge.reward.title(locale)%>
+    <%= image_tag @pledge.reward.image(locale).thumb.url %>
   </div>
   <div class="field">
     <%= f.label :pledged_at %><br>
@@ -39,8 +36,8 @@
       <%= ppf.number_field :total_amount, step: 0.01, value: @pledge.pledge_payment.total_amount %>
     </div>
     <div class="field">
-      <%= ppf.label :payment_method_id %><br>
-      <%= ppf.number_field :payment_method_id %>
+      <%= ppf.label :payment_method_div %><br>
+      <%= ppf.number_field :payment_method_div %>
     </div>
     <div class="field">
       <%= ppf.label :payment_vendor_id %><br>

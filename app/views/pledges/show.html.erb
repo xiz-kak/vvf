@@ -1,16 +1,73 @@
 <p>
   <strong>Reward:</strong>
-  <%= @pledge.reward %>
+  <%= @pledge.reward.title(locale) %>
 </p>
 
 <p>
   <strong>User:</strong>
-  <%= @pledge.user %>
+  <%= @pledge.user.name %>
 </p>
 
 <p>
   <strong>Pledged at:</strong>
-  <%= @pledge.pledged_at %>
+  <%= l @pledge.pledged_at, format: :date %>
+</p>
+
+<p>
+  <strong>Pledge amount:</strong>
+  <%= @pledge.pledge_payment.amount_f %>
+</p>
+
+<p>
+  <strong>Shipping rate:</strong>
+  <%= @pledge.pledge_payment.shipping_rate_f %>
+</p>
+
+<p>
+  <strong>Total amount:</strong>
+  <%= @pledge.pledge_payment.total_amount_f %>
+</p>
+
+<h3>-- Shipping Info --</h3>
+
+<p>
+  <strong>First Name:</strong>
+  <%= @pledge.pledge_shipping.first_name %>
+</p>
+
+<p>
+  <strong>Last Name:</strong>
+  <%= @pledge.pledge_shipping.last_name %>
+</p>
+
+<p>
+  <strong>Tel:</strong>
+  <%= @pledge.pledge_shipping.tel %>
+</p>
+
+<p>
+  <strong>Zip code:</strong>
+  <%= @pledge.pledge_shipping.zip_code %>
+</p>
+
+<p>
+  <strong>Address1:</strong>
+  <%= @pledge.pledge_shipping.address1 %>
+</p>
+
+<p>
+  <strong>Address2:</strong>
+  <%= @pledge.pledge_shipping.address2 %>
+</p>
+
+<p>
+  <strong>Address3:</strong>
+  <%= @pledge.pledge_shipping.address3 %>
+</p>
+
+<p>
+  <strong>Address4:</strong>
+  <%= @pledge.pledge_shipping.address4 %>
 </p>
 
 <%= link_to 'Edit', edit_pledge_path(@pledge) %> |

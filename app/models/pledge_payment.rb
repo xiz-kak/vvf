@@ -26,4 +26,30 @@
 class PledgePayment < ActiveRecord::Base
   belongs_to :payment_vendor
   belongs_to :pledge, inverse_of: :pledge_payment
+
+  include NumberFormatter
+
+  def amount_z
+    to_currency_z(amount, :usd)
+  end
+
+  def amount_f
+    to_currency_f(amount, :usd)
+  end
+
+  def shipping_rate_z
+    to_currency_z(shipping_rate, :usd)
+  end
+
+  def shipping_rate_f
+    to_currency_f(shipping_rate, :usd)
+  end
+
+  def total_amount_z
+    to_currency_z(total_amount, :usd)
+  end
+
+  def total_amount_f
+    to_currency_f(total_amount, :usd)
+  end
 end

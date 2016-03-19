@@ -41,6 +41,8 @@ class Project < ActiveRecord::Base
   validates :duration_days, presence: true
   validate :main_language_is_used
 
+  include NumberFormatter
+
   def title(locale)
     localed_header(locale).title
   end
@@ -55,17 +57,11 @@ class Project < ActiveRecord::Base
 
   # Set 2 decimal places
   def goal_amount_z
-    ApplicationController.helpers.number_with_precision(goal_amount,
-                                                        precision: 2, separator: '.')
+    to_currency_z(goal_amount, :usd)
   end
 
   def goal_amount_f
-    ApplicationController.helpers.number_with_delimiter(goal_amount_z,
-                                                        delimiter: ',', separator: '.')
-  end
-
-  def applied_begin_date_f
-    applied_begin_date # [wip]apply format
+    to_currency_f(goal_amount, :usd)
   end
 
   def main_language

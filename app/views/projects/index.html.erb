@@ -7,7 +7,7 @@
       <th>Category</th>
       <th>Goal amount</th>
       <th>Duration days</th>
-      <th>Applied Begin Date</th>
+      <th>Begin Date (applied)</th>
       <th>Image</th>
       <th>Languages</th>
       <th>Rewards</th>
@@ -22,7 +22,7 @@
         <td><%= project.category.name(locale) %></td>
         <td><%= project.goal_amount_f %></td>
         <td><%= project.duration_days %></td>
-        <td><%= project.applied_begin_date_f %></td>
+        <td><%= I18n.l project.applied_begin_date, format: :date %></td>
         <td><%= image_tag project.image(locale).thumb.url %></td>
         <td><%= project.languages.join(',') %></td>
         <td><%= project.rewards.size %></td>
