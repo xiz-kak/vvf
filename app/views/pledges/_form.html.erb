@@ -25,15 +25,18 @@
   <%= f.fields_for :pledge_payment do |ppf| %>
     <div class="field">
       <%= ppf.label :amount %><br>
-      <%= ppf.number_field :amount, step: 0.01, value: @pledge.pledge_payment.amount %>
+      <%= ppf.number_field :amount, step: 0.01,
+        value: @pledge.pledge_payment.amount, class: 'amount_to_pay' %>
     </div>
     <div class="field">
       <%= ppf.label :shipping_rate %><br>
-      <%= ppf.number_field :shipping_rate, step: 0.01, value: @pledge.pledge_payment.shipping_rate %>
+      <%= ppf.number_field :shipping_rate, step: 0.01,
+        value: @pledge.pledge_payment.shipping_rate, class: 'amount_to_pay' %>
     </div>
     <div class="field">
       <%= ppf.label :total_amount %><br>
-      <%= ppf.number_field :total_amount, step: 0.01, value: @pledge.pledge_payment.total_amount %>
+      <%= ppf.number_field :total_amount, step: 0.01,
+        value: @pledge.pledge_payment.total_amount, disabled: true %>
     </div>
     <div class="field">
       <%= ppf.label :payment_method_div %><br>
@@ -85,3 +88,7 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+<script type='text/javascript'>
+  
+</script>

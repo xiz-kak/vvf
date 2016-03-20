@@ -66,7 +66,6 @@ class PledgesController < ApplicationController
           :id,
           :amount,
           :shipping_rate,
-          :total_amount,
           :payment_method_div,
           :payment_vendor_id
         ],
