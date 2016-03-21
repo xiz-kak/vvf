@@ -13,5 +13,4 @@ module LocaleBase
       find_by(language_id: language_id)
     end
   end
-
 end
