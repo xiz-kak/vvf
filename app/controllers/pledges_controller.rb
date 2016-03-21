@@ -14,10 +14,9 @@ class PledgesController < ApplicationController
 
   # GET /pledges/new
   def new
-    @pledge = Pledge.new
+    @pledge = Pledge.new(reward_id: params[:reward_id])
     @pledge.build_pledge_payment
     @pledge.build_pledge_shipping
-    @pledge.reward_id = params[:id]
   end
 
   # GET /pledges/1/edit
@@ -28,6 +27,7 @@ class PledgesController < ApplicationController
   def create
     @pledge = Pledge.new(pledge_params)
     @pledge.user = current_user
+    @pledge.pledged_at = Time.zone.now
 
     if @pledge.save
       redirect_to @pledge, notice: 'Pledge was successfully created.'
@@ -61,7 +61,6 @@ class PledgesController < ApplicationController
     def pledge_params
       params.require(:pledge).permit(
         :reward_id,
-        :pledged_at,
         pledge_payment_attributes: [
           :id,
           :amount,

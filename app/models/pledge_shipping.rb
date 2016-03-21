@@ -26,4 +26,10 @@
 
 class PledgeShipping < ActiveRecord::Base
   belongs_to :pledge, inverse_of: :pledge_shipping
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :tel, presence: true
+  validates :zip_code, presence: true
+  validates :address1, presence: true
 end

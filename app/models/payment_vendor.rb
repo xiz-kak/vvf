@@ -12,6 +12,8 @@ class PaymentVendor < ActiveRecord::Base
   has_many :payment_vendor_locales, dependent: :destroy
   accepts_nested_attributes_for :payment_vendor_locales, allow_destroy: true
 
+  include SortableBase
+
   def name(locale)
     payment_vendor_locales.localed(locale).name
   end

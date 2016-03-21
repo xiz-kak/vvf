@@ -14,8 +14,7 @@ Rails.application.routes.draw do
         get 'edit_rewards' => 'projects#edit_rewards'
       end
     end
-    get 'rewards/:id/new_pledge' => 'pledges#new', as: :new_pledge
-    # get 'pledges/new' => 'pledges#new', as: :new_pledge
+    get 'rewards/:reward_id/new_pledge' => 'pledges#new', as: :new_pledge
     resources :pledges, except: :new
 
     get 'login' => 'user_sessions#new', :as => :login

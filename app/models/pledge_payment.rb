@@ -27,6 +27,12 @@ class PledgePayment < ActiveRecord::Base
   belongs_to :payment_vendor
   belongs_to :pledge, inverse_of: :pledge_payment
 
+  before_validation :calculate_amount
+
+  validates :amount, presence: true
+  validates :payment_method_div, presence: true
+  validates :payment_vendor_id, presence: true
+
   include NumberFormatter
 
   def amount_z
@@ -51,5 +57,11 @@ class PledgePayment < ActiveRecord::Base
 
   def total_amount_f
     to_currency_f(total_amount, :usd)
+  end
+
+  private
+
+  def calculate_amount
+    self.total_amount = amount + shipping_rate
   end
 end

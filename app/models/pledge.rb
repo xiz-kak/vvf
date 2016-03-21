@@ -29,12 +29,4 @@ class Pledge < ActiveRecord::Base
 
   has_one :pledge_shipping, dependent: :destroy, inverse_of: :pledge
   accepts_nested_attributes_for :pledge_shipping, allow_destroy: true
-
-  before_validation :calculate_amount
-
-  private
-
-  def calculate_amount
-    pledge_payment.total_amount = pledge_payment.amount + pledge_payment.shipping_rate
-  end
 end

@@ -35,12 +35,19 @@ class Division < ActiveRecord::Base
     dl
   end
 
-  CODES = { project_status: 2 }
-  VALS = { project_status: { draft: 1, applied: 2, active: 5, closed: 9 } }
+  CODES = { project_status: 2, pledge_payment_method: 7 }
+  VALS = { project_status: { draft: 1, applied: 2, active: 5, closed: 9 },
+           pledge_payment_method: { wallet: 1 },
+         }
 
   def self.div(code, val)
     c = CODES[code]
     v = VALS[code][val]
     Division.where(code: c, val: v).first
+  end
+
+  def self.find_by_code(code)
+    c = CODES[code]
+    Division.where(code: c)
   end
 end

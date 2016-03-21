@@ -15,10 +15,7 @@
     <%= label :pledge, :reward_id %><br>
     <%= @pledge.reward.title(locale)%>
     <%= image_tag @pledge.reward.image(locale).thumb.url %>
-  </div>
-  <div class="field">
-    <%= f.label :pledged_at %><br>
-    <%= f.date_select :pledged_at %>
+    <%= f.hidden_field :reward_id%>
   </div>
 
   <!-- Pledge Payment -->
@@ -40,11 +37,13 @@
     </div>
     <div class="field">
       <%= ppf.label :payment_method_div %><br>
-      <%= ppf.number_field :payment_method_div %>
+      <%= ppf.select :payment_method_div,
+        Division.find_by_code(:pledge_payment_method).map{|p| [p.name(locale), p.id]} %>
     </div>
     <div class="field">
       <%= ppf.label :payment_vendor_id %><br>
-      <%= ppf.number_field :payment_vendor_id %>
+      <%= ppf.select :payment_vendor_id,
+        PaymentVendor.sorted.map{|p| [p.name(locale), p.id]} %>
     </div>
   <% end %>
 

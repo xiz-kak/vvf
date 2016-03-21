@@ -1,6 +1,7 @@
 <p>
   <strong>Reward:</strong>
   <%= @pledge.reward.title(locale) %>
+  <%= image_tag @pledge.reward.image(locale).thumb.url %>
 </p>
 
 <p>
