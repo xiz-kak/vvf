@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
   scope '(:locale)', locale: /en|vi|ja/ do
     root 'projects#index'
-    resources :user_sessions
     resources :users
     resources :languages
     resources :categories
@@ -19,6 +18,7 @@ Rails.application.routes.draw do
 
     get 'login' => 'user_sessions#new', :as => :login
     post 'logout' => 'user_sessions#destroy', :as => :logout
+    post 'user_sessions' => 'user_sessions#create', :as => :user_sessions
 
     post 'oauth/callback' => 'oauths#callback'
     get 'oauth/callback' => 'oauths#callback' # for use with Github, Facebook
