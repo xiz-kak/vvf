@@ -21,3 +21,8 @@ div=Division.create(code: 2, val: 9, sort_order: 6, description: 'project_status
 div.division_locales.create(language_id: language_id_en, name: 'Closed')
 div.division_locales.create(language_id: language_id_vi, name: '')
 div.division_locales.create(language_id: language_id_ja, name: '終了')
+
+div=Division.create(code: 7, val: 1, sort_order: 1, description: 'pledge_payment_method-wallet')
+div.division_locales.create(language_id: language_id_en, name: 'Wallet')
+div.division_locales.create(language_id: language_id_vi, name: '')
+div.division_locales.create(language_id: language_id_ja, name: 'ウォレット')
