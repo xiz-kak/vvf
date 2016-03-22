@@ -1,6 +1,16 @@
 <hr>
 <strong><%= "Reward ##{idx+1}" %></strong>
 <p>
+  <strong>Title</strong>
+  <%= r.title(locale) %>
+</p>
+
+<p>
+  <strong>Image</strong>
+  <%= image_tag r.image(locale), height: 300 %>
+</p>
+
+<p>
   <strong>Price</strong>
   <%= r.price_f %>
 </p>
@@ -11,13 +21,8 @@
 </p>
 
 <p>
-  <strong>Title</strong>
-  <%= r.title(locale) %>
-</p>
-
-<p>
-  <strong>Image</strong>
-  <%= image_tag r.image(locale), height: 300 %>
+  <strong>Estimated delivery</strong>
+  <%= l r.estimated_delivery, format: :y_m %>
 </p>
 
 <p>

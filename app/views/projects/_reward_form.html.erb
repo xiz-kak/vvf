@@ -13,6 +13,11 @@
     <%= f.label :count %><br>
     <%= f.number_field :count %>
   </div>
+  <div class="field">
+    <%= f.label :estimated_delivery %><br>
+    <%= f.date_select :estimated_delivery,
+      start_year: Date.today.year, end_year: Date.today.year+2, discard_day: :true %>
+  </div>
   <% @project.project_locales_sorted.each do |pl| %>
     <% l = Language.find(pl.language_id) %>
     <hr>

@@ -107,6 +107,7 @@ class ProjectsController < ApplicationController
         :id,
         :price,
         :count,
+        :estimated_delivery,
         :_destroy,
         reward_contents_attributes: [
           :id,

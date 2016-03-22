@@ -200,4 +200,5 @@ vi:
       long: "%d %B, %Y %H:%M"
       short: "%d %b %H:%M"
       date: "%B %d, %Y"
+      y_m: "%B %Y"
     pm: chiều

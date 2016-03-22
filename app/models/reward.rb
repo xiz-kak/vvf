@@ -2,12 +2,13 @@
 #
 # Table name: rewards
 #
-#  id         :integer          not null, primary key
-#  project_id :integer
-#  price      :float
-#  count      :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                 :integer          not null, primary key
+#  project_id         :integer
+#  price              :float
+#  count              :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  estimated_delivery :datetime
 #
 # Indexes
 #
