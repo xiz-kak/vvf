@@ -9,6 +9,7 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  estimated_delivery :datetime
+#  ships_to_div       :integer
 #
 # Indexes
 #
@@ -21,6 +22,8 @@
 
 class Reward < ActiveRecord::Base
   belongs_to :project
+  belongs_to :ships_to, -> { where code: 5 }, class_name: 'Division', primary_key: :val, foreign_key: :ships_to_div
+
   has_many :reward_contents, dependent: :destroy, inverse_of: :reward
   has_many :pledges, dependent: :destroy, inverse_of: :reward
   accepts_nested_attributes_for :reward_contents, allow_destroy: true

@@ -18,6 +18,11 @@
     <%= f.date_select :estimated_delivery,
       start_year: Date.today.year, end_year: Date.today.year+2, discard_day: :true %>
   </div>
+  <div class="field">
+    <%= f.label :ships_to_div, 'Ships to' %><br>
+    <%= f.select :ships_to_div,
+      Division.find_by_code(:reward_ships_to).map{|d| [d.name(locale), d.val]} %>
+  </div>
   <% @project.project_locales_sorted.each do |pl| %>
     <% l = Language.find(pl.language_id) %>
     <hr>

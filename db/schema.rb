@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160322062415) do
+ActiveRecord::Schema.define(version: 20160322111150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,16 @@ ActiveRecord::Schema.define(version: 20160322062415) do
     t.integer  "sort_order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "nations", force: :cascade do |t|
+    t.string   "name"
+    t.string   "alpha_2_code"
+    t.string   "alpha_3_code"
+    t.string   "numeric_code"
+    t.boolean  "is_to_ship"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "payment_vendor_locales", force: :cascade do |t|
@@ -217,6 +227,7 @@ ActiveRecord::Schema.define(version: 20160322062415) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.datetime "estimated_delivery"
+    t.integer  "ships_to_div"
   end
 
   add_index "rewards", ["project_id"], name: "index_rewards_on_project_id", using: :btree

@@ -26,6 +26,7 @@
 class PledgePayment < ActiveRecord::Base
   belongs_to :payment_vendor
   belongs_to :pledge, inverse_of: :pledge_payment
+  belongs_to :payment_method, -> { where code: 7 }, class_name: 'Division', primary_key: :val, foreign_key: :payment_method_div
 
   before_validation :calculate_amount
 

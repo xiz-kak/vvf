@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @nation.name %>
+</p>
+
+<p>
+  <strong>Alpha 2 code:</strong>
+  <%= @nation.alpha_2_code %>
+</p>
+
+<p>
+  <strong>Alpha 3 code:</strong>
+  <%= @nation.alpha_3_code %>
+</p>
+
+<p>
+  <strong>Numeric code:</strong>
+  <%= @nation.numeric_code %>
+</p>
+
+<p>
+  <strong>Is to ship:</strong>
+  <%= @nation.is_to_ship %>
+</p>
+
+<%= link_to 'Edit', edit_nation_path(@nation) %> |
+<%= link_to 'Back', nations_path %>
