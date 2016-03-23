@@ -2,14 +2,15 @@
 #
 # Table name: rewards
 #
-#  id                 :integer          not null, primary key
-#  project_id         :integer
-#  price              :float
-#  count              :integer
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  estimated_delivery :datetime
-#  ships_to_div       :integer
+#  id                    :integer          not null, primary key
+#  project_id            :integer
+#  price                 :float
+#  count                 :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  estimated_delivery    :datetime
+#  ships_to_div          :integer
+#  default_shipping_rate :float
 #
 # Indexes
 #
@@ -25,12 +26,19 @@ class Reward < ActiveRecord::Base
   belongs_to :ships_to, -> { where code: 5 }, class_name: 'Division', primary_key: :val, foreign_key: :ships_to_div
 
   has_many :reward_contents, dependent: :destroy, inverse_of: :reward
-  has_many :pledges, dependent: :destroy, inverse_of: :reward
   accepts_nested_attributes_for :reward_contents, allow_destroy: true
+
+  has_many :reward_shippings, dependent: :destroy, inverse_of: :reward
+  accepts_nested_attributes_for :reward_shippings, allow_destroy: true
+
+  has_many :pledges, dependent: :destroy, inverse_of: :reward
 
   validates :project, presence: true
   validates :price, presence: true
   validates :count, presence: true
+  # default_shipping_rate is required if ships to anywhere_in_the_world
+  validates :default_shipping_rate, presence: true, if: Proc.new { self.ships_to_div == 3 }
+  validate :reward_shipping_is_required
 
   def title(locale)
     localed_content(locale).title
@@ -54,6 +62,16 @@ class Reward < ActiveRecord::Base
                                                         delimiter: ',', separator: '.')
   end
 
+  def default_shipping_rate_z
+    ApplicationController.helpers.number_with_precision(self.default_shipping_rate,
+                                                        precision: 2, separator: '.')
+  end
+
+  def default_shipping_rate_f
+    ApplicationController.helpers.number_with_delimiter(default_shipping_rate_z,
+                                                        delimiter: ',', separator: '.')
+  end
+
   def get_or_new_content(language_id)
     rc = reward_contents.find { |r| r.language_id == language_id }
     rc = reward_contents.langed(language_id)
@@ -62,6 +80,12 @@ class Reward < ActiveRecord::Base
   end
 
   private
+
+  def reward_shipping_is_required
+    if ships_to_div == Division.val(:reward_ships_to, :certain_countries)
+      errors.add(:ships_to, ':At lease one nation is required to be specified.') if reward_shippings.size == 0
+    end
+  end
 
   def localed_content(locale)
     rc = reward_contents.localed(locale)

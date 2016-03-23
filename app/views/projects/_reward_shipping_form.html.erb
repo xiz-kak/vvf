@@ -1,0 +1,13 @@
+<div class="field-group">
+  <div class="field">
+    <%= f.label :nation_id %><br>
+    <%= f.select :nation_id,
+      Nation.shipping_destinations.map{|n| [n.name, n.id]} %>
+  </div>
+  <div class="field">
+    <%= f.label :shipping_rate %><br>
+    <%= f.number_field :shipping_rate, step: 0.01, value: f.object.shipping_rate_z %>
+  </div>
+  <%= link_to_remove_field("Remove", f, {}) %>
+  <%= f.hidden_field :id %>
+</div>

@@ -73,8 +73,15 @@ class ProjectsController < ApplicationController
         params[:project][:project_headers_attributes][index][:_destroy] = true
         params[:project][:project_contents_attributes][index][:_destroy] = true
       end
-      # hash[:_destroy] = hash[:use_this_language] != "1"
       hash[:is_main] = hash[:language_id] == params[:project][:main_language_id]
+    end
+    params[:project][:rewards_attributes].try(:each) do |index, hash|
+      if hash[:ships_to_div].to_i == Division.val(:reward_ships_to, :no_shipping)
+        hash[:default_shipping_rate] = nil
+        hash[:reward_shippings_attributes].try(:each) { |i_rs, h_rs| h_rs[:_destroy] = true }
+      elsif hash[:ships_to_div].to_i == Division.val(:reward_ships_to, :certain_countries)
+        hash[:default_shipping_rate] = nil
+      end
     end
     params.require(:project).permit(
       :id,
@@ -109,7 +116,14 @@ class ProjectsController < ApplicationController
         :count,
         :estimated_delivery,
         :ships_to_div,
+        :default_shipping_rate,
         :_destroy,
+        reward_shippings_attributes: [
+          :id,
+          :nation_id,
+          :shipping_rate,
+          :_destroy
+        ],
         reward_contents_attributes: [
           :id,
           :language_id,

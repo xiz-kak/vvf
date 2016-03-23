@@ -13,4 +13,7 @@
 #
 
 class Nation < ActiveRecord::Base
+  has_many :reward_shippings, inverse_of: :reward
+
+  scope :shipping_destinations, -> { where(is_to_ship: true).order(:name) }
 end

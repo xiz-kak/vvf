@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160322111150) do
+ActiveRecord::Schema.define(version: 20160323043708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -220,14 +220,26 @@ ActiveRecord::Schema.define(version: 20160322111150) do
   add_index "reward_contents", ["language_id"], name: "index_reward_contents_on_language_id", using: :btree
   add_index "reward_contents", ["reward_id"], name: "index_reward_contents_on_reward_id", using: :btree
 
+  create_table "reward_shippings", force: :cascade do |t|
+    t.integer  "reward_id"
+    t.integer  "nation_id"
+    t.float    "shipping_rate"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "reward_shippings", ["nation_id"], name: "index_reward_shippings_on_nation_id", using: :btree
+  add_index "reward_shippings", ["reward_id"], name: "index_reward_shippings_on_reward_id", using: :btree
+
   create_table "rewards", force: :cascade do |t|
     t.integer  "project_id"
     t.float    "price"
     t.integer  "count"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.datetime "estimated_delivery"
     t.integer  "ships_to_div"
+    t.float    "default_shipping_rate"
   end
 
   add_index "rewards", ["project_id"], name: "index_rewards_on_project_id", using: :btree
@@ -265,5 +277,7 @@ ActiveRecord::Schema.define(version: 20160322111150) do
   add_foreign_key "projects", "users"
   add_foreign_key "reward_contents", "languages"
   add_foreign_key "reward_contents", "rewards"
+  add_foreign_key "reward_shippings", "nations"
+  add_foreign_key "reward_shippings", "rewards"
   add_foreign_key "rewards", "projects"
 end
