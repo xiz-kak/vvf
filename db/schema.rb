@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160323043708) do
+ActiveRecord::Schema.define(version: 20160325033040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,8 +144,10 @@ ActiveRecord::Schema.define(version: 20160323043708) do
     t.string   "address4"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "nation_id"
   end
 
+  add_index "pledge_shippings", ["nation_id"], name: "index_pledge_shippings_on_nation_id", using: :btree
   add_index "pledge_shippings", ["pledge_id"], name: "index_pledge_shippings_on_pledge_id", using: :btree
 
   create_table "pledges", force: :cascade do |t|
@@ -264,6 +266,7 @@ ActiveRecord::Schema.define(version: 20160323043708) do
   add_foreign_key "payment_vendor_locales", "payment_vendors"
   add_foreign_key "pledge_payments", "payment_vendors"
   add_foreign_key "pledge_payments", "pledges"
+  add_foreign_key "pledge_shippings", "nations"
   add_foreign_key "pledge_shippings", "pledges"
   add_foreign_key "pledges", "rewards"
   add_foreign_key "pledges", "users"
