@@ -23,17 +23,18 @@
     <div class="field">
       <%= ppf.label :amount %><br>
       <%= ppf.number_field :amount, step: 0.01,
-        value: @pledge.pledge_payment.amount, class: 'amount_to_pay' %>
+        value: @pledge.pledge_payment.amount_z, class: 'amount_to_pay' %>
+      <small>(min: <%= @pledge.reward.price_f %>)</small>
     </div>
     <div class="field">
       <%= ppf.label :shipping_rate %><br>
       <%= ppf.number_field :shipping_rate, step: 0.01,
-        value: @pledge.pledge_payment.shipping_rate, class: 'amount_to_pay' %>
+        value: @pledge.pledge_payment.shipping_rate_z, class: 'amount_to_pay', disabled: true %>
     </div>
     <div class="field">
       <%= ppf.label :total_amount %><br>
       <%= ppf.number_field :total_amount, step: 0.01,
-        value: @pledge.pledge_payment.total_amount, disabled: true %>
+        value: @pledge.pledge_payment.total_amount_z, disabled: true %>
     </div>
     <div class="field">
       <%= ppf.label :payment_method_div %><br>
@@ -48,39 +49,50 @@
   <% end %>
 
   <!-- Pledge Shipping -->
-  <%= f.fields_for :pledge_shipping do |psf| %>
-    <div class="field">
-      <%= psf.label :first_name %><br>
-      <%= psf.text_field :first_name %>
-    </div>
-    <div class="field">
-      <%= psf.label :last_name %><br>
-      <%= psf.text_field :last_name %>
-    </div>
-    <div class="field">
-      <%= psf.label :tel %><br>
-      <%= psf.text_field :tel %>
-    </div>
-    <div class="field">
-      <%= psf.label :zip_code %><br>
-      <%= psf.text_field :zip_code %>
-    </div>
-    <div class="field">
-      <%= psf.label :address1 %><br>
-      <%= psf.text_field :address1 %>
-    </div>
-    <div class="field">
-      <%= psf.label :address2 %><br>
-      <%= psf.text_field :address2 %>
-    </div>
-    <div class="field">
-      <%= psf.label :address3 %><br>
-      <%= psf.text_field :address3 %>
-    </div>
-    <div class="field">
-      <%= psf.label :address4 %><br>
-      <%= psf.text_field :address4 %>
-    </div>
+  <% if @pledge.reward.ships_to_div == 2 || @pledge.reward.ships_to_div == 3 %>
+    <%= f.fields_for :pledge_shipping do |psf| %>
+      <div class="field">
+        <%= psf.label :first_name %><br>
+        <%= psf.text_field :first_name %>
+      </div>
+      <div class="field">
+        <%= psf.label :last_name %><br>
+        <%= psf.text_field :last_name %>
+      </div>
+      <% if @pledge.reward.ships_to_div == 2 %>
+        <% list = @pledge.reward.reward_shippings.map{ |rs| [rs.nation.name, rs.nation.id] } %>
+      <% else %>
+        <% list = Nation.shipping_destinations.map{ |n| [n.name, n.id] } %>
+      <% end %>
+      <div class="field">
+        <%= psf.label :nation_id %><br>
+        <%= psf.select :nation_id, list, {include_blank: '-- Select a nation --'}, data: {reward_id: @pledge.reward.id} %>
+      </div>
+      <div class="field">
+        <%= psf.label :tel %><br>
+        <%= psf.text_field :tel %>
+      </div>
+      <div class="field">
+        <%= psf.label :zip_code %><br>
+        <%= psf.text_field :zip_code %>
+      </div>
+      <div class="field">
+        <%= psf.label :address1 %><br>
+        <%= psf.text_field :address1 %>
+      </div>
+      <div class="field">
+        <%= psf.label :address2 %><br>
+        <%= psf.text_field :address2 %>
+      </div>
+      <div class="field">
+        <%= psf.label :address3 %><br>
+        <%= psf.text_field :address3 %>
+      </div>
+      <div class="field">
+        <%= psf.label :address4 %><br>
+        <%= psf.text_field :address4 %>
+      </div>
+    <% end %>
   <% end %>
 
   <div class="actions">

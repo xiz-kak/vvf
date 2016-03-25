@@ -17,6 +17,10 @@ class PledgesController < ApplicationController
     @pledge = Pledge.new(reward_id: params[:reward_id])
     @pledge.build_pledge_payment
     @pledge.build_pledge_shipping
+
+    @pledge.pledge_payment.amount = @pledge.reward.price
+    @pledge.pledge_payment.shipping_rate = 0
+    @pledge.pledge_payment.total_amount = @pledge.reward.price
   end
 
   # GET /pledges/1/edit
@@ -51,6 +55,12 @@ class PledgesController < ApplicationController
     redirect_to pledges_url, notice: 'Pledge was successfully destroyed.'
   end
 
+  # POST rewards/1/shipping_rate
+  def shipping_rate
+    sr = Reward.find(params[:reward_id]).shipping_rate(params[:nation_id])
+    render json: sr
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_pledge
@@ -64,7 +74,6 @@ class PledgesController < ApplicationController
         pledge_payment_attributes: [
           :id,
           :amount,
-          :shipping_rate,
           :payment_method_div,
           :payment_vendor_id
         ],
@@ -72,6 +81,7 @@ class PledgesController < ApplicationController
           :id,
           :first_name,
           :last_name,
+          :nation_id,
           :tel,
           :zip_code,
           :address1,

@@ -28,7 +28,7 @@ class Reward < ActiveRecord::Base
   has_many :reward_contents, dependent: :destroy, inverse_of: :reward
   accepts_nested_attributes_for :reward_contents, allow_destroy: true
 
-  has_many :reward_shippings, dependent: :destroy, inverse_of: :reward
+  has_many :reward_shippings, -> { order 'nation_id' }, dependent: :destroy, inverse_of: :reward
   accepts_nested_attributes_for :reward_shippings, allow_destroy: true
 
   has_many :pledges, dependent: :destroy, inverse_of: :reward
@@ -70,6 +70,18 @@ class Reward < ActiveRecord::Base
   def default_shipping_rate_f
     ApplicationController.helpers.number_with_delimiter(default_shipping_rate_z,
                                                         delimiter: ',', separator: '.')
+  end
+
+  def shipping_rate(nation_id)
+    if ships_to_div == 1
+      sr = 0.00
+    elsif ships_to_div == 2
+      sr = reward_shippings.find_by(nation_id: nation_id).shipping_rate_z
+    elsif ships_to_div == 3
+      sr = reward_shippings.find_by(nation_id: nation_id).try(:shipping_rate_z)
+      sr = default_shipping_rate_z if sr.blank?
+    end
+    sr
   end
 
   def get_or_new_content(language_id)
