@@ -73,7 +73,6 @@ class PledgesController < ApplicationController
         :reward_id,
         pledge_payment_attributes: [
           :id,
-          :amount,
           :payment_method_div,
           :payment_vendor_id
         ],

@@ -13,26 +13,28 @@
     <%= f.label :count %><br>
     <%= f.number_field :count %>
   </div>
-  <div class="field">
-    <%= f.label :estimated_delivery %><br>
-    <%= f.date_select :estimated_delivery,
-      start_year: Date.today.year, end_year: Date.today.year+2, discard_day: :true %>
-  </div>
 
   <div class="field">
     <%= f.label :ships_to_div, 'Ships to' %><br>
     <%= f.select :ships_to_div,
       Division.find_by_code(:reward_ships_to).map{|d| [d.name(locale), d.val]}, {},
       class: 'reward_ships_to',
-      data: { default_shipping_rate: "reward_#{f.options[:child_index]}_default_shipping_rate",
-              nation_group: "reward_#{f.options[:child_index]}_nation_group" } %>
+      data: { estimated_delivery: "reward_#{f.options[:child_index]}_estimated_delivery",
+              nation_group: "reward_#{f.options[:child_index]}_nation_group",
+              default_shipping_rate: "reward_#{f.options[:child_index]}_default_shipping_rate" } %>
   </div>
   <% if !f.object.ships_to_div || f.object.ships_to_div == 1 %><!-- if no_shipping -->
-    <% style_dsr = "style='display: none;'".html_safe %>
+    <% style_ed = "style='display: none;'".html_safe %>
     <% style_ng = "style='display: none;'".html_safe %>
+    <% style_dsr = "style='display: none;'".html_safe %>
   <% elsif f.object.ships_to_div == 2 %><!-- if only_certain_countries -->
     <% style_dsr = "style='display: none;'".html_safe %>
   <% end %>
+  <div class="field" id="reward_<%= f.options[:child_index] %>_estimated_delivery" <%= style_ed %>>
+    <%= f.label :estimated_delivery %><br>
+    <%= f.date_select :estimated_delivery,
+      start_year: Date.today.year, end_year: Date.today.year+2, discard_day: :true %>
+  </div>
   <div class="field-group" id="reward_<%= f.options[:child_index] %>_nation_group" <%= style_ng %>>
     <%= f.fields_for :reward_shippings do |rsf| %>
       <%= render partial: "reward_shipping_form", locals: {f: rsf} %>

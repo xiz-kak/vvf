@@ -23,13 +23,12 @@
     <div class="field">
       <%= ppf.label :amount %><br>
       <%= ppf.number_field :amount, step: 0.01,
-        value: @pledge.pledge_payment.amount_z, class: 'amount_to_pay' %>
-      <small>(min: <%= @pledge.reward.price_f %>)</small>
+        value: @pledge.pledge_payment.amount_z, disabled: true %>
     </div>
     <div class="field">
       <%= ppf.label :shipping_rate %><br>
       <%= ppf.number_field :shipping_rate, step: 0.01,
-        value: @pledge.pledge_payment.shipping_rate_z, class: 'amount_to_pay', disabled: true %>
+        value: @pledge.pledge_payment.shipping_rate_z, disabled: true %>
     </div>
     <div class="field">
       <%= ppf.label :total_amount %><br>

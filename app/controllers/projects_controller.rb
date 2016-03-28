@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   before_action :require_admin, only: [:destroy]
   before_action :set_project, only: [:show, :edit, :edit_rewards, :update, :destroy]
   before_action :require_login, except: [:index, :show]
-  before_action :require_owner_allowed, only: [:edit, :edit_rewards, :update]
+  before_action :require_creator_allowed, only: [:edit, :edit_rewards, :update]
 
   # GET /projects
   def index
@@ -137,9 +137,9 @@ class ProjectsController < ApplicationController
     )
   end
 
-  # Filter: owner of the project and allowed to edit
-  def require_owner_allowed
-    render_404 unless @project.user == current_user
+  # Filter: creator of the project and allowed to edit
+  def require_creator_allowed
+    render_404 unless @project.user == current_user || is_admin?
     # [wip] must be in the editable status
   end
 end

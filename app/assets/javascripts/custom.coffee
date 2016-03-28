@@ -13,9 +13,6 @@ $(document).on 'ready page:load', ->
 
   Cookies.set('tzoffset', (new Date()).getTimezoneOffset())
 
-  $('.amount_to_pay').on 'change', ->
-    calcTotalAmount()
-
   $('#pledge_pledge_shipping_attributes_nation_id').on 'change', ->
     $.ajax
       url: "/shipping_rate"
@@ -38,14 +35,17 @@ changeShipsToDiv = ->
 switchOnShipsTo = (el) ->
   switch el.val()
     when '1'
-      $('#'+el.data('default-shipping-rate')).hide()
+      $('#'+el.data('estimated-delivery')).hide()
       $('#'+el.data('nation-group')).hide()
-    when '2'
       $('#'+el.data('default-shipping-rate')).hide()
+    when '2'
+      $('#'+el.data('estimated-delivery')).show()
       $('#'+el.data('nation-group')).show()
+      $('#'+el.data('default-shipping-rate')).hide()
     when '3'
-      $('#'+el.data('default-shipping-rate')).show()
+      $('#'+el.data('estimated-delivery')).show()
       $('#'+el.data('nation-group')).show()
+      $('#'+el.data('default-shipping-rate')).show()
 
 calcTotalAmount = ->
   numA = $('#pledge_pledge_payment_attributes_amount').val()
