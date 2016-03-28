@@ -1,0 +1,37 @@
+<%= form_for(@nation) do |f| %>
+  <% if @nation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@nation.errors.count, "error") %> prohibited this nation from being saved:</h2>
+
+      <ul>
+      <% @nation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :alpha_2_code %><br>
+    <%= f.text_field :alpha_2_code %>
+  </div>
+  <div class="field">
+    <%= f.label :alpha_3_code %><br>
+    <%= f.text_field :alpha_3_code %>
+  </div>
+  <div class="field">
+    <%= f.label :numeric_code %><br>
+    <%= f.text_field :numeric_code %>
+  </div>
+  <div class="field">
+    <%= f.label :is_to_ship %><br>
+    <%= f.check_box :is_to_ship %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

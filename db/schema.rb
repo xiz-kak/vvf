@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160322062415) do
+ActiveRecord::Schema.define(version: 20160325033040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,16 @@ ActiveRecord::Schema.define(version: 20160322062415) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "nations", force: :cascade do |t|
+    t.string   "name"
+    t.string   "alpha_2_code"
+    t.string   "alpha_3_code"
+    t.string   "numeric_code"
+    t.boolean  "is_to_ship"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
   create_table "payment_vendor_locales", force: :cascade do |t|
     t.integer  "payment_vendor_id"
     t.integer  "language_id"
@@ -134,8 +144,10 @@ ActiveRecord::Schema.define(version: 20160322062415) do
     t.string   "address4"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "nation_id"
   end
 
+  add_index "pledge_shippings", ["nation_id"], name: "index_pledge_shippings_on_nation_id", using: :btree
   add_index "pledge_shippings", ["pledge_id"], name: "index_pledge_shippings_on_pledge_id", using: :btree
 
   create_table "pledges", force: :cascade do |t|
@@ -210,13 +222,26 @@ ActiveRecord::Schema.define(version: 20160322062415) do
   add_index "reward_contents", ["language_id"], name: "index_reward_contents_on_language_id", using: :btree
   add_index "reward_contents", ["reward_id"], name: "index_reward_contents_on_reward_id", using: :btree
 
+  create_table "reward_shippings", force: :cascade do |t|
+    t.integer  "reward_id"
+    t.integer  "nation_id"
+    t.float    "shipping_rate"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "reward_shippings", ["nation_id"], name: "index_reward_shippings_on_nation_id", using: :btree
+  add_index "reward_shippings", ["reward_id"], name: "index_reward_shippings_on_reward_id", using: :btree
+
   create_table "rewards", force: :cascade do |t|
     t.integer  "project_id"
     t.float    "price"
     t.integer  "count"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.datetime "estimated_delivery"
+    t.integer  "ships_to_div"
+    t.float    "default_shipping_rate"
   end
 
   add_index "rewards", ["project_id"], name: "index_rewards_on_project_id", using: :btree
@@ -241,6 +266,7 @@ ActiveRecord::Schema.define(version: 20160322062415) do
   add_foreign_key "payment_vendor_locales", "payment_vendors"
   add_foreign_key "pledge_payments", "payment_vendors"
   add_foreign_key "pledge_payments", "pledges"
+  add_foreign_key "pledge_shippings", "nations"
   add_foreign_key "pledge_shippings", "pledges"
   add_foreign_key "pledges", "rewards"
   add_foreign_key "pledges", "users"
@@ -254,5 +280,7 @@ ActiveRecord::Schema.define(version: 20160322062415) do
   add_foreign_key "projects", "users"
   add_foreign_key "reward_contents", "languages"
   add_foreign_key "reward_contents", "rewards"
+  add_foreign_key "reward_shippings", "nations"
+  add_foreign_key "reward_shippings", "rewards"
   add_foreign_key "rewards", "projects"
 end

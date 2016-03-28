@@ -17,7 +17,9 @@
 
 class Division < ActiveRecord::Base
   has_many :division_locales, dependent: :destroy
-  has_many :projects
+  has_many :projects, inverse_of: :statu
+  has_many :rewards, inverse_of: :ships_to
+  has_many :pledge_payments, inverse_of: :payment_method
 
   accepts_nested_attributes_for :division_locales, allow_destroy: true
 
@@ -35,10 +37,19 @@ class Division < ActiveRecord::Base
     dl
   end
 
-  CODES = { project_status: 2, pledge_payment_method: 7 }
+  CODES = { project_status: 2, reward_ships_to: 5, pledge_payment_method: 7 }
   VALS = { project_status: { draft: 1, applied: 2, active: 5, closed: 9 },
+           reward_ships_to: { no_shipping: 1, certain_countries: 2, anywhere_in_the_world: 3 },
            pledge_payment_method: { wallet: 1 },
          }
+
+  def self.code(code)
+    CODES[code].to_i
+  end
+
+  def self.val(code, val)
+    VALS[code][val].to_i
+  end
 
   def self.div(code, val)
     c = CODES[code]

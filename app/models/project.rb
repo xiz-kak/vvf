@@ -26,7 +26,7 @@
 class Project < ActiveRecord::Base
   belongs_to :category
   belongs_to :user
-  belongs_to :status_div, -> { where code: 2 }, class_name: 'Division', primary_key: :val, foreign_key: :status_div
+  belongs_to :status, -> { where code: 2 }, class_name: 'Division', primary_key: :val, foreign_key: :status_div
   has_many :project_locales, dependent: :destroy, inverse_of: :project
   has_many :project_headers, dependent: :destroy, inverse_of: :project
   has_many :project_contents, dependent: :destroy, inverse_of: :project

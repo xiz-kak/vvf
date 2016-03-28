@@ -26,12 +26,14 @@
 class PledgePayment < ActiveRecord::Base
   belongs_to :payment_vendor
   belongs_to :pledge, inverse_of: :pledge_payment
+  belongs_to :payment_method, -> { where code: 7 }, class_name: 'Division', primary_key: :val, foreign_key: :payment_method_div
 
   before_validation :calculate_amount
 
   validates :amount, presence: true
   validates :payment_method_div, presence: true
   validates :payment_vendor_id, presence: true
+  validate :greater_than_reward_price
 
   include NumberFormatter
 
@@ -62,6 +64,16 @@ class PledgePayment < ActiveRecord::Base
   private
 
   def calculate_amount
+    r = self.pledge.reward
+    n_id = self.pledge.pledge_shipping.nation_id
+    self.shipping_rate = r.shipping_rate(n_id)
     self.total_amount = amount + shipping_rate
+  end
+
+  def greater_than_reward_price
+    if amount < self.pledge.reward.price
+      errors.add(:amount,
+        ": Amount must be greater than reward price(#{self.pledge.reward.price_f}).")
+    end
   end
 end

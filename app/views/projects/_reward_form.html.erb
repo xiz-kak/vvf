@@ -18,6 +18,32 @@
     <%= f.date_select :estimated_delivery,
       start_year: Date.today.year, end_year: Date.today.year+2, discard_day: :true %>
   </div>
+
+  <div class="field">
+    <%= f.label :ships_to_div, 'Ships to' %><br>
+    <%= f.select :ships_to_div,
+      Division.find_by_code(:reward_ships_to).map{|d| [d.name(locale), d.val]}, {},
+      class: 'reward_ships_to',
+      data: { default_shipping_rate: "reward_#{f.options[:child_index]}_default_shipping_rate",
+              nation_group: "reward_#{f.options[:child_index]}_nation_group" } %>
+  </div>
+  <% if !f.object.ships_to_div || f.object.ships_to_div == 1 %><!-- if no_shipping -->
+    <% style_dsr = "style='display: none;'".html_safe %>
+    <% style_ng = "style='display: none;'".html_safe %>
+  <% elsif f.object.ships_to_div == 2 %><!-- if only_certain_countries -->
+    <% style_dsr = "style='display: none;'".html_safe %>
+  <% end %>
+  <div class="field-group" id="reward_<%= f.options[:child_index] %>_nation_group" <%= style_ng %>>
+    <%= f.fields_for :reward_shippings do |rsf| %>
+      <%= render partial: "reward_shipping_form", locals: {f: rsf} %>
+    <% end %>
+    <%= link_to_add_field("Add Nation", f, :reward_shippings, {}) %>
+  </div>
+  <div class="field" id="reward_<%= f.options[:child_index] %>_default_shipping_rate" <%= style_dsr %>>
+    <%= f.label :default_shipping_rate, 'Shipping rate of the rest of the world' %><br>
+    <%= f.number_field :default_shipping_rate, step: 0.01, value: r.default_shipping_rate_z %>
+  </div>
+
   <% @project.project_locales_sorted.each do |pl| %>
     <% l = Language.find(pl.language_id) %>
     <hr>
