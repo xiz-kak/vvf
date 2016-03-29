@@ -45,6 +45,7 @@ group :development do
   gem 'guard-migrate'
 
   gem 'annotate'
+  gem "rails-erd"
 end
 
 group :production do
