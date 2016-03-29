@@ -8,10 +8,10 @@ test: &default
   mode: sandbox
 
   # Credentials for Classic APIs
-  app_id: APP-80W284485P519543T # sandbox mode
-  username: nuderebatsin.roal-facilitator_api1.gmail.com
-  password: KD422PNNJXKVLHKH
-  signature: AFcWxV21C7fd0v3bYYYRCpSSRl31Aq1vWOndHjxzP6VeYFsXNFV6lI2-
+  app_id: <%= ENV['PAYPAL_APP_ID'] || 'APP-80W284485P519543T' %> # sandbox mode
+  username: <%= ENV['PAYPAL_USERNAME'] || 'nuderebatsin.roal-facilitator_api1.gmail.com' %>
+  password: <%= ENV['PAYPAL_PASSWORD'] || 'KD422PNNJXKVLHKH' %>
+  signature: <%= ENV['PAYPAL_SIGNATURE'] || 'AFcWxV21C7fd0v3bYYYRCpSSRl31Aq1vWOndHjxzP6VeYFsXNFV6lI2-' %>
   # # With Certificate
   # cert_path: "config/cert_key.pem"
   sandbox_email_address: Platform.sdk.seller@gmail.com
