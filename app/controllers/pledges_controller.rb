@@ -40,6 +40,8 @@ class PledgesController < ApplicationController
       preapproval_response = adaptive_payments_api.preapproval(preapproval)
 
       if preapproval_response.success?
+        # @pledge.create_pledge_payment(:preapproval_key => preapproval_response.preapprovalKey)
+
         redirect_to preapproval_url(preapproval_response.preapprovalKey)
       else
         render :new
