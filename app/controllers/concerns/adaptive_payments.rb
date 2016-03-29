@@ -7,7 +7,7 @@ module AdaptivePayments
 
   def preapproval_options(opts = {})
     preapproval_options = { :currencyCode => 'USD',
-                            :maxTotalAmountOfAllPayments => 1.00,
+                            :maxTotalAmountOfAllPayments => 1.00, # opts[:maxTotalAmountOfAllPayments]
                             :displayMaxTotalAmount => TRUE,
                             :startingDate => Time.now,
                             :endingDate => Time.now.months_since(1), # opts[:endingDate]
