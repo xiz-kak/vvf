@@ -55,6 +55,12 @@ class PledgesController < ApplicationController
     redirect_to pledges_url, notice: 'Pledge was successfully destroyed.'
   end
 
+  def cancel
+  end
+
+  def complete
+  end
+
   # POST rewards/1/shipping_rate
   def shipping_rate
     sr = Reward.find(params[:reward_id]).shipping_rate(params[:nation_id])
