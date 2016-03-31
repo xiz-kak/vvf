@@ -3,6 +3,8 @@ class PledgesController < ApplicationController
   before_action :set_pledge, only: [:show, :edit, :update, :destroy]
   before_action :require_login, except: [:index, :show]
 
+  include AdaptivePayments
+
   # GET /pledges
   def index
     @pledges = Pledge.all
@@ -34,7 +36,16 @@ class PledgesController < ApplicationController
     @pledge.pledged_at = Time.zone.now
 
     if @pledge.save
-      redirect_to @pledge, notice: 'Pledge was successfully created.'
+      preapproval = adaptive_payments_api.build_preapproval(preapproval_options)
+      preapproval_response = adaptive_payments_api.preapproval(preapproval)
+
+      if preapproval_response.success?
+        # @pledge.create_pledge_payment(:preapproval_key => preapproval_response.preapprovalKey)
+
+        redirect_to preapproval_url(preapproval_response.preapprovalKey)
+      else
+        render :new
+      end
     else
       render :new
     end
@@ -53,6 +64,12 @@ class PledgesController < ApplicationController
   def destroy
     @pledge.destroy
     redirect_to pledges_url, notice: 'Pledge was successfully destroyed.'
+  end
+
+  def cancel
+  end
+
+  def complete
   end
 
   # POST rewards/1/shipping_rate

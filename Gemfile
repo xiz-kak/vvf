@@ -22,6 +22,8 @@ gem 'mini_magick'
 
 gem 'js_cookie_rails'
 
+gem 'paypal-sdk-adaptivepayments', '~> 1.117.0'
+
 group :development, :test do
   # gem 'byebug'
 
