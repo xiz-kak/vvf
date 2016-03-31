@@ -34,15 +34,15 @@ changeShipsToDiv = ->
 
 switchOnShipsTo = (el) ->
   switch el.val()
-    when '1'
+    when '0'
       $('#'+el.data('estimated-delivery')).hide()
       $('#'+el.data('nation-group')).hide()
       $('#'+el.data('default-shipping-rate')).hide()
-    when '2'
+    when '1'
       $('#'+el.data('estimated-delivery')).show()
       $('#'+el.data('nation-group')).show()
       $('#'+el.data('default-shipping-rate')).hide()
-    when '3'
+    when '2'
       $('#'+el.data('estimated-delivery')).show()
       $('#'+el.data('nation-group')).show()
       $('#'+el.data('default-shipping-rate')).show()

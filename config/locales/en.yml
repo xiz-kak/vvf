@@ -1,0 +1,16 @@
+en:
+  divs:
+    project_status:
+      draft: 'Draft'
+      applied: 'Applied'
+      remanded: 'Remanded'
+      canceled: 'Canceled'
+      active: 'Active'
+      suspended: 'Suspended'
+      dropped: 'Dropped'
+    reward_ships_to:
+      no_shipping: 'No shipping involved'
+      certain_countries: 'Only ships to certain countries'
+      anywhere_in_the_world: 'Anywhere in the world'
+    pledge_payment_method:
+      wallet: 'Wallet'

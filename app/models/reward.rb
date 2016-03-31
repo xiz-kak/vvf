@@ -23,7 +23,8 @@
 
 class Reward < ActiveRecord::Base
   belongs_to :project
-  belongs_to :ships_to, -> { where code: 5 }, class_name: 'Division', primary_key: :val, foreign_key: :ships_to_div
+
+  bind_inum :ships_to_div, Divs::RewardShipsTo
 
   has_many :reward_contents, dependent: :destroy, inverse_of: :reward
   accepts_nested_attributes_for :reward_contents, allow_destroy: true
@@ -94,7 +95,7 @@ class Reward < ActiveRecord::Base
   private
 
   def reward_shipping_is_required
-    if ships_to_div == Division.val(:reward_ships_to, :certain_countries)
+    if ships_to_div == Divs::RewardShipsTo::CERTAIN_COUNTRIES
       errors.add(:ships_to, ':At lease one nation is required to be specified.') if reward_shippings.size == 0
     end
   end

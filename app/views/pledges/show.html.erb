@@ -29,52 +29,54 @@
   <%= @pledge.pledge_payment.total_amount_f %>
 </p>
 
-<h3>-- Shipping Info --</h3>
+<% if @pledge.pledge_shipping %>
+  <h3>-- Shipping Info --</h3>
 
-<p>
-  <strong>First Name:</strong>
-  <%= @pledge.pledge_shipping.first_name %>
-</p>
+  <p>
+    <strong>First Name:</strong>
+    <%= @pledge.pledge_shipping.first_name %>
+  </p>
 
-<p>
-  <strong>Last Name:</strong>
-  <%= @pledge.pledge_shipping.last_name %>
-</p>
+  <p>
+    <strong>Last Name:</strong>
+    <%= @pledge.pledge_shipping.last_name %>
+  </p>
 
-<p>
-  <strong>Nation:</strong>
-  <%= @pledge.pledge_shipping.nation.name %>
-</p>
+  <p>
+    <strong>Nation:</strong>
+    <%= @pledge.pledge_shipping.nation.name %>
+  </p>
 
-<p>
-  <strong>Tel:</strong>
-  <%= @pledge.pledge_shipping.tel %>
-</p>
+  <p>
+    <strong>Tel:</strong>
+    <%= @pledge.pledge_shipping.tel %>
+  </p>
 
-<p>
-  <strong>Zip code:</strong>
-  <%= @pledge.pledge_shipping.zip_code %>
-</p>
+  <p>
+    <strong>Zip code:</strong>
+    <%= @pledge.pledge_shipping.zip_code %>
+  </p>
 
-<p>
-  <strong>Address1:</strong>
-  <%= @pledge.pledge_shipping.address1 %>
-</p>
+  <p>
+    <strong>Address1:</strong>
+    <%= @pledge.pledge_shipping.address1 %>
+  </p>
 
-<p>
-  <strong>Address2:</strong>
-  <%= @pledge.pledge_shipping.address2 %>
-</p>
+  <p>
+    <strong>Address2:</strong>
+    <%= @pledge.pledge_shipping.address2 %>
+  </p>
 
-<p>
-  <strong>Address3:</strong>
-  <%= @pledge.pledge_shipping.address3 %>
-</p>
+  <p>
+    <strong>Address3:</strong>
+    <%= @pledge.pledge_shipping.address3 %>
+  </p>
 
-<p>
-  <strong>Address4:</strong>
-  <%= @pledge.pledge_shipping.address4 %>
-</p>
+  <p>
+    <strong>Address4:</strong>
+    <%= @pledge.pledge_shipping.address4 %>
+  </p>
+<% end %>
 
 <%= link_to 'Edit', edit_pledge_path(@pledge) %> |
 <%= link_to 'Back', @pledge.reward.project %>

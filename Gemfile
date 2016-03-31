@@ -24,6 +24,8 @@ gem 'js_cookie_rails'
 
 gem 'paypal-sdk-adaptivepayments', '~> 1.117.0'
 
+gem 'inum'
+
 group :development, :test do
   # gem 'byebug'
 

@@ -59,28 +59,6 @@ ActiveRecord::Schema.define(version: 20160329173009) do
   add_index "ckeditor_assets", ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable", using: :btree
   add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type", using: :btree
 
-  create_table "division_locales", force: :cascade do |t|
-    t.integer  "division_id"
-    t.integer  "language_id"
-    t.string   "name"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "division_locales", ["division_id"], name: "index_division_locales_on_division_id", using: :btree
-  add_index "division_locales", ["language_id"], name: "index_division_locales_on_language_id", using: :btree
-
-  create_table "divisions", force: :cascade do |t|
-    t.integer  "code"
-    t.integer  "val"
-    t.integer  "sort_order"
-    t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "divisions", ["code", "val"], name: "index_divisions_on_code_and_val", unique: true, using: :btree
-
   create_table "languages", force: :cascade do |t|
     t.string   "code"
     t.string   "name"
@@ -261,8 +239,6 @@ ActiveRecord::Schema.define(version: 20160329173009) do
 
   add_foreign_key "category_locales", "categories"
   add_foreign_key "category_locales", "languages"
-  add_foreign_key "division_locales", "divisions"
-  add_foreign_key "division_locales", "languages"
   add_foreign_key "payment_vendor_locales", "languages"
   add_foreign_key "payment_vendor_locales", "payment_vendors"
   add_foreign_key "pledge_payments", "payment_vendors"

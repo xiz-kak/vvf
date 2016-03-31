@@ -1,0 +1,16 @@
+ja:
+  divs:
+    project_status:
+      draft: '下書き'
+      applied: '申請中'
+      remanded: '差戻し'
+      canceled: 'キャンセル'
+      active: '有効'
+      suspended: '保留'
+      dropped: '中止'
+    reward_ships_to:
+      no_shipping: '発送なし'
+      certain_countries: '一部の国のみ'
+      anywhere_in_the_world: '世界中の国'
+    pledge_payment_method:
+      wallet: 'ウォレット'

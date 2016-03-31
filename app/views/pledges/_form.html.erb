@@ -38,7 +38,7 @@
     <div class="field">
       <%= ppf.label :payment_method_div %><br>
       <%= ppf.select :payment_method_div,
-        Division.find_by_code(:pledge_payment_method).map{|p| [p.name(locale), p.id]} %>
+        Divs::PledgePaymentMethod.collection %>
     </div>
     <div class="field">
       <%= ppf.label :payment_vendor_id %><br>

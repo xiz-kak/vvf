@@ -30,7 +30,7 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     @project.user = current_user
-    @project.status_div = Division.div(:project_status, :draft)
+    @project.status_div = Divs::ProjectStatus::DRAFT
 
     if @project.save
       redirect_to @project, notice: 'Project was successfully created.'
@@ -76,10 +76,10 @@ class ProjectsController < ApplicationController
       hash[:is_main] = hash[:language_id] == params[:project][:main_language_id]
     end
     params[:project][:rewards_attributes].try(:each) do |index, hash|
-      if hash[:ships_to_div].to_i == Division.val(:reward_ships_to, :no_shipping)
+      if hash[:ships_to_div].to_i == Divs::RewardShipsTo::NO_SHIPPING
         hash[:default_shipping_rate] = nil
         hash[:reward_shippings_attributes].try(:each) { |i_rs, h_rs| h_rs[:_destroy] = true }
-      elsif hash[:ships_to_div].to_i == Division.val(:reward_ships_to, :certain_countries)
+      elsif hash[:ships_to_div].to_i == Divs::RewardShipsTo::CERTAIN_COUNTRIES
         hash[:default_shipping_rate] = nil
       end
     end

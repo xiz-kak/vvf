@@ -27,7 +27,6 @@
 class PledgePayment < ActiveRecord::Base
   belongs_to :payment_vendor
   belongs_to :pledge, inverse_of: :pledge_payment
-  belongs_to :payment_method, -> { where code: 7 }, class_name: 'Division', primary_key: :val, foreign_key: :payment_method_div
 
   before_validation :calculate_amount
 
@@ -65,9 +64,9 @@ class PledgePayment < ActiveRecord::Base
 
   def calculate_amount
     r = self.pledge.reward
-    n_id = self.pledge.pledge_shipping.nation_id
+    n_id = self.pledge.pledge_shipping.try(:nation_id)
     self.amount = r.price
-    self.shipping_rate = r.shipping_rate(n_id)
+    self.shipping_rate = r.shipping_rate(n_id) || 0
     self.total_amount = amount + shipping_rate
   end
 end
