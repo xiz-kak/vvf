@@ -18,4 +18,12 @@ module Divs
   class PledgePaymentMethod < Inum::Base
     define :WALLET, 0
   end
+
+  class PledgePaymentStatus < Inum::Base
+    define :UNPAID, 1
+    define :PREAPPROVAL_ERROR, 2
+    define :PREAPPROVED, 3
+    define :PAY_ERROR, 8
+    define :PAID, 9
+  end
 end
