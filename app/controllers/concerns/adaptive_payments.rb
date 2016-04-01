@@ -14,7 +14,6 @@ module AdaptivePayments
                             :maxNumberOfPayments => 1,
                             :maxNumberOfPaymentsPerPeriod => 1,
                             :pinType => 'NOT_REQUIRED',
-                            :requestEnvelope => 'en_US',
                             :feesPayer => 'SENDER',
                             # :senderEmail => opts[:email],
                             :requestEnvelope => {
