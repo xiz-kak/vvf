@@ -40,10 +40,21 @@ class PledgesController < ApplicationController
       preapproval_response = adaptive_payments_api.preapproval(preapproval)
 
       if preapproval_response.success?
-        # @pledge.create_pledge_payment(:preapproval_key => preapproval_response.preapprovalKey)
+        @pledge.preapprove(preapproval_response.preapprovalKey)
 
         redirect_to preapproval_url(preapproval_response.preapprovalKey)
       else
+        @pledge.pledge_payment.status = Divs::PledgePaymentStatus::PREAPPROVAL_ERROR
+
+        errorInfo = preapproval_response.error.map { |item|
+          { errorId: item.errorId,
+            message: item.message,
+          }
+        }.first.merge({ correlationId: preapproval_response.responseEnvelope.correlationId })
+
+        logger.error "Pledge failed to preapproval correlationId: #{errorInfo[:correlationId]}" \
+                     "  errorId: #{errorInfo[:errorId]} with errorMessage: #{errorInfo[:message]}"
+
         render :new
       end
     else
