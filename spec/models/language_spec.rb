@@ -1,51 +1,41 @@
 require 'rails_helper'
 
-RSpec.describe Language, type: :model do
-  describe '#locale_to_lang' do
-    it 'returns language_id of :en for argument :en' do
-      expect(Language.locale_to_lang(:en)).to eq Language.coded(:en).id
-    end
+RSpec.describe Language do
+  let!(:en) { FactoryGirl.create(:language, :en) }
+  let!(:vi) { FactoryGirl.create(:language, :vi) }
+  let!(:ja) { FactoryGirl.create(:language, :ja) }
 
-    it 'returns language_id of :en for argument "en"' do
-      expect(Language.locale_to_lang('en')).to eq Language.coded(:en).id
+  describe '.locale_to_lang' do
+    subject { described_class.locale_to_lang(locale) }
+    context 'when locale is blank' do
+      let(:locale) { 'en' }
+      it { is_expected.to eq en.id }
     end
-
-    it 'returns language_id of :vi for argument :vi' do
-      expect(Language.locale_to_lang(:vi)).to eq Language.coded(:vi).id
-    end
-
-    it 'returns language_id of :vi for argument "vi"' do
-      expect(Language.locale_to_lang('vi')).to eq Language.coded(:vi).id
-    end
-
-    it 'returns language_id of :ja for argument :ja' do
-      expect(Language.locale_to_lang(:ja)).to eq Language.coded(:ja).id
-    end
-
-    it 'returns language_id of :ja for argument "ja"' do
-      expect(Language.locale_to_lang('ja')).to eq Language.coded(:ja).id
-    end
-
-    it 'returns language_id of :en for argument nil' do
-      expect(Language.locale_to_lang(nil)).to eq Language.coded(:en).id
-    end
-
-    it 'returns language_id of :en for argument ""' do
-      expect(Language.locale_to_lang('')).to eq Language.coded(:en).id
+    context 'when locale is not blank' do
+      context 'when locale is vi' do
+        let(:locale) { 'vi' }
+        it { is_expected.to eq vi.id }
+      end
+      context 'when locale is ja' do
+        let(:locale) { 'ja' }
+        it { is_expected.to eq ja.id }
+      end
     end
   end
 
-  describe '#lang_to_locale' do
-    it 'returns "en" for language_id of :en' do
-      expect(Language.lang_to_locale(Language.coded(:en).id)).to eq 'en'
+  describe '.lang_to_locale' do
+    subject { described_class.lang_to_locale(lang_id) }
+    context 'when lang_id is en.id' do
+      let(:lang_id) { en.id }
+      it { is_expected.to eq en.code }
     end
-
-    it 'returns "vi" for language_id of :vi' do
-      expect(Language.lang_to_locale(Language.coded(:vi).id)).to eq 'vi'
+    context 'when lang_id is vi.id' do
+      let(:lang_id) { vi.id }
+      it { is_expected.to eq vi.code }
     end
-
-    it 'returns "ja" for language_id of :ja' do
-      expect(Language.lang_to_locale(Language.coded(:ja).id)).to eq 'ja'
+    context 'when lang_id is ja.id' do
+      let(:lang_id) { ja.id }
+      it { is_expected.to eq ja.code }
     end
   end
 end
