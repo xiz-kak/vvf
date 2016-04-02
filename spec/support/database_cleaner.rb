@@ -1,5 +1,7 @@
 require 'database_cleaner'
 
+# TODO
+# using database_rewinder would be better performance
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
