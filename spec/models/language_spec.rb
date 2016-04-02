@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Language do
   let!(:en) { Language.find_by(code: 'en') }
-  let!(:en) { Language.find_by(code: 'vi') }
-  let!(:en) { Language.find_by(code: 'ja') }
+  let!(:vi) { Language.find_by(code: 'vi') }
+  let!(:ja) { Language.find_by(code: 'ja') }
 
   describe '.locale_to_lang' do
     subject { described_class.locale_to_lang(locale) }
