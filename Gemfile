@@ -50,6 +50,7 @@ group :development do
 
   gem 'annotate'
   gem "rails-erd"
+  gem 'database_cleaner'
 end
 
 group :production do
