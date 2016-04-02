@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Language do
-  # let!(:en) { FactoryGirl.create(:language, :en) }
-  # let!(:vi) { FactoryGirl.create(:language, :vi) }
-  # let!(:ja) { FactoryGirl.create(:language, :ja) }
-
   let!(:en) { Language.find_by(code: 'en') }
   let!(:en) { Language.find_by(code: 'vi') }
   let!(:en) { Language.find_by(code: 'ja') }
