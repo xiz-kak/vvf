@@ -1,8 +1,10 @@
 class ProjectsController < ApplicationController
   before_action :require_admin, only: [:destroy]
-  before_action :set_project, only: [:show, :edit, :edit_rewards, :update, :destroy]
+  before_action :set_project, only: [:show, :edit, :edit_rewards, :update, :destroy, :complete, :cancel]
   before_action :require_login, except: [:index, :show]
   before_action :require_creator_allowed, only: [:edit, :edit_rewards, :update]
+
+  include AdaptivePayments
 
   # GET /projects
   def index
@@ -60,10 +62,38 @@ class ProjectsController < ApplicationController
 
   # POST /project/1/complete
   def complete
+    @project.pledges.each do |pledge|
+      opts = { :email => pledge.user.email,
+               :preapprovalKey => pledge.pledge_payment.preapproval_key,
+               :amount => pledge.reward.price }
+
+      pay = adaptive_payments_api.build_pay(approval_options(opts))
+      pay_response = adaptive_payments_api.pay(pay)
+
+      if pay_response.success? && pay_response.paymentExecStatus == EXEC_STATUS_COMPLETED
+        pledge.approve!
+        approve_log(pay_response, approval_options(opts))
+      else
+        pledge.pay_error!
+        payment_error_log(pay_response)
+      end
+    end
   end
 
   # POST /project/1/cancel
   def cancel
+    @project.pledges.each do |pledge|
+      cancel_preapproval = adaptive_payments_api.
+                             build_cancel_preapproval(cancel_preapproval_options(pledge.pledge_payment.preapproval_key))
+      cancel_preapproval_response = adaptive_payments_api.cancel_preapproval(cancel_preapproval)
+
+      if cancel_preapproval_response.success?
+        pledge.cancel!
+      else
+        pledge.pay_error!
+        payment_error_log(cancel_preapproval_response)
+      end
+    end
   end
 
   private

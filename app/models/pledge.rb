@@ -30,6 +30,11 @@ class Pledge < ActiveRecord::Base
   has_one :pledge_shipping, dependent: :destroy, inverse_of: :pledge
   accepts_nested_attributes_for :pledge_shipping, allow_destroy: true
 
+  scope :preapproved, lambda {
+    joins(:pledge_payment).
+    where('pledge_payments.status = ?', Divs::PledgePaymentStatus::PREAPPROVED.to_i)
+  }
+
   def preapproval_key(key)
     payment = pledge_payment || build_pledge_payment
     payment.payment_preapproval_key = key
@@ -41,5 +46,17 @@ class Pledge < ActiveRecord::Base
 
   def preapprove_error!
     pledge_payment.payment_status = Divs::PledgePaymentStatus::PREAPPROVAL_ERROR
+  end
+
+  def approve!
+    pledge_payment.payment_status = Divs::PledgePaymentStatus::APPROVED
+  end
+
+  def cancel!
+    pledge_payment.payment_status = Divs::PledgePaymentStatus::APPROVED
+  end
+
+  def pay_error!
+    pledge_payment.payment_status = Divs::PledgePaymentStatus::PAY_ERROR
   end
 end
