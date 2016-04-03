@@ -1,6 +1,6 @@
 class PledgesController < ApplicationController
   before_action :require_admin, only: [:edit, :update, :destroy]
-  before_action :set_pledge, only: [:show, :edit, :update, :destroy]
+  before_action :set_pledge, only: [:show, :edit, :update, :destroy, :complete]
   before_action :require_login, except: [:index, :show]
 
   include AdaptivePayments
@@ -36,24 +36,21 @@ class PledgesController < ApplicationController
     @pledge.pledged_at = Time.zone.now
 
     if @pledge.save
-      preapproval = adaptive_payments_api.build_preapproval(preapproval_options)
+      opts = { :maxTotalAmountOfAllPayments => @pledge.pledge_payment.total_amount,
+               :endingDate => Time.now.months_since(1),
+               :email => @pledge.user.email,
+               :pledge_id => @pledge.id }
+
+      preapproval = adaptive_payments_api.build_preapproval(preapproval_options(opts))
       preapproval_response = adaptive_payments_api.preapproval(preapproval)
 
       if preapproval_response.success?
-        @pledge.preapprove(preapproval_response.preapprovalKey)
+        @pledge.preapproval_key(preapproval_response.preapprovalKey)
 
         redirect_to preapproval_url(preapproval_response.preapprovalKey)
       else
-        @pledge.pledge_payment.status = Divs::PledgePaymentStatus::PREAPPROVAL_ERROR
-
-        errorInfo = preapproval_response.error.map { |item|
-          { errorId: item.errorId,
-            message: item.message,
-          }
-        }.first.merge({ correlationId: preapproval_response.responseEnvelope.correlationId })
-
-        logger.error "Pledge failed to preapproval correlationId: #{errorInfo[:correlationId]}" \
-                     "  errorId: #{errorInfo[:errorId]} with errorMessage: #{errorInfo[:message]}"
+        @pledge.preapprove_error!
+        payment_error_log(preapproval_response)
 
         render :new
       end
@@ -77,10 +74,14 @@ class PledgesController < ApplicationController
     redirect_to pledges_url, notice: 'Pledge was successfully destroyed.'
   end
 
-  def cancel
+  # GET /pledges/1/complete
+  def complete
+    # TODO: 条件が必要
+    @pledge.preapprove!
   end
 
-  def complete
+  # GET /pledges/cancel
+  def cancel
   end
 
   # POST rewards/1/shipping_rate
@@ -102,7 +103,9 @@ class PledgesController < ApplicationController
         pledge_payment_attributes: [
           :id,
           :payment_method_div,
-          :payment_vendor_id
+          :payment_vendor_id,
+          :preapproval_key,
+          :status
         ],
         pledge_shipping_attributes: [
           :id,

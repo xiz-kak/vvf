@@ -17,10 +17,8 @@ Rails.application.routes.draw do
     get 'rewards/:reward_id/new_pledge' => 'pledges#new', as: :new_pledge
     post 'shipping_rate' => 'pledges#shipping_rate'
     resources :pledges, :except => :new do
-      collection do
-        get 'cancel'
-        get 'complete'
-      end
+      get 'complete', :on => :member
+      get 'cancel', :on => :collection
     end
 
     get 'login' => 'user_sessions#new', :as => :login
