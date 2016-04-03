@@ -61,12 +61,12 @@ class PledgePayment < ActiveRecord::Base
     to_currency_f(total_amount, :usd)
   end
 
-  def status=(arg)
-    write_attribute(:status, arg)
+  def payment_status=(arg)
+    update_attribute(:status, arg)
   end
 
-  def preapprove_key=(arg)
-    write_attribute(:preapproval_key, arg)
+  def payment_preapproval_key=(arg)
+    update_attribute(:preapproval_key, arg)
   end
 
   private
