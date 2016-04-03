@@ -24,6 +24,6 @@ module Divs
     define :PREAPPROVAL_ERROR, 2
     define :PREAPPROVED, 3
     define :PAY_ERROR, 8
-    define :PAID, 9
+    define :APPROVED, 9
   end
 end
