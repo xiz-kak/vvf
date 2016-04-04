@@ -26,26 +26,6 @@ class ProjectsController < ApplicationController
   def edit_rewards
   end
 
-  # GET /projects/1/edit_draft
-  def edit_draft
-    #
-  end
-
-  # GET /projects/1/discard
-  def discard
-    #
-  end
-
-  # PATCH/PUT /projects/1/save_draft
-  def save_draft
-    #
-  end
-
-  # PATCH/PUT /projects/1/apply
-  def apply
-    #
-  end
-
   # POST /projects
   def create
     @project = Project.new(project_params)
@@ -53,7 +33,8 @@ class ProjectsController < ApplicationController
     @project.status_div = Divs::ProjectStatus::DRAFT
 
     if @project.save
-      redirect_to @project, notice: 'Project was successfully created.'
+      # redirect_to @project, notice: 'Project was successfully created.'
+      redirect_to edit_rewards_project_path(@project)
     else
       render :new
     end
@@ -62,7 +43,15 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   def update
     if @project.update(project_params)
-      redirect_to @project, notice: 'Project was successfully updated.'
+      if params[:project].present?
+        redirect_to edit_rewards_project_path(@project)
+      elsif params[:preview].present?
+        render :preview
+      elsif params[:draft].present?
+        redirect_to @project, notice: 'Draft was successfully saved.'
+      else
+        redirect_to @project, notice: 'Project was successfully updated.'
+      end
     else
       if params[:update_rewards].present?
         render :edit_rewards
@@ -70,6 +59,16 @@ class ProjectsController < ApplicationController
         render :edit
       end
     end
+  end
+
+  # GET /projects/1/discard
+  def discard
+    #
+  end
+
+  # GET /projects/1/apply
+  def apply
+    #
   end
 
   # DELETE /projects/1

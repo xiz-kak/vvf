@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     resources :projects do
       member do
         get 'edit_rewards' => 'projects#edit_rewards'
+        get 'discard' => 'projects#discard'
+        get 'apply' => 'projects#apply'
       end
     end
     get 'rewards/:reward_id/new_pledge' => 'pledges#new', as: :new_pledge
