@@ -38,7 +38,7 @@ class PledgesController < ApplicationController
     if @pledge.save
       opts = { :maxTotalAmountOfAllPayments => @pledge.pledge_payment.total_amount,
                :endingDate => Time.now.months_since(1),
-               :email => @pledge.user.email,
+               :email => nil, # @pledge.user.email,
                :pledge_id => @pledge.id }
 
       preapproval = adaptive_payments_api.build_preapproval(preapproval_options(opts))

@@ -32,7 +32,7 @@ class Pledge < ActiveRecord::Base
 
   scope :preapproved, lambda {
     joins(:pledge_payment).
-    where('pledge_payments.status = ?', Divs::PledgePaymentStatus::PREAPPROVED.to_i)
+    where('pledge_payments.status in (?, ?)', Divs::PledgePaymentStatus::PREAPPROVED.to_i, Divs::PledgePaymentStatus::PAY_ERROR.to_i)
   }
 
   def preapproval_key(key)
