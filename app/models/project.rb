@@ -11,6 +11,11 @@
 #  user_id            :integer
 #  applied_begin_date :datetime
 #  status_div         :integer
+#  code               :string
+#  begin_at           :datetime
+#  end_at             :datetime
+#  view_begin_at      :datetime
+#  view_end_at        :datetime
 #
 # Indexes
 #
@@ -24,12 +29,14 @@
 #
 
 class Project < ActiveRecord::Base
+  scope :active, -> { where('view_begin_at <= ? AND view_end_at > ?', Time.now, Time.now) }
+
   belongs_to :category
   belongs_to :user
   has_many :project_locales, dependent: :destroy, inverse_of: :project
   has_many :project_headers, dependent: :destroy, inverse_of: :project
   has_many :project_contents, dependent: :destroy, inverse_of: :project
-  has_many :rewards, -> { order(:price, :count, :id) }, dependent: :destroy, inverse_of: :project
+  has_many :rewards, -> { order(:price, :count, :id) }, primary_key: :code, foreign_key: :project_code, dependent: :destroy, inverse_of: :project
   accepts_nested_attributes_for :project_locales, allow_destroy: true
   accepts_nested_attributes_for :project_headers, allow_destroy: true
   accepts_nested_attributes_for :project_contents, allow_destroy: true

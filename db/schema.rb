@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160329173009) do
+ActiveRecord::Schema.define(version: 20160401040451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,10 +133,12 @@ ActiveRecord::Schema.define(version: 20160329173009) do
     t.integer  "reward_id"
     t.integer  "user_id"
     t.datetime "pledged_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "reward_code"
   end
 
+  add_index "pledges", ["reward_code"], name: "index_pledges_on_reward_code", using: :btree
   add_index "pledges", ["reward_id"], name: "index_pledges_on_reward_id", using: :btree
   add_index "pledges", ["user_id"], name: "index_pledges_on_user_id", using: :btree
 
@@ -183,6 +185,11 @@ ActiveRecord::Schema.define(version: 20160329173009) do
     t.integer  "user_id"
     t.datetime "applied_begin_date"
     t.integer  "status_div"
+    t.string   "code"
+    t.datetime "begin_at"
+    t.datetime "end_at"
+    t.datetime "view_begin_at"
+    t.datetime "view_end_at"
   end
 
   add_index "projects", ["category_id"], name: "index_projects_on_category_id", using: :btree
@@ -216,13 +223,19 @@ ActiveRecord::Schema.define(version: 20160329173009) do
     t.integer  "project_id"
     t.float    "price"
     t.integer  "count"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                                                             null: false
+    t.datetime "updated_at",                                                             null: false
     t.datetime "estimated_delivery"
     t.integer  "ships_to_div"
     t.float    "default_shipping_rate"
+    t.integer  "code",                  default: "nextval('reward_code_seq'::regclass)"
+    t.string   "project_code"
+    t.datetime "view_begin_at"
+    t.datetime "view_end_at"
+    t.integer  "status_div"
   end
 
+  add_index "rewards", ["project_code"], name: "index_rewards_on_project_code", using: :btree
   add_index "rewards", ["project_id"], name: "index_rewards_on_project_id", using: :btree
 
   create_table "users", force: :cascade do |t|

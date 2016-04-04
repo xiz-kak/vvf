@@ -2,17 +2,19 @@
 #
 # Table name: pledges
 #
-#  id         :integer          not null, primary key
-#  reward_id  :integer
-#  user_id    :integer
-#  pledged_at :datetime
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :integer          not null, primary key
+#  reward_id   :integer
+#  user_id     :integer
+#  pledged_at  :datetime
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  reward_code :string
 #
 # Indexes
 #
-#  index_pledges_on_reward_id  (reward_id)
-#  index_pledges_on_user_id    (user_id)
+#  index_pledges_on_reward_code  (reward_code)
+#  index_pledges_on_reward_id    (reward_id)
+#  index_pledges_on_user_id      (user_id)
 #
 # Foreign Keys
 #

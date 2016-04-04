@@ -26,6 +26,26 @@ class ProjectsController < ApplicationController
   def edit_rewards
   end
 
+  # GET /projects/1/edit_draft
+  def edit_draft
+    #
+  end
+
+  # GET /projects/1/discard
+  def discard
+    #
+  end
+
+  # PATCH/PUT /projects/1/save_draft
+  def save_draft
+    #
+  end
+
+  # PATCH/PUT /projects/1/apply
+  def apply
+    #
+  end
+
   # POST /projects
   def create
     @project = Project.new(project_params)
