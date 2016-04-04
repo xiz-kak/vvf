@@ -1,17 +1,17 @@
 test: &default
 
   # Credentials for REST APIs
-  client_id: AQg75AQgBreinHyAlgJds5mS-q9mCs-DT0VsB_xnTORUHHTi3is5OP-Z-SABDqj8S4uZDmCeYqLC3qvG
-  client_secret: EO8yVS7VjpckqFRhb3DkDyf_sz6siCIm-dfmfAy0mEAqqUgSvJsBaAiZ_XystM-1n-3Pv8aChlYl8LPU
+  client_id: <%= ENV['PAYPAL_CLIENT_ID'] || 'AQg75AQgBreinHyAlgJds5mS-q9mCs-DT0VsB_xnTORUHHTi3is5OP-Z-SABDqj8S4uZDmCeYqLC3qvG' %>
+  client_secret: <%= ENV['PAYPAL_CLIENT_SECRET'] || 'EO8yVS7VjpckqFRhb3DkDyf_sz6siCIm-dfmfAy0mEAqqUgSvJsBaAiZ_XystM-1n-3Pv8aChlYl8LPU' %>
 
   # Mode can be 'live' or 'sandbox'
   mode: sandbox
 
   # Credentials for Classic APIs
   app_id: <%= ENV['PAYPAL_APP_ID'] || 'APP-80W284485P519543T' %> # sandbox mode
-  username: <%= ENV['PAYPAL_USERNAME'] || 'nuderebatsin.roal-facilitator_api1.gmail.com' %>
-  password: <%= ENV['PAYPAL_PASSWORD'] || 'KD422PNNJXKVLHKH' %>
-  signature: <%= ENV['PAYPAL_SIGNATURE'] || 'AFcWxV21C7fd0v3bYYYRCpSSRl31Aq1vWOndHjxzP6VeYFsXNFV6lI2-' %>
+  username: <%= ENV['PAYPAL_USERNAME'] || 'shizuka.kakimoto-facilitator_api1.jepco.org' %>
+  password: <%= ENV['PAYPAL_PASSWORD'] || 'KGLY5UMVHRWR7PGB' %>
+  signature: <%= ENV['PAYPAL_SIGNATURE'] || 'AFcWxV21C7fd0v3bYYYRCpSSRl31AXjA.SBGUBrYUN2gQfWQN90kaTWo' %>
   # # With Certificate
   # cert_path: "config/cert_key.pem"
   sandbox_email_address: Platform.sdk.seller@gmail.com
