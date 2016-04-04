@@ -30,6 +30,8 @@
         <td><%= link_to 'Edit', edit_project_path(project) %></td>
         <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <td><%= link_to 'Rewards', edit_rewards_project_path(project) %></td>
+        <td><%= link_to 'Complete', complete_project_path(project), method: :post %></td>
+        <td><%= link_to 'Cancel', cancel_project_path(project), method: :post %></td>
       </tr>
     <% end %>
   </tbody>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160401040451) do
+ActiveRecord::Schema.define(version: 20160401221148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,9 +103,10 @@ ActiveRecord::Schema.define(version: 20160401040451) do
     t.float    "total_amount"
     t.integer  "payment_method_div"
     t.integer  "payment_vendor_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "preapproval_key"
+    t.integer  "status",             default: 1, null: false
   end
 
   add_index "pledge_payments", ["payment_vendor_id"], name: "index_pledge_payments_on_payment_vendor_id", using: :btree

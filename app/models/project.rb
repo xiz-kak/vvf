@@ -108,6 +108,10 @@ class Project < ActiveRecord::Base
     pc
   end
 
+  def pledges
+    Pledge.preapproved.joins(:reward).where('rewards.project_id = ?', id)
+  end
+
   private
 
   def main_language_is_used
