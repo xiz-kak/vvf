@@ -63,7 +63,7 @@ class ProjectsController < ApplicationController
   # POST /project/1/complete
   def complete
     @project.pledges.each do |pledge|
-      opts = { :email => pledge.user.email,
+      opts = { :email => 'shizuka.kakimoto-receiver@jepco.org', # 調達者のPayPalアカウントが入る
                :preapprovalKey => pledge.pledge_payment.preapproval_key,
                :amount => pledge.reward.price }
 

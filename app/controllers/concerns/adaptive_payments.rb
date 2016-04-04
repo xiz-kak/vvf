@@ -43,7 +43,7 @@ module AdaptivePayments
       :maxNumberOfPayments => 1,
       :maxNumberOfPaymentsPerPeriod => 1,
       :pinType => 'NOT_REQUIRED',
-      :feesPayer => 'EACHRECEIVER',
+      # :feesPayer => 'EACHRECEIVER',
       # :senderEmail => opts[:email], 指定したemailのみしかpaypalにログインできない
       :requestEnvelope => {
       :errorLanguage => 'en_US' },
