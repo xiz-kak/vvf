@@ -30,7 +30,7 @@ group :development, :test do
   # gem 'byebug'
 
   gem 'rspec-rails', '~> 3.0'
-  gem 'factory_girl_rails', require: false
+  gem 'factory_girl_rails'
 
   gem 'spring'
 
@@ -50,6 +50,7 @@ group :development do
 
   gem 'annotate'
   gem "rails-erd"
+  gem 'database_cleaner'
 end
 
 group :production do
