@@ -12,6 +12,7 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  preapproval_key    :string
+#  status             :integer          default(1), not null
 #
 # Indexes
 #
@@ -58,6 +59,14 @@ class PledgePayment < ActiveRecord::Base
 
   def total_amount_f
     to_currency_f(total_amount, :usd)
+  end
+
+  def payment_status=(arg)
+    update_attribute(:status, arg)
+  end
+
+  def payment_preapproval_key=(arg)
+    update_attribute(:preapproval_key, arg)
   end
 
   private
