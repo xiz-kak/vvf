@@ -32,7 +32,7 @@ class Reward < ActiveRecord::Base
 
   bind_inum :ships_to_div, Divs::RewardShipsTo
 
-  belongs_to :project, -> { active }, primary_key: :code, foreign_key: :project_code, inverse_of: :rewards
+  belongs_to :project, inverse_of: :rewards
   has_many :reward_contents, dependent: :destroy, inverse_of: :reward
   has_many :reward_shippings, -> { order 'nation_id' }, dependent: :destroy, inverse_of: :reward
   has_many :pledges, dependent: :destroy, inverse_of: :reward
@@ -95,6 +95,16 @@ class Reward < ActiveRecord::Base
     rc = reward_contents.langed(language_id)
     rc = reward_contents.build(language_id: language_id) if rc.blank?
     rc
+  end
+
+  def replicate
+    replica = dup
+    replica.project_id = nil
+
+    reward_contents.each { |rc| replica.reward_contents << rc.replicate }
+    reward_shippings.each { |rs| replica.reward_shippings << rs.replicate }
+
+    replica
   end
 
   private

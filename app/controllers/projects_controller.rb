@@ -1,7 +1,8 @@
 class ProjectsController < ApplicationController
-  before_action :require_admin, only: [:destroy]
-  before_action :set_project, only: [:show, :edit, :edit_rewards, :update, :destroy, :complete, :cancel]
+  before_action :require_admin, only: [:destroy, :remand, :approve, :drop]
+  before_action :set_project, only: [:show, :preview, :edit, :edit_rewards, :update, :destroy, :discard, :apply, :approve, :remand, :suspend, :drop, :complete, :cancel]
   before_action :require_login, except: [:index, :show]
+  before_action :require_creator, only: [:discard, :apply, :suspend]
   before_action :require_creator_allowed, only: [:edit, :edit_rewards, :update]
 
   include AdaptivePayments
@@ -15,6 +16,12 @@ class ProjectsController < ApplicationController
   def show
   end
 
+  # GET /projects/1/preview
+  def preview
+    @is_preview = true
+    render :show
+  end
+
   # GET /projects/new
   def new
     @project = Project.new
@@ -22,6 +29,11 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
+    if @project.status_div_active?
+      @project = @project.replicate
+      @project.status_div = Divs::ProjectStatus::TEMP
+      @project.save
+    end
   end
 
   # GET /projects/1/edit_rewards
@@ -34,9 +46,12 @@ class ProjectsController < ApplicationController
     @project.user = current_user
     @project.status_div = Divs::ProjectStatus::DRAFT
 
-    if @project.save
-      # redirect_to @project, notice: 'Project was successfully created.'
-      redirect_to edit_rewards_project_path(@project)
+    if @project.save(validate: params[:save_draft].blank?)
+      if params[:save_draft]
+        redirect_to @project, notice: 'Draft was successfully saved.'
+      elsif params[:edit_rewards]
+        redirect_to edit_rewards_project_path(@project)
+      end
     else
       render :new
     end
@@ -44,18 +59,26 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1
   def update
-    if @project.update(project_params)
-      if params[:project].present?
+    if params[:project].present?
+      @project.assign_attributes(project_params)
+    end
+
+    if params[:preview]
+      unless @project.rewards_exist
+        return render :edit_rewards
+      end
+    end
+
+    if @project.save(validate: params[:save_draft].blank?)
+      if params[:edit_rewards]
         redirect_to edit_rewards_project_path(@project)
-      elsif params[:preview].present?
-        render :preview
-      elsif params[:draft].present?
+      elsif params[:save_draft]
         redirect_to @project, notice: 'Draft was successfully saved.'
-      else
-        redirect_to @project, notice: 'Project was successfully updated.'
+      elsif params[:preview]
+        redirect_to preview_project_path(@project)
       end
     else
-      if params[:update_rewards].present?
+      if params[:update_rewards]
         render :edit_rewards
       else
         render :edit
@@ -65,12 +88,38 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/discard
   def discard
-    #
+    @project.discard!
+    redirect_to projects_url, notice: 'Project was discarded.'
   end
 
   # GET /projects/1/apply
   def apply
-    #
+    @project.apply!
+    redirect_to @project, notice: 'Project was successfully applied.'
+  end
+
+  # GET /projects/1/remand
+  def remand
+    @project.remand!
+    redirect_to @project, notice: 'Project was successfully remanded.'
+  end
+
+  # GET /projects/1/approve
+  def approve
+    @project.approve!
+    redirect_to @project, notice: 'Project was successfully approved.'
+  end
+
+  # GET /projects/1/suspend
+  def suspend
+    @project.suspend!
+    redirect_to @project, notice: 'Project was successfully suspended.'
+  end
+
+  # GET /projects/1/drop
+  def drop
+    @project.drop!
+    redirect_to projects_url, notice: 'Project was successfully dropped.'
   end
 
   # DELETE /projects/1
@@ -142,6 +191,7 @@ class ProjectsController < ApplicationController
     end
     params.require(:project).permit(
       :id,
+      :code,
       :category_id,
       :goal_amount,
       :duration_days,
@@ -194,9 +244,17 @@ class ProjectsController < ApplicationController
     )
   end
 
+  # Filter: creator of the project
+  def require_creator
+    render_404 unless @project.user == current_user || is_admin?
+  end
+
   # Filter: creator of the project and allowed to edit
   def require_creator_allowed
     render_404 unless @project.user == current_user || is_admin?
-    # [wip] must be in the editable status
+
+    unless @project.status_div_draft? || @project.status_div_remanded? || @project.status_div_active?
+      redirect_to projects_url, alert: "This project is under #{@project.status_div.t}, then you cannot edit now."
+    end
   end
 end

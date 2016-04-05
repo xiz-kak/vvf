@@ -4,7 +4,7 @@ ja:
       draft: '下書き'
       applied: '申請中'
       remanded: '差戻し'
-      canceled: 'キャンセル'
+      discarded: '破棄'
       active: '有効'
       suspended: '保留'
       dropped: '中止'

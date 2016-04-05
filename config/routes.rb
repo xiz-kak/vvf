@@ -11,9 +11,14 @@ Rails.application.routes.draw do
     resources :payment_vendors
     resources :projects do
       member do
+        get 'preview' => 'projects#preview'
         get 'edit_rewards' => 'projects#edit_rewards'
         get 'discard' => 'projects#discard'
         get 'apply' => 'projects#apply'
+        get 'remand' => 'projects#remand'
+        get 'approve' => 'projects#approve'
+        get 'suspend' => 'projects#suspend'
+        get 'drop' => 'projects#drop'
         post 'complete'
         post 'cancel'
       end

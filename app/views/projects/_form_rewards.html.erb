@@ -19,7 +19,10 @@
 
     <%= hidden_field_tag :update_rewards, :true %>
     <div class="actions">
-      <%= f.submit 'Update Rewards' %>
+      <%= link_to 'Discard', discard_project_path(@project), data: { confirm: 'Are you sure?' } %>
+      <%= link_to 'Back', edit_project_path(@project) %>
+      <%= f.submit 'Save Draft', name: :save_draft %>
+      <%= f.submit 'Preview', name: :preview %>
     </div>
   </div>
 <% end %>

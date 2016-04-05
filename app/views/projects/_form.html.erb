@@ -14,6 +14,10 @@
   <div class="field-group">
     <h2>- Project Info -</h2>
     <div class="field">
+      <%= f.label :code %><br>
+      <%= f.text_field :code %>
+    </div>
+    <div class="field">
       <%= f.label :main_language_id %><br>
       <%= f.select :main_language_id, Language.all.map{|l| [l.name_en, l.id]}, selected: @project.main_language.id %>
     </div>
@@ -53,7 +57,13 @@
     <% end %>
 
     <div class="actions">
-      <%= f.submit %>
+      <% if @project.new_record? %>
+        <%= link_to 'Cancel', @project %>
+      <% else %>
+        <%= link_to 'Discard', discard_project_path(@project), data: { confirm: 'Are you sure?' } %>
+      <% end %>
+      <%= f.submit 'Save Draft', name: :save_draft %>
+      <%= f.submit 'Next', name: :edit_rewards %>
     </div>
   </div>
 <% end %>

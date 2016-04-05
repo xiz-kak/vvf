@@ -36,4 +36,10 @@ class RewardShipping < ActiveRecord::Base
     ApplicationController.helpers.number_with_delimiter(shipping_rate_z,
                                                         delimiter: ',', separator: '.')
   end
+
+  def replicate
+    replica = dup
+    replica.reward_id = nil
+    replica
+  end
 end

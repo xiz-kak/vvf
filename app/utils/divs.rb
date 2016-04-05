@@ -1,9 +1,10 @@
 module Divs
   class ProjectStatus < Inum::Base
-    define :DRAFT, 0
-    define :APPLIED, 1
-    define :REMANDED, 2
-    define :CANCELED, 3
+    define :TEMP, 0
+    define :DRAFT, 1
+    define :APPLIED, 2
+    define :REMANDED, 3
+    define :DISCARDED, 4
     define :ACTIVE, 5
     define :SUSPENDED, 6
     define :DROPPED, 9

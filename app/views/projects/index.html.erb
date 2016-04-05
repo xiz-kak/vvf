@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <th>Code</th>
       <th>Title</th>
       <th>Category</th>
       <th>Goal amount</th>
@@ -11,25 +12,28 @@
       <th>Image</th>
       <th>Languages</th>
       <th>Rewards</th>
-      <th colspan="4"></th>
+      <th>Status</th>
+      <th colspan="6"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @projects.each do |project| %>
       <tr>
+        <td><%= project.code %></td>
         <td><%= project.title(locale)  %></td>
         <td><%= project.category.name(locale) %></td>
         <td><%= project.goal_amount_f %></td>
         <td><%= project.duration_days %></td>
         <td><%= I18n.l project.applied_begin_date, format: :date %></td>
-        <td><%= image_tag project.image(locale).thumb.url %></td>
+        <td><%= image_tag project.image_thumb(locale) %></td>
         <td><%= project.languages.join(',') %></td>
         <td><%= project.rewards.size %></td>
+        <td><%= project.status_div.t %></td>
         <td><%= link_to 'Show', project %></td>
         <td><%= link_to 'Edit', edit_project_path(project) %></td>
         <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= link_to 'Rewards', edit_rewards_project_path(project) %></td>
+        <td><%= link_to 'Preview', preview_project_path(project) %></td>
         <td><%= link_to 'Complete', complete_project_path(project), method: :post %></td>
         <td><%= link_to 'Cancel', cancel_project_path(project), method: :post %></td>
       </tr>

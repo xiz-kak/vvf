@@ -1,3 +1,6 @@
+<% if @is_preview %>
+  <h2>This is preview</h2>
+<% end %>
 <p>
   <strong>Title</strong>
   <%= @project.title(locale) %>
@@ -39,6 +42,20 @@
 <% end%>
 
 <br>
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Project List', projects_path %> |
-<%= link_to 'Edit Rewards', edit_rewards_project_path(@project) %>
+<% if @is_preview %>
+  <% if @project.user == current_user && (@project.status_div_draft? || @project.status_div_remanded?) %>
+    <%= link_to 'Back', edit_rewards_project_path(@project) %> |
+    <%= link_to 'Apply', apply_project_path(@project), data: { confirm: 'Are you sure?' } %>
+  <% elsif current_user.is_admin && @project.status_div_applied? %>
+    <%= link_to 'Remand', remand_project_path(@project), data: { confirm: 'Are you sure?' } %> |
+    <%= link_to 'Approve', approve_project_path(@project), data: { confirm: 'Are you sure?' } %>
+  <% end %>
+<% else %>
+  <% if (@project.user == current_user || current_user.is_admin) && @project.status_div_active? %>
+    <%= link_to 'Suspend', suspend_project_path(@project), data: { confirm: 'Are you sure?' } %>
+  <% elsif current_user.is_admin && @project.status_div_suspended? %>
+    <%= link_to 'Resume', approve_project_path(@project), data: { confirm: 'Are you sure?' } %>
+    <%= link_to 'Drop', drop_project_path(@project), data: { confirm: 'Are you sure?' } %>
+  <% end %>
+  <%= link_to 'Project List', projects_path %>
+<% end %>

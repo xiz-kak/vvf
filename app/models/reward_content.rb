@@ -35,4 +35,11 @@ class RewardContent < ActiveRecord::Base
   mount_uploader :image, ImageUploader
 
   include LocaleBase
+
+  def replicate
+    replica = dup
+    replica.reward_id = nil
+    replica.image = image
+    replica
+  end
 end

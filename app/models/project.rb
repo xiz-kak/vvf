@@ -31,17 +31,20 @@
 class Project < ActiveRecord::Base
   scope :active, -> { where('view_begin_at <= ? AND view_end_at > ?', Time.now, Time.now) }
 
+  bind_inum :status_div, Divs::ProjectStatus
+
   belongs_to :category
   belongs_to :user
   has_many :project_locales, dependent: :destroy, inverse_of: :project
   has_many :project_headers, dependent: :destroy, inverse_of: :project
   has_many :project_contents, dependent: :destroy, inverse_of: :project
-  has_many :rewards, -> { order(:price, :count, :id) }, primary_key: :code, foreign_key: :project_code, dependent: :destroy, inverse_of: :project
+  has_many :rewards, -> { order(:price, :count, :id) }, dependent: :destroy, inverse_of: :project
   accepts_nested_attributes_for :project_locales, allow_destroy: true
   accepts_nested_attributes_for :project_headers, allow_destroy: true
   accepts_nested_attributes_for :project_contents, allow_destroy: true
   accepts_nested_attributes_for :rewards, allow_destroy: true
 
+  validates :code, presence: true
   validates :category, presence: true
   validates :goal_amount, presence: true
   validates :duration_days, presence: true
@@ -50,15 +53,19 @@ class Project < ActiveRecord::Base
   include NumberFormatter
 
   def title(locale)
-    localed_header(locale).title
+    localed_header(locale) ? localed_header(locale).title : ''
   end
 
   def image(locale)
-    localed_header(locale).image
+    localed_header(locale) ? localed_header(locale).image : ''
+  end
+
+  def image_thumb(locale)
+    localed_header(locale) ? localed_header(locale).image.thumb.url : ''
   end
 
   def body(locale)
-    localed_content(locale).body
+    localed_content(locale) ? localed_content(locale).body : ''
   end
 
   # Set 2 decimal places
@@ -110,6 +117,50 @@ class Project < ActiveRecord::Base
 
   def pledges
     Pledge.preapproved.joins(:reward).where('rewards.project_id = ?', id)
+  end
+
+  def discard!
+    update_attribute(:status_div, Divs::ProjectStatus::DISCARDED)
+  end
+
+  def apply!
+    update_attribute(:status_div, Divs::ProjectStatus::APPLIED)
+  end
+
+  def remand!
+    update_attribute(:status_div, Divs::ProjectStatus::REMANDED)
+  end
+
+  def approve!
+    update_attribute(:status_div, Divs::ProjectStatus::ACTIVE)
+  end
+
+  def suspend!
+    update_attribute(:status_div, Divs::ProjectStatus::SUSPENDED)
+  end
+
+  def drop!
+    update_attribute(:status_div, Divs::ProjectStatus::DROPPED)
+  end
+
+  def replicate
+    replica = dup
+
+    project_locales.each { |ph| replica.project_locales << ph.replicate }
+    project_headers.each { |ph| replica.project_headers << ph.replicate }
+    project_contents.each { |pc| replica.project_contents << pc.replicate }
+    rewards.each { |r| replica.rewards << r.replicate }
+
+    replica
+  end
+
+  # validate if rewards exist
+  def rewards_exist
+    if rewards.size == 0
+      errors[:base] << 'At lease 1 reward is required.'
+      return
+    end
+    true
   end
 
   private

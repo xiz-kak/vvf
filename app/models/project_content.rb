@@ -29,4 +29,10 @@ class ProjectContent < ActiveRecord::Base
   validates :body, presence: true
 
   include LocaleBase
+
+  def replicate
+    replica = dup
+    replica.project_id = nil
+    replica
+  end
 end

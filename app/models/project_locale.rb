@@ -30,4 +30,11 @@ class ProjectLocale < ActiveRecord::Base
   include LocaleBase
 
   attr_accessor :use_this_language
+
+  def replicate
+    replica = dup
+    replica.project_id = nil
+    replica.use_this_language = "1"
+    replica
+  end
 end
