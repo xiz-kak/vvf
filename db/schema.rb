@@ -131,7 +131,6 @@ ActiveRecord::Schema.define(version: 20160401221148) do
   add_index "pledge_shippings", ["pledge_id"], name: "index_pledge_shippings_on_pledge_id", using: :btree
 
   create_table "pledges", force: :cascade do |t|
-    t.integer  "reward_id"
     t.integer  "user_id"
     t.datetime "pledged_at"
     t.datetime "created_at",  null: false
@@ -140,7 +139,6 @@ ActiveRecord::Schema.define(version: 20160401221148) do
   end
 
   add_index "pledges", ["reward_code"], name: "index_pledges_on_reward_code", using: :btree
-  add_index "pledges", ["reward_id"], name: "index_pledges_on_reward_id", using: :btree
   add_index "pledges", ["user_id"], name: "index_pledges_on_user_id", using: :btree
 
   create_table "project_contents", force: :cascade do |t|
@@ -230,13 +228,8 @@ ActiveRecord::Schema.define(version: 20160401221148) do
     t.integer  "ships_to_div"
     t.float    "default_shipping_rate"
     t.integer  "code",                  default: "nextval('reward_code_seq'::regclass)"
-    t.string   "project_code"
-    t.datetime "view_begin_at"
-    t.datetime "view_end_at"
-    t.integer  "status_div"
   end
 
-  add_index "rewards", ["project_code"], name: "index_rewards_on_project_code", using: :btree
   add_index "rewards", ["project_id"], name: "index_rewards_on_project_id", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -259,7 +252,6 @@ ActiveRecord::Schema.define(version: 20160401221148) do
   add_foreign_key "pledge_payments", "pledges"
   add_foreign_key "pledge_shippings", "nations"
   add_foreign_key "pledge_shippings", "pledges"
-  add_foreign_key "pledges", "rewards"
   add_foreign_key "pledges", "users"
   add_foreign_key "project_contents", "languages"
   add_foreign_key "project_contents", "projects"

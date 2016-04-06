@@ -29,7 +29,10 @@
 #
 
 class Project < ActiveRecord::Base
-  scope :active, -> { where('view_begin_at <= ? AND view_end_at > ?', Time.now, Time.now) }
+  include NumberFormatter
+
+  scope :active, -> { where('view_begin_at <= ? AND view_end_at > ? AND status_div = ?',
+                            Time.now, Time.now, Divs::ProjectStatus::ACTIVE.value) }
 
   bind_inum :status_div, Divs::ProjectStatus
 
@@ -44,13 +47,13 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :project_contents, allow_destroy: true
   accepts_nested_attributes_for :rewards, allow_destroy: true
 
-  validates :code, presence: true
+  validates :code, presence: true, length: { maximum: 30 }, format: { with: /\A[a-z0-9_]+\z/i }
   validates :category, presence: true
   validates :goal_amount, presence: true
   validates :duration_days, presence: true
   validate :main_language_is_used
 
-  include NumberFormatter
+  END_OF_THE_WORLD = Time.parse('2999/12/31')
 
   def title(locale)
     localed_header(locale) ? localed_header(locale).title : ''
@@ -119,6 +122,11 @@ class Project < ActiveRecord::Base
     Pledge.preapproved.joins(:reward).where('rewards.project_id = ?', id)
   end
 
+  def first_post?
+    return true if code.blank?
+    !Project.where.not(id: id).exists?(code: code)
+  end
+
   def discard!
     update_attribute(:status_div, Divs::ProjectStatus::DISCARDED)
   end
@@ -132,6 +140,34 @@ class Project < ActiveRecord::Base
   end
 
   def approve!
+    now_time = Time.now
+    begin_date = applied_begin_date > now_time ? applied_begin_date : Date.tomorrow.to_time
+
+    active_records = Project.where.not(id: id)
+    .where(code: code, status_div: Divs::ProjectStatus::ACTIVE)
+
+    active_records.each do |r|
+      if r.view_begin_at > now_time
+        r.update_attributes(view_begin_at: begin_date, view_end_at: begin_date)
+      elsif r.view_end_at > now_time
+        r.update_attribute(:view_end_at, begin_date)
+      end
+    end
+
+    if active_records.size > 0
+      update_attributes(status_div: Divs::ProjectStatus::ACTIVE,
+                        view_begin_at: begin_date,
+                        view_end_at: END_OF_THE_WORLD)
+    else
+      update_attributes(status_div: Divs::ProjectStatus::ACTIVE,
+                        begin_at: begin_date,
+                        end_at: begin_date + duration_days.days,
+                        view_begin_at: begin_date,
+                        view_end_at: END_OF_THE_WORLD)
+    end
+  end
+
+  def resume!
     update_attribute(:status_div, Divs::ProjectStatus::ACTIVE)
   end
 
@@ -145,6 +181,9 @@ class Project < ActiveRecord::Base
 
   def replicate
     replica = dup
+    replica.view_begin_at = nil
+    replica.view_end_at = nil
+    replica.applied_begin_date = Date.today
 
     project_locales.each { |ph| replica.project_locales << ph.replicate }
     project_headers.each { |ph| replica.project_headers << ph.replicate }
@@ -158,6 +197,15 @@ class Project < ActiveRecord::Base
   def rewards_exist
     if rewards.size == 0
       errors[:base] << 'At lease 1 reward is required.'
+      return
+    end
+    true
+  end
+
+  # validate if code exists
+  def code_exists?
+    if code.blank?
+      errors.add(:code, 'cannot be blank.')
       return
     end
     true

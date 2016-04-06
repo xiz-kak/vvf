@@ -12,15 +12,10 @@
 #  ships_to_div          :integer
 #  default_shipping_rate :float
 #  code                  :integer
-#  project_code          :string
-#  view_begin_at         :datetime
-#  view_end_at           :datetime
-#  status_div            :integer
 #
 # Indexes
 #
-#  index_rewards_on_project_code  (project_code)
-#  index_rewards_on_project_id    (project_id)
+#  index_rewards_on_project_id  (project_id)
 #
 # Foreign Keys
 #
@@ -35,7 +30,7 @@ class Reward < ActiveRecord::Base
   belongs_to :project, inverse_of: :rewards
   has_many :reward_contents, dependent: :destroy, inverse_of: :reward
   has_many :reward_shippings, -> { order 'nation_id' }, dependent: :destroy, inverse_of: :reward
-  has_many :pledges, dependent: :destroy, inverse_of: :reward
+  has_many :pledges, primary_key: :code, foreign_key: :reward_code, dependent: :destroy, inverse_of: :reward
   accepts_nested_attributes_for :reward_contents, allow_destroy: true
   accepts_nested_attributes_for :reward_shippings, allow_destroy: true
 

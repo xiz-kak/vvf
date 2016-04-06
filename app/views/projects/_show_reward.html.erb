@@ -40,4 +40,4 @@
   <%= r.description(locale) %>
 </p>
 
-<%= link_to 'Pledge', new_pledge_path(r) %><br>
+<%= link_to 'Pledge', new_pledge_path(r.code) if r.project.status_div_active? %><br>

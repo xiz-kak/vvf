@@ -1,6 +1,7 @@
 ja:
   divs:
     project_status:
+      temp: '仮保存'
       draft: '下書き'
       applied: '申請中'
       remanded: '差戻し'

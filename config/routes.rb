@@ -17,13 +17,14 @@ Rails.application.routes.draw do
         get 'apply' => 'projects#apply'
         get 'remand' => 'projects#remand'
         get 'approve' => 'projects#approve'
+        get 'resume' => 'projects#resume'
         get 'suspend' => 'projects#suspend'
         get 'drop' => 'projects#drop'
         post 'complete'
         post 'cancel'
       end
     end
-    get 'rewards/:reward_id/new_pledge' => 'pledges#new', as: :new_pledge
+    get 'rewards/:reward_code/new_pledge' => 'pledges#new', as: :new_pledge
     post 'shipping_rate' => 'pledges#shipping_rate'
     resources :pledges, :except => :new do
       get 'complete', :on => :member

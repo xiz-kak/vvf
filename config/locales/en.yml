@@ -1,6 +1,7 @@
 en:
   divs:
     project_status:
+      temp: 'Temporary'
       draft: 'Draft'
       applied: 'Applied'
       remanded: 'Remanded'

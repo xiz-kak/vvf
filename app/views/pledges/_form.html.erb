@@ -12,10 +12,10 @@
   <% end %>
 
   <div class="field">
-    <%= label :pledge, :reward_id %><br>
+    <%= label :pledge, :reward_code %><br>
     <%= @pledge.reward.title(locale)%>
     <%= image_tag @pledge.reward.image(locale).thumb.url %>
-    <%= f.hidden_field :reward_id%>
+    <%= f.hidden_field :reward_code %>
   </div>
 
   <!-- Pledge Payment -->
@@ -65,7 +65,7 @@
       <% end %>
       <div class="field">
         <%= psf.label :nation_id %><br>
-        <%= psf.select :nation_id, list, {include_blank: '-- Select a nation --'}, data: {reward_id: @pledge.reward.id} %>
+        <%= psf.select :nation_id, list, {include_blank: '-- Select a nation --'}, data: {reward_code: @pledge.reward.id} %>
       </div>
       <div class="field">
         <%= psf.label :tel %><br>

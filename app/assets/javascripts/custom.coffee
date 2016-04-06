@@ -17,7 +17,7 @@ $(document).on 'ready page:load', ->
     $.ajax
       url: "/shipping_rate"
       type: "POST"
-      data: {reward_id: $(this).data('reward-id'), nation_id: $(this).val()}
+      data: {reward_code: $(this).data('reward-code'), nation_id: $(this).val()}
       dataType: "json"
       success: (data, status, xhr) ->
         $('#pledge_pledge_payment_attributes_shipping_rate').val(xhr.responseText)

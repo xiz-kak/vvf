@@ -16,7 +16,7 @@ class PledgesController < ApplicationController
 
   # GET /pledges/new
   def new
-    @pledge = Pledge.new(reward_id: params[:reward_id])
+    @pledge = Pledge.new(reward_code: params[:reward_code])
     @pledge.build_pledge_payment
     @pledge.build_pledge_shipping
 
@@ -33,7 +33,7 @@ class PledgesController < ApplicationController
   def create
     @pledge = Pledge.new(pledge_params)
     @pledge.user = current_user
-    @pledge.pledged_at = Time.zone.now
+    @pledge.pledged_at = Time.now
 
     if @pledge.save
       opts = { :maxTotalAmountOfAllPayments => @pledge.pledge_payment.total_amount,
@@ -86,7 +86,7 @@ class PledgesController < ApplicationController
 
   # POST rewards/1/shipping_rate
   def shipping_rate
-    sr = Reward.find(params[:reward_id]).shipping_rate(params[:nation_id])
+    sr = Reward.find_by(code: params[:reward_code]).shipping_rate(params[:nation_id])
     render json: sr
   end
 
@@ -99,7 +99,7 @@ class PledgesController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def pledge_params
       params.require(:pledge).permit(
-        :reward_id,
+        :reward_code,
         pledge_payment_attributes: [
           :id,
           :payment_method_div,

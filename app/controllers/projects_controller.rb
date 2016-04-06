@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
-  before_action :require_admin, only: [:destroy, :remand, :approve, :drop]
-  before_action :set_project, only: [:show, :preview, :edit, :edit_rewards, :update, :destroy, :discard, :apply, :approve, :remand, :suspend, :drop, :complete, :cancel]
+  before_action :require_admin, only: [:destroy, :remand, :approve, :resume, :drop]
+  before_action :set_project, only: [:show, :preview, :edit, :edit_rewards, :update, :destroy, :discard, :apply, :approve, :resume, :remand, :suspend, :drop, :complete, :cancel]
   before_action :require_login, except: [:index, :show]
   before_action :require_creator, only: [:discard, :apply, :suspend]
   before_action :require_creator_allowed, only: [:edit, :edit_rewards, :update]
@@ -45,6 +45,8 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     @project.user = current_user
     @project.status_div = Divs::ProjectStatus::DRAFT
+
+    return render :new unless @project.code_exists?
 
     if @project.save(validate: params[:save_draft].blank?)
       if params[:save_draft]
@@ -108,6 +110,12 @@ class ProjectsController < ApplicationController
   def approve
     @project.approve!
     redirect_to @project, notice: 'Project was successfully approved.'
+  end
+
+  # GET /projects/1/resume
+  def resume
+    @project.resume!
+    redirect_to @project, notice: 'Project was successfully resumed.'
   end
 
   # GET /projects/1/suspend
@@ -251,9 +259,9 @@ class ProjectsController < ApplicationController
 
   # Filter: creator of the project and allowed to edit
   def require_creator_allowed
-    render_404 unless @project.user == current_user || is_admin?
+    return render_404 unless @project.user == current_user || is_admin?
 
-    unless @project.status_div_draft? || @project.status_div_remanded? || @project.status_div_active?
+    unless @project.status_div_draft? || @project.status_div_remanded? || @project.status_div_active? || @project.status_div_temp?
       redirect_to projects_url, alert: "This project is under #{@project.status_div.t}, then you cannot edit now."
     end
   end
