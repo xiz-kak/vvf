@@ -71,12 +71,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
-<<<<<<< HEAD
     concurrent-ruby (1.0.1)
-=======
-    concurrent-ruby (1.0.0)
     database_cleaner (1.5.1)
->>>>>>> master
     debug_inspector (0.0.2)
     diff-lcs (1.2.5)
     dotenv (2.1.1)
