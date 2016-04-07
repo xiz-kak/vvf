@@ -92,6 +92,14 @@ class Reward < ActiveRecord::Base
     rc
   end
 
+  def first_post?
+    return true if code.blank?
+    Reward.where.not(id: id).where(code: code).each do |r|
+      return false if r.project.status_div_active?
+    end
+    return true
+  end
+
   def replicate
     replica = dup
     replica.project_id = nil
