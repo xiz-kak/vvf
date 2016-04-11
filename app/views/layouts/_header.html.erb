@@ -1,51 +1,15 @@
-<header>
-  <div id="nav">
-    <span><strong>Login actions:</strong></span>
-    <% if current_user %>
-      <%= "[Logged in as #{current_user.name}, Admin: #{current_user.is_admin}]" %>
-      <%= link_to 'Edit Profile', edit_user_path(current_user.id) %> |
-      <%= link_to 'Logout', :logout, method: :post %>
-    <% else %>
-      <%= '[Not logged in]'%>
-      <%= link_to 'Register', new_user_path %> |
-      <%= link_to 'Login', :login %>
-    <% end %>
-    | <%= link_to 'Login with Twitter', auth_at_provider_path(:provider => :twitter) %> |
-    <%= link_to 'Login with Facebook', auth_at_provider_path(:provider => :facebook) %>
-  </div>
-  <div id="nav">
-    <span><strong>Languages:</strong></span>
-    <%= link_to_if (params[:locale] != 'en' && !params[:locale].blank?), 'English', url_for(locale: :en) %> |
-    <%= link_to_if params[:locale] != 'vi', 'Tiếng Việt', url_for(locale: :vi) %> |
-    <%= link_to_if params[:locale] != 'ja', '日本語', url_for(locale: :ja) %>
-  </div>
-  <div id="nav">
-    <span><strong>Master maintenance:</strong></span>
-    <%= link_to 'Languages', languages_path %> |
-    <%= link_to 'Categories', categories_path %> |
-    <%= link_to 'Users', users_path %> |
-    <%= link_to 'Payment Vendors', payment_vendors_path %> |
-    <%= link_to 'Nations', nations_path %>
-  </div>
-  <div id="nav">
-    <span><strong>Links:</strong></span>
-    <%= link_to 'Home', root_path %> |
-    <%= link_to 'Projects', projects_path %> |
-    <%= link_to 'Pledge', pledges_path %>
-  </div>
-</header>
-<header class="navbar navbar-default navbar-fixed-top site-nav">
+<header class="navbar navbar-fixed-top site-nav">
   <div class="navbar-header">
     <button class="navbar-toggle" data-toggle="collapse" data-target=".target">
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="">Vin-Vin Funding</a>
+    <%= link_to 'Vin-Vin Funding', root_path, class: 'navbar-brand' %>
   </div>
   <div class="collapse navbar-collapse target">
     <ul class="nav navbar-nav">
-      <li><a href="">Discover</a></li>
+      <li><%= link_to 'Discover', discover_index_path %></li>
       <li><a href="">Start a project</a></li>
       <li><a href="">About us</a></li>
     </ul>
@@ -58,6 +22,19 @@
       </button>
     </form>
     <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+      <% cur_lang, sel_lang = Language.sorted.pluck(:code).partition do |c| %>
+        <% (params[:locale].blank? && c == 'en') || params[:locale] == c %>
+      <% end %>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <%= cur_lang[0] %><span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <% sel_lang.each do |c| %>
+            <li><%= link_to c, url_for(locale: c) %></li>
+          <% end %>
+        </ul>
+      </li>
       <li><a href="">Profile</a></li>
     </ul>
   </div>

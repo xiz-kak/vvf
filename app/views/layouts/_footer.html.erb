@@ -1,0 +1,30 @@
+<footer class="navbar navbar-default">
+  <div id="nav">
+    <span><strong>Login actions:</strong></span>
+    <% if current_user %>
+      <%= "[Logged in as #{current_user.name}, Admin: #{current_user.is_admin}]" %>
+      <%= link_to 'Edit Profile', edit_user_path(current_user.id) %> |
+      <%= link_to 'Logout', :logout, method: :post %>
+    <% else %>
+      <%= '[Not logged in]'%>
+      <%= link_to 'Register', new_user_path %> |
+      <%= link_to 'Login', :login %>
+    <% end %>
+    | <%= link_to 'Login with Twitter', auth_at_provider_path(:provider => :twitter) %> |
+    <%= link_to 'Login with Facebook', auth_at_provider_path(:provider => :facebook) %>
+  </div>
+  <div id="nav">
+    <span><strong>Master maintenance:</strong></span>
+    <%= link_to 'Languages', languages_path %> |
+    <%= link_to 'Categories', categories_path %> |
+    <%= link_to 'Users', users_path %> |
+    <%= link_to 'Payment Vendors', payment_vendors_path %> |
+    <%= link_to 'Nations', nations_path %>
+  </div>
+  <div id="nav">
+    <span><strong>Links:</strong></span>
+    <%= link_to 'Home', root_path %> |
+    <%= link_to 'Projects', projects_path %> |
+    <%= link_to 'Pledge', pledges_path %>
+  </div>
+</footer>

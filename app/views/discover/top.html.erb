@@ -1,2 +1,162 @@
+<div>
+  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="10000">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <div class="hero-image hero-image-01">
+          <div class="carousel-content-top">
+            <%= image_tag 'vvf_color_mark.png', size: '230x260' %>
+          </div>
+          <div>
+            <p class="hero-title">Vin-Vin Funding</p>
+          </div>
+          <div>
+            <p class="hero-subtitle">New Vietnam now begins...</p>
+          </div>
+        </div>
+        <div class="carousel-caption">
+        </div>
+      </div>
+      <div class="item">
+        <div class="hero-image hero-image-02">
+          <div>
+            <p class="hero-sentence">Throw your net.<br>Get your fish.</p>
+          </div>
+          <div>
+            <%= link_to 'Start a project', root_path, class: 'hero-start-btn btn btn-lg btn-white btn-ghost' %>
+          </div>
+        </div>
+        <div class="carousel-caption">
+        </div>
+      </div>
+      <div class="item">
+        <div class="hero-image hero-image-03">
+        </div>
+        <div class="carousel-caption">
+          Photo3
+        </div>
+      </div>
+      <div class="item">
+        <div class="hero-image hero-image-04">
+        </div>
+        <div class="carousel-caption">
+          Photo4
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+  <%= image_tag 'vvf_line.png', class: 'hero-bottom-line' %>
+</div>
+
+<div class="favorites-area">
+  <div class="container favorites-content">
+    <div class="row">
+      <% p = Project.first %>
+      <div class="col col-md-10">
+        <div class="row">
+          <h3 class="sr-only">Our favorite projects</h3>
+          <div class="projects-slider">
+            <div class="row">
+              <div class="col col-md-12">
+                <div class="title">
+                  <div class="row">
+                    <div class="col">
+                      <h3>
+                        <%= link_to 'Our Favorites:', discover_category_path(1) %>
+                        <%= link_to 'Art', discover_category_path(1) %>
+                      </h3>
+                    </div>
+                    <div class="col col-right">
+                      <%= link_to 'See all this category', discover_category_path(1), class: 'see-all-category' %>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-card-wrap">
+                  <div class="project-card">
+                    <div class="project-image">
+                      <%= image_tag p.image(locale) %>
+                    </div>
+                    <div class="project-card-description">
+                      <h4><%= link_to p.title(locale), p %></h4>
+                      <p><%= link_to p.user.name, p.user %></p>
+                      <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
+                      <div class="project-card-footer">
+                        <div class="project-location-category">
+                          <%= link_to discover_category_path(p.category), class: 'mr2' do %>
+                            <i class="glyphicon glyphicon-tag"></i>
+                            <%= p.category.name(locale) %>
+                          <% end %>
+                          <i class="glyphicon glyphicon-globe"></i>
+                          <% p.project_locales.each do |l|%>
+                            <kbd><%= l.language.code %></kbd>
+                          <% end %>
+                        </div>
+                        <div class="project-status-wrap absolute-bottom">
+                          <div class="project-progress mb1">
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-info" style="width:60%">
+                              </div>
+                            </div>
+                          </div>
+                          <ul class="project-status list-inline">
+                            <li class="mr2">
+                              <strong class="block h4">33%</strong>
+                              <span class="grey-dark">funded</span>
+                            </li>
+                            <li class="mr2">
+                              <strong class="block h4">$55,324</strong>
+                              <span class="grey-dark">pledged</span>
+                            </li>
+                            <li class="mr2">
+                              <strong class="block h4">915</strong>
+                              <span class="grey-dark">backers</span>
+                            </li>
+                            <li class="mr2">
+                              <strong class="block h4">15</strong>
+                              <span class="grey-dark">days to go</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="category-nav ml2 mt2 mr2 mb2">
+          <ul class="list-no-style">
+            <% Category.sorted.each do |c| %>
+              <li><%= link_to c.name(locale), discover_category_path(c) %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <h1>Discover#top</h1>
 <p>Find me in app/views/discover/top.html.erb</p>
+

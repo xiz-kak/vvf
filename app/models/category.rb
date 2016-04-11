@@ -9,6 +9,8 @@
 #
 
 class Category < ActiveRecord::Base
+  include SortableBase
+
   has_many :category_locales, dependent: :destroy
   accepts_nested_attributes_for :category_locales, allow_destroy: true
 
