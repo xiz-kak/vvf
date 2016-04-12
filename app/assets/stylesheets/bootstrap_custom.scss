@@ -1,0 +1,59 @@
+.btn-ghost {
+  background: transparent;
+}
+
+.btn-ghost.btn-default {
+  color: #777;
+}
+
+.btn-ghost.btn-primary {
+  color: #337ab7;
+}
+
+.btn-ghost.btn-success {
+  color: #5cb85c;
+}
+
+.btn-ghost.btn-info {
+  color: #5bc0de;
+}
+
+.btn-ghost.btn-warning {
+  color: #f0ad4e;
+}
+
+.btn-ghost.btn-danger {
+  color: #d9534f;
+}
+
+.btn-ghost.btn-primary:hover,
+.btn-ghost.btn-success:hover,
+.btn-ghost.btn-info:hover,
+.btn-ghost.btn-warning:hover,
+.btn-ghost.btn-danger:hover {
+  color: white;
+}
+
+.btn-ghost.btn-white {
+  color: white;
+  border: 1px solid white;
+}
+
+.btn-ghost.btn-white:hover {
+  color: #333;
+  background: white;
+}
+
+.form-control.form-control-ghost {
+  background-color: rgba(255,255,255,0.1);
+  border: 1px solid white;
+  color: $white-smoke;
+  @include placeholder {
+    color: $white-smoke;
+  }
+}
+
+.modal-dialog-middle {
+  padding-top: 150px;
+}
+

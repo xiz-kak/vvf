@@ -1,18 +1,57 @@
-<footer class="navbar navbar-default">
-  <div id="nav">
-    <span><strong>Login actions:</strong></span>
-    <% if current_user %>
-      <%= "[Logged in as #{current_user.name}, Admin: #{current_user.is_admin}]" %>
-      <%= link_to 'Edit Profile', edit_user_path(current_user.id) %> |
-      <%= link_to 'Logout', :logout, method: :post %>
-    <% else %>
-      <%= '[Not logged in]'%>
-      <%= link_to 'Register', new_user_path %> |
-      <%= link_to 'Login', :login %>
-    <% end %>
-    | <%= link_to 'Login with Twitter', auth_at_provider_path(:provider => :twitter) %> |
-    <%= link_to 'Login with Facebook', auth_at_provider_path(:provider => :facebook) %>
+<footer class="global-footer">
+  <div class="container px2 py2">
+    <div class="row mt2">
+      <div class="col col-md-6">
+        <div class="row">
+          <div class="col col-md-6">
+            <h3>Info</h3>
+            <ul class="list-no-style mt2">
+              <li><%= link_to 'About us', root_path %></li>
+              <li><%= link_to 'menu', root_path %></li>
+            </ul>
+          </div>
+          <div class="col col-md-6">
+            <h3>Help</h3>
+            <ul class="list-no-style mt2">
+              <li><%= link_to 'menu', root_path %></li>
+              <li><%= link_to 'menu', root_path %></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col col-md-6">
+        <div class="row">
+          <div class="col col-md-6">
+            <h3>Discover</h3>
+            <ul class="list-no-style mt2">
+              <% Category.sorted.each do |c| %>
+                <li><%= link_to c.name(locale), discover_category_path(c) %></li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="col col-md-6">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</footer>
+<footer class="navbar-copyright">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col footer-logo my1">
+        <%= link_to image_tag('vvf_logo.png'), root_path %>
+      </div>
+      <div class="copyright-mark mt4">
+        <span >
+          <i class="glyphicon glyphicon-copyright-mark"></i>2016
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<footer class="navbar navbar-default">
   <div id="nav">
     <span><strong>Master maintenance:</strong></span>
     <%= link_to 'Languages', languages_path %> |

@@ -66,7 +66,7 @@
   <%= image_tag 'vvf_line.png', class: 'hero-bottom-line' %>
 </div>
 
-<div class="favorites-area">
+<div class="favorites-area border-bottom">
   <div class="container favorites-content">
     <div class="row">
       <% p = Project.first %>
@@ -92,7 +92,7 @@
                 <div class="project-card-wrap">
                   <div class="project-card">
                     <div class="project-image">
-                      <%= image_tag p.image(locale) %>
+                      <%= link_to image_tag(p.image(locale)), p %>
                     </div>
                     <div class="project-card-description">
                       <h4><%= link_to p.title(locale), p %></h4>
@@ -157,6 +157,87 @@
   </div>
 </div>
 
-<h1>Discover#top</h1>
-<p>Find me in app/views/discover/top.html.erb</p>
+<div class="recommended-area py4">
+  <div class="container px2 py2">
+    <div class="recommended-title pb2">
+      <div class="row">
+        <div class="col">
+          <h3>Recommended for you</h3>
+        </div>
+        <div class="col col-right">
+          <%= link_to 'See all', root_path, class: 'btn btn-default btn-sm' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container px2 pb2">
+    <div class="row">
+      <div class="col-md-4 col">
+        <% p = Project.first %>
+        <div class="project-tile project-tile-tall-big">
+          <div class="project-image">
+            <%= link_to image_tag(p.image(locale)), p %>
+          </div>
+          <div class="project-tile-content">
+            <h5><%= link_to p.title(locale), p %></h5>
+            <p>by <%= link_to p.user.name, p.user %></p>
+            <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
+          </div>
+          <div class="project-tile-footer">
+            <div class="project-tile-category-lang">
+              <%= link_to p.category, class: 'mr2' do %>
+                <i class="glyphicon glyphicon-tag"></i>
+                <%= p.category.name(locale) %>
+              <% end %>
+              <i class="glyphicon glyphicon-globe"></i>
+              <% p.project_locales.each do |l|%>
+                <kbd><%= l.language.code %></kbd>
+              <% end %>
+            </div>
+            <div class="project-tile-status-wrap">
+              <div class="project-progress-bar">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-info" style="width:60%">
+                  </div>
+                </div>
+              </div>
+              <div class="project-status">
+                <ul class="project-status list-inline">
+                  <li class="mr1">
+                    <strong class="block h5">33%</strong>
+                    <span class="grey-dark">funded</span>
+                  </li>
+                  <li class="mr1">
+                    <strong class="block h5">$55,324</strong>
+                    <span class="grey-dark">pledged</span>
+                  </li>
+                  <li class="mr1">
+                    <strong class="block h5">915</strong>
+                    <span class="grey-dark">backers</span>
+                  </li>
+                  <li class="mr1">
+                    <strong class="block h5">15</strong>
+                    <span class="grey-dark">days to go</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col">
+        <div class="project-tile project-tile-tall-big">
+        </div>
+      </div>
+      <div class="col-md-4 col">
+        <div class="project-tile project-tile-tall-big">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="start-project-area">
+  <p class="project-start-message">Want to start?<br>Yes, you can now.</p>
+  <%= link_to 'Start a project', root_path, class: 'btn btn-white btn-ghost btn-lg mt2'%>
+</div>
