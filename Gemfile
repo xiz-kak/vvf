@@ -26,9 +26,7 @@ gem 'paypal-sdk-adaptivepayments', '~> 1.117.0'
 
 gem 'inum'
 
-gem "therubyracer"
-gem "less-rails"
-gem "twitter-bootstrap-rails"
+gem 'bootstrap-sass'
 
 group :development, :test do
   # gem 'byebug'
