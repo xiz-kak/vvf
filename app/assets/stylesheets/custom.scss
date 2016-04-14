@@ -26,6 +26,20 @@
   float: right;
 }
 
+#go-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  a {
+    width: 90px;
+    display: block;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
 .hero-image {
   height: 720px;
   /* 画像をタイル状に繰り返し表示しない */
