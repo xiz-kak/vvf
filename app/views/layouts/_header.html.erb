@@ -1,4 +1,11 @@
-<header class="navbar <%= 'navbar-fixed-top' if params[:action] == 'top' %> site-nav">
+<% if params[:action] == 'top' %>
+  <% navbar_classes = 'navbar-fixed-top navbar-ghost top-header' %>
+  <% btn_classes = 'btn-white top-header-btn' %>
+<% else %>
+  <% navbar_classes = 'navbar-default' %>
+  <% btn_classes = 'btn-default' %>
+<% end %>
+<header class="navbar <%= navbar_classes %>">
   <div class="navbar-header">
     <button class="navbar-toggle" data-toggle="collapse" data-target=".target">
       <span class="icon-bar"></span>
@@ -17,7 +24,7 @@
       <div class="form-group">
         <input type="text" class="form-control form-control-ghost" placeholder="Search">
       </div>
-      <button type="submit" class="btn btn-white btn-ghost">
+      <button type="submit" class="btn <%= btn_classes %> btn-ghost">
         <i class="glyphicon glyphicon-search"></i>
       </button>
     </form>

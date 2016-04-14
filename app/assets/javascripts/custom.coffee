@@ -30,11 +30,23 @@ $(document).on 'ready page:load', ->
 
   topBtn = $('#go-to-top')
   topBtn.hide()
+  topHeader = $('.top-header')
+  searchBtn = $('.top-header-btn')
   $(window).scroll ->
     if $(this).scrollTop() > 100
       topBtn.fadeIn()
     else
       topBtn.fadeOut()
+    if $(this).scrollTop() > 700
+      topHeader.removeClass('navbar-ghost')
+      topHeader.addClass('navbar-default')
+      searchBtn.removeClass('btn-white')
+      searchBtn.addClass('btn-default')
+    else
+      topHeader.removeClass('navbar-default')
+      topHeader.addClass('navbar-ghost')
+      searchBtn.removeClass('btn-default')
+      searchBtn.addClass('btn-white')
   topBtn.click ->
     $('body,html').animate({
         scrollTop: 0

@@ -87,7 +87,7 @@
             <%= p.body(locale).html_safe %>
           </div>
           <div class="mb4">
-            <a href="#" class= "btn btn-info btn-block">Back this project</a>
+            <a href="#rewards-list" class= "btn btn-info btn-block">Back this project</a>
           </div>
           <div class="report-to-vvf mb6">
             <%= link_to 'Report this project', p, class: 'btn btn-default' %>
@@ -95,7 +95,7 @@
         </div>
         <div class="col col-md-4">
           <div class="mb4">
-            <h3>Rewards</h3>
+            <h3 id="rewards-list">Rewards</h3>
           </div>
           <ul class="list-no-style pl0">
             <% p.rewards.each do |r| %>
