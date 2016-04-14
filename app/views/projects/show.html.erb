@@ -1,45 +1,140 @@
+<% p = @project %>
+<section class="project-hero">
+  <div class="project-hero-title py4 px2">
+    <div class="center">
+      <h2 class="mb1"><%= p.title(locale) %></h2>
+      <h5>by <%= link_to p.user.name, p.user %></h5>
+    </div>
+  </div>
+  <div class="project-hero-content container px2">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="project-hero-image mb4">
+          <%= image_tag p.image(locale) %>
+        </div>
+        <div class="project-hero-description">
+          <div class="h5 mb3">
+            <%= link_to discover_category_path(p.category), class: 'mr2' do %>
+              <i class="glyphicon glyphicon-tag"></i>
+              <%= p.category.name(locale) %>
+            <% end %>
+            <i class="glyphicon glyphicon-globe"></i>
+            <% p.project_locales.each do |l|%>
+              <kbd><%= l.language.code %></kbd>
+            <% end %>
+          </div>
+          <p class="h3 mb3">This is a description of this project this explains the background of the project and some stories.</p>
+          <div class="mb3">
+            <ul class="list-inline">
+              <li><a href="#" class="btn btn-default btn-sm">f Share</a></li>
+              <li><a href="#" class="btn btn-default btn-sm">t Tweet</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="project-hero-stats">
+          <div class="row">
+            <div class="col col-md-12 mb3">
+              <div><h1 class="bold">300</h1></div>
+              <span>backers</span>
+            </div>
+            <div class="col col-md-12 mb3">
+              <div><h1 class="bold">$7,532</h1></div>
+              <span>pledged of <%= p.goal_amount_f %> goal</span>
+            </div>
+            <div class="col col-md-12 mb3">
+              <div><h1 class="bold">16</h1></div>
+              <span>days to go</span>
+            </div>
+          </div>
+          <div class="project-hero-back pt4">
+            <a href="#" class="btn btn-info btn-ghost  btn-lg">Back This Project</a>
+          </div>
+          <div class="py4">
+            <div class="row">
+              <div class="col col-md-12">
+                <h6 class="mb2">This project will end on <%= p.end_at %></h6>
+              </div>
+              <div class="col col-md-8">
+                <h5 class="mb1"><%= p.user.name %></h5>
+                <p>
+                  <%= link_to 'See full bio', p.user %>
+                  <%= link_to 'Contact me', root_path %>
+                </p>
+              </div>
+              <div class="col col-md-4">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-hero-bio">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="project-content">
+  <div class="bg-white">
+    <div class="container px2">
+      <div class="row">
+        <div class="col col-md-8">
+          <div class="mb4">
+            <h3>About this project</h3>
+          </div>
+          <div class="project-content-body">
+            <%= p.body(locale).html_safe %>
+          </div>
+          <div class="mb4">
+            <a href="#" class= "btn btn-info btn-block">Back this project</a>
+          </div>
+          <div class="report-to-vvf mb6">
+            <%= link_to 'Report this project', p, class: 'btn btn-default' %>
+          </div>
+        </div>
+        <div class="col col-md-4">
+          <div class="mb4">
+            <h3>Rewards</h3>
+          </div>
+          <ul class="list-no-style pl0">
+            <% p.rewards.each do |r| %>
+              <li class="reward-tile-wrap">
+                <div class="reward-tile">
+                  <h3 class="mb1">Reward of $<%= r.price_f %></h3>
+                  <span class="block mb1">0 left of <%= r.count %></span>
+                  <div class="reward-image mb1">
+                    <%= image_tag r.image(locale) %>
+                  </div>
+                  <div class="reward-description mb1">
+                    <%= r.description(locale) %>
+                  </div>
+                  <div class="reward-footer mb1">
+                    <div class="reward-footer-item">
+                      <span class="item-label">Estimated delivery:</span>
+                      <span class="item-data"><%= l r.estimated_delivery, format: :date %></span>
+                    </div>
+                    <div class="reward-footer-item">
+                      <span class="item-label">Ships to:</span>
+                      <span class="item-data"><%= r.ships_to_div.t %></span>
+                    </div>
+                  </div>
+                  <div class="pledge-button">
+                    <%= link_to 'Pledge this reward', new_pledge_path(r.code), class: 'btn btn-info btn-block' %>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <% if @is_preview %>
   <h2>This is preview</h2>
 <% end %>
-<p>
-  <strong>Title</strong>
-  <%= @project.title(locale) %>
-</p>
-
-<p>
-  <strong>Category:</strong>
-  <%= @project.category.name(locale) %>
-</p>
-
-<p>
-  <strong>Goal amount:</strong>
-  <%= @project.goal_amount_f %>
-</p>
-
-<p>
-  <strong>Duration days:</strong>
-  <%= @project.duration_days %>
-</p>
-
-<p>
-  <strong>Begin Date:</strong>
-  <%= l @project.applied_begin_date, format: :date %>
-</p>
-
-<p>
-  <strong>Image</strong>
-  <%= image_tag @project.image(locale), height: 300 %>
-</p>
-
-<p>
-  <strong>Detail</strong>
-  <!--<%= simple_format(@project.body(locale)) %>-->
-  <%= @project.body(locale).html_safe %>
-</p>
-
-<% @project.rewards.each_with_index do |r, idx| %>
-  <%= render partial: 'show_reward', locals: {r: r, idx: idx} %>
-<% end%>
 
 <br>
 <% if logged_in? %>
@@ -53,11 +148,11 @@
     <% end %>
   <% else %>
     <% if (@project.user == current_user || current_user.is_admin) && @project.status_div_active? %>
-      <%= link_to 'Suspend', suspend_project_path(@project), data: { confirm: 'Are you sure?' } %>
+      <%= link_to 'Suspend', suspend_project_path(@project), data: { confirm: 'Are you sure?' } %> |
     <% elsif current_user.is_admin && @project.status_div_suspended? %>
       <%= link_to 'Resume', resume_project_path(@project), data: { confirm: 'Are you sure?' } %>
-      <%= link_to 'Drop', drop_project_path(@project), data: { confirm: 'Are you sure?' } %>
+      <%= link_to 'Drop', drop_project_path(@project), data: { confirm: 'Are you sure?' } %> |
     <% end %>
-    <%= link_to 'Project List', projects_path %>
+    <%= link_to_if(current_user.is_admin, 'Project List', projects_path) {} %>
   <% end %>
 <% end %>

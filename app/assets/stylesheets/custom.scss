@@ -14,44 +14,6 @@
   a {
     color: $white-smoke;
   }
-  a.admin-name {
-    color: red;
-  }
-}
-
-.nav > li > a:hover,
-.nav > li > a:focus {
-  text-decoration: underline;
-  background-color: rgba(255,255,255,0);
-}
-
-.nav .open > a,
-.nav .open > a:hover,
-.nav .open > a:focus {
-  background-color: rgba(255,255,255,0);
-}
-
-.dropdown-menu {
-  background-color: rgba(255,255,255,0);
-  text-align: right;
-  border: none;
-  box-shadow: none;
-  > li > a {
-    color: $white-smoke;
-    &:hover {
-      background-color: rgba(255,255,255,0);
-      color: $white-smoke;
-      text-decoration: underline;
-    }
-  }
-}
-
-.navbar-right {
-  margin-right: 10px;
-}
-
-.navbar-toggle, .icon-bar {
-  border: 1px solid white;
 }
 
 .col {
@@ -119,7 +81,7 @@
 
 .favorites-area {
   height: 500px;
-  background-color: mintcream;
+  background-color: $vvf-light-sky;
   padding: 50px 0px;
   a {
     color: #333333;
@@ -232,6 +194,74 @@
   .footer-logo {
     img {
       max-width: 300px;
+    }
+  }
+}
+
+.project-hero {
+  background-color: $vvf-light-sky;
+  .project-hero-image {
+    height: 400px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+  a {
+    color: #333333;
+  }
+  .project-hero-stats {
+    margin-top: 45px;
+    margin-bottom: 20px;
+  }
+}
+
+.bg-white {
+  background-color: white;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.project-content-body {
+  line-height: 1.5em;
+  word-wrap: break-word;
+  & > p > img {
+    width: 100% !important; //To avoid the limitation of ckeditor.
+    height: auto !important;
+  }
+}
+
+.reward-tile-wrap {
+  margin-bottom: 20px;
+  font-size: 14px;
+  display: block;
+  background: $vvf-light-sky;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  word-break: break-word;
+  .reward-tile {
+    margin: 0 20px 0 20px;
+    padding: 20px 0 20px 0;
+    .reward-image {
+      height: 200px;
+      overflow: hidden;
+      img {
+        width: 100%;
+      }
+    }
+    .reward-footer {
+      height: 60px;
+      .reward-footer-item {
+        float: left;
+        width: 50%;
+        .item-label {
+          color: $gray-light;
+          display: block;
+        }
+        .item-data {
+          display: block;
+        }
+      }
     }
   }
 }

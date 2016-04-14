@@ -1,3 +1,39 @@
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+  text-decoration: underline;
+  background-color: rgba(255,255,255,0);
+}
+
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+  background-color: rgba(255,255,255,0);
+}
+
+.dropdown-menu {
+  background-color: rgba(255,255,255,0);
+  text-align: right;
+  border: none;
+  box-shadow: none;
+  > li > a {
+    color: $white-smoke;
+    &:hover {
+      background-color: rgba(255,255,255,0);
+      color: $white-smoke;
+      text-decoration: underline;
+    }
+  }
+}
+
+.navbar-right {
+  margin-right: 10px;
+}
+
+.navbar-toggle, .icon-bar {
+  border: 1px solid white;
+}
+
 .btn-ghost {
   background: transparent;
 }
