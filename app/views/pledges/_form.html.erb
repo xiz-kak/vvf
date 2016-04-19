@@ -11,12 +11,62 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= label :pledge, :reward_code %><br>
-    <%= @pledge.reward.title(locale)%>
-    <%= image_tag @pledge.reward.image(locale).thumb.url %>
-    <%= f.hidden_field :reward_code %>
-  </div>
+  <section>
+    <div class="reward-title py4 px2">
+      <div class="center">
+        <h2 class="mb1"><%= @pledge.reward.project.title(locale) %></h2>
+        <h5>by <%= link_to @pledge.reward.project.user.name, @pledge.reward.project.user %></h5>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="bg-white">
+      <div class="container">
+        <div class="reward-info">
+          <div class="row">
+            <div class="col col-md-12 my1">
+              <h3>Reward information</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-md-4">
+              <div class="reward-image">
+                <%= image_tag @pledge.reward.image(locale) %>
+              </div>
+            </div>
+            <div class="col col-md-8">
+              <div class="reward-content">
+                <h3>Reward of $<%= @pledge.reward.price_f %></h3>
+                <h4 class="my1"><%= @pledge.reward.title(locale)%></h4>
+                <p><%= @pledge.reward.description(locale) %></p>
+                <div>
+                  <span class="item-label">Estimated delivery:</span>
+                  <span class="item-data"><%= l @pledge.reward.estimated_delivery, format: :date %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <%= f.hidden_field :reward_code %>
+        </div><!-- /.reward-info -->
+        <div class="payment-info mt4">
+          <div class="row">
+            <div class="col col-md-12 my1">
+              <h3>Payment information</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-md-12">
+              <p class="">If this project is successcully funded, your payment will be charged the following amount when the project ends.</p>
+              <h4>Total amount: $<%= @pledge.reward.price_f %></h4>
+              <h5>Reward price: $<%= @pledge.reward.price_f %></h5>
+              <h5>Shipping rate: $<%= @pledge.reward.price_f %></h5>
+            </div>
+          </div>
+        </div><!-- /.payment-info -->
+      </div>
+    </div>
+  </section>
 
   <!-- Pledge Payment -->
   <%= f.fields_for :pledge_payment do |ppf| %>

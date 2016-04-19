@@ -269,3 +269,27 @@
     }
   }
 }
+
+.reward-title {
+  background-color: $vvf-light-sky;
+}
+
+.reward-info {
+  .reward-image {
+    height: 200px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+  .reward-content {
+    width: 80%;
+     .item-label {
+       color: $gray-light;
+       display: block;
+     }
+     .item-data {
+       display: block;
+     }
+  }
+}
