@@ -20,7 +20,7 @@ $(document).on 'ready page:load', ->
       data: {reward_code: $(this).data('reward-code'), nation_id: $(this).val()}
       dataType: "json"
       success: (data, status, xhr) ->
-        $('#pledge_pledge_payment_attributes_shipping_rate').val(xhr.responseText)
+        $('#pledge_payment_shipping_rate').text(xhr.responseText)
         calcTotalAmount()
       error: (xhr, status, error) ->
         alert('Failed to load shipping_rate!!\n[Error] '+error)
@@ -52,6 +52,21 @@ $(document).on 'ready page:load', ->
         scrollTop: 0
     }, 500)
     return false
+  $('#pledge-modal').on 'show.bs.modal', (event) ->
+    button = $(event.relatedTarget)
+    reward_code = button.data('reward-code')
+    modal = $(this)
+    $.ajax
+      url: "/rewards/" + reward_code + "/new_pledge"
+      type: "GET"
+      data: {}
+      dataType: "html"
+      success: (data, status, xhr) ->
+        modal.find('#pledge-info').html(data)
+      error: (xhr, status, error) ->
+        modal.modal('hide')
+        alert('Failed to load pledge info!!\n[Error] '+error)
+
 
 changeShipsToDiv = ->
   $('.reward_ships_to').on 'change', ->
@@ -73,17 +88,17 @@ switchOnShipsTo = (el) ->
       $('#'+el.data('default-shipping-rate')).show()
 
 calcTotalAmount = ->
-  numA = $('#pledge_pledge_payment_attributes_amount').val()
-  numB = $('#pledge_pledge_payment_attributes_shipping_rate').val()
+  numA = $('#pledge_payment_amount').text()
+  numB = $('#pledge_payment_shipping_rate').text()
   numA = parseFloat(numA)
   numB = parseFloat(numB)
   if numA == null
-    $('#pledge_pledge_payment_attributes_amount').val('')
+    $('#pledge_payment_amount').text('')
     return false
   if numB == null
-    $('#pledge_pledge_payment_attributes_shipping_rate').val('')
+    $('#pledge_payment_shipping_rate').text('')
     return false
-  $('#pledge_pledge_payment_attributes_total_amount').val((numA+numB).toFixed(2))
+  $('#pledge_payment_total_amount').text((numA+numB).toFixed(2))
 
 $(document).bind 'page:change', ->
   $('.ckeditor').each ->

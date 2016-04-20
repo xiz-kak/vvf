@@ -1,0 +1,182 @@
+<div class="container modal-container">
+  <%= form_for(@pledge) do |f| %>
+
+    <section>
+      <div class="">
+
+        <div class="reward-info">
+          <div class="row my2">
+            <div class="col col-md-12">
+              <h3>Reward information</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-md-5">
+              <div class="reward-image">
+                <%= image_tag @pledge.reward.image(locale) %>
+              </div>
+            </div>
+            <div class="col col-md-7">
+              <div class="reward-content">
+                <h3>Reward of $<%= @pledge.reward.price_f %></h3>
+                <h4 class="my1"><%= @pledge.reward.title(locale)%></h4>
+                <p><%= @pledge.reward.description(locale) %></p>
+                <div>
+                  <span class="item-label">Estimated delivery:</span>
+                  <span class="item-data"><%= l @pledge.reward.estimated_delivery, format: :date %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <%= f.hidden_field :reward_code %>
+        </div><!-- /.reward-info -->
+
+        <% if @pledge.reward.ships_to_div == 1 || @pledge.reward.ships_to_div == 2 %>
+          <div class="shipping-info mt4">
+            <div class="row my2">
+              <div class="col col-md-12">
+                <h3>Shipping information</h3>
+              </div>
+            </div>
+            <div class="form-horizontal ml1">
+              <%= f.fields_for :pledge_shipping do |psf| %>
+                <div class="form-group">
+                  <div class="col-md-12">
+                    <%= psf.label :first_name, 'Name', class: 'control-label' %>
+                  </div>
+                  <div>
+                    <div class="col-md-6">
+                      <%= psf.text_field :first_name, class: 'form-control', placeholder: 'First Name' %>
+                    </div>
+                    <div class="col-md-6">
+                      <%= psf.text_field :last_name, class: 'form-control', placeholder: 'Last Name' %>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-12">
+                    <%= psf.label :address1, 'Stree Address', class: 'control-label' %>
+                  </div>
+                  <div class="col-md-12">
+                    <%= psf.text_field :address1, class: 'form-control', placeholder: 'Building Name / Room #' %>
+                  </div>
+                  <div class="col-md-12">
+                    <%= psf.text_field :address2, class: 'form-control', placeholder: 'Street / Avenue Name' %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <%= psf.label :address3, 'City',class: 'control-label' %>
+                    <div class="">
+                      <%= psf.text_field :address3, class: 'form-control', placeholder: 'City / Town Name' %>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <%= psf.label :address4, 'State', class: 'control-label' %>
+                    <div class="">
+                      <%= psf.text_field :address4, class: 'form-control', placeholder: 'State / Province Name' %>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <%= psf.label :zip_code, class: 'control-label' %>
+                    <div class="">
+                      <%= psf.text_field :zip_code, class: 'form-control', placeholder: 'Zip / Postal Code' %>
+                    </div>
+                  </div>
+                </div>
+                <% if @pledge.reward.ships_to_div == Divs::RewardShipsTo::CERTAIN_COUNTRIES %>
+                  <% list = @pledge.reward.reward_shippings.map{ |rs| [rs.nation.name, rs.nation.id] } %>
+                <% else %>
+                  <% list = Nation.shipping_destinations.map{ |n| [n.name, n.id] } %>
+                <% end %>
+                <div class="form-group">
+                  <div class="col-md-6">
+                    <%= psf.label :nation_id, class: 'control-label' %>
+                    <div class="">
+                      <%= psf.select :nation_id, list, {include_blank: '-- Select a nation --'}, data: {reward_code: @pledge.reward.code}, class: 'form-control' %>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <%= psf.label :tel, class: 'control-label' %>
+                    <div class="">
+                      <%= psf.text_field :tel, class: 'form-control' %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div><!-- /.shipping-info -->
+        <% end %>
+
+        <%= f.fields_for :pledge_payment do |ppf| %>
+          <div class="payment-info mt4">
+            <div class="row my2">
+              <div class="col col-md-12">
+                <h3>Payment information</h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-md-12">
+                <p class="">If this project is successcully funded, your payment will be charged the following amount when the project ends.</p>
+                <div class="row">
+                <div class="col col-md-6">
+                  <h4>Total amount: $
+                    <span id="pledge_payment_total_amount">
+                      <%= @pledge.pledge_payment.total_amount_z %>
+                    </span>
+                  </h4>
+                  <h5 class="ml2 mt1">Reward price: $
+                    <span id="pledge_payment_amount">
+                      <%= @pledge.pledge_payment.amount_z %>
+                    </span>
+                  </h5>
+                  <h5 class="ml2 mt1">Shipping rate: $
+                    <span id="pledge_payment_shipping_rate">
+                      <%= @pledge.pledge_payment.shipping_rate_z %>
+                    </span>
+                  </h5>
+                </div>
+                <div class="col col-md-6">
+                  <h4>Payment method</h4>
+                  <div class="ml2 mt2">
+                    <%= image_tag 'paypal_logo.png' %>
+                  </div>
+                </div>
+                </div>
+                <div class="field hide">
+                  <%= ppf.label :payment_method_div %><br>
+                  <%= ppf.select :payment_method_div,
+                    Divs::PledgePaymentMethod.collection %>
+                </div>
+                <div class="field hide">
+                  <%= ppf.label :payment_vendor_id %><br>
+                  <%= ppf.select :payment_vendor_id,
+                    PaymentVendor.sorted.map{|p| [p.name(locale), p.id]} %>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.payment-info -->
+        <% end %>
+
+      </div>
+    </section>
+
+    <section>
+      <div class="my6">
+        <div class="actions">
+          <%= f.submit 'Pledge', class: 'btn btn-info btn-lg btn-block' %>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="mb6">
+        <div class="pledge-attention">
+          <h4>Vin-Vin Funding is not an EC.</h4>
+          <h5>We support creators and backers to make their dreams come true. </h5>
+          <p class="mt2">Vin-Vin Funding does not guarantee projects or investigate a creator's ability to complete their project. It is the responsibility of the project creator to complete their project as promised, and the claims of this project are theirs alone.</p>
+        </div>
+      </div>
+    </section>
+  <% end %>
+</div>

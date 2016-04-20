@@ -1,7 +1,8 @@
 class PledgesController < ApplicationController
   before_action :require_admin, only: [:edit, :update, :destroy]
-  before_action :set_pledge, only: [:show, :edit, :update, :destroy, :complete]
+  before_action :set_pledge, only: [:show, :edit, :pay, :update, :destroy, :complete]
   before_action :require_login, except: [:index, :show]
+  before_action :require_backer, only: [:pay]
 
   include AdaptivePayments
 
@@ -14,7 +15,7 @@ class PledgesController < ApplicationController
   def show
   end
 
-  # GET /pledges/new
+  # GET /rewards/1/new_pledge
   def new
     @pledge = Pledge.new(reward_code: params[:reward_code])
     @pledge.build_pledge_payment
@@ -23,6 +24,8 @@ class PledgesController < ApplicationController
     @pledge.pledge_payment.amount = @pledge.reward.price
     @pledge.pledge_payment.shipping_rate = 0
     @pledge.pledge_payment.total_amount = @pledge.reward.price
+
+    render partial: 'form_for_modal'
   end
 
   # GET /pledges/1/edit
@@ -36,6 +39,16 @@ class PledgesController < ApplicationController
     @pledge.pledged_at = Time.now
 
     if @pledge.save
+      @is_confirmation = true
+      render :show
+    else
+      render :new
+    end
+  end
+
+  # GET /pledges/1/pay
+  def pay
+    # if @pledge.save
       opts = { :maxTotalAmountOfAllPayments => @pledge.pledge_payment.total_amount,
                :endingDate => Time.now.months_since(1),
                :email => nil, # @pledge.user.email,
@@ -54,9 +67,9 @@ class PledgesController < ApplicationController
 
         render :new
       end
-    else
-      render :new
-    end
+    # else
+    #   render :new
+    # end
   end
 
   # PATCH/PUT /pledges/1
@@ -91,34 +104,38 @@ class PledgesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_pledge
-      @pledge = Pledge.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_pledge
+    @pledge = Pledge.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def pledge_params
-      params.require(:pledge).permit(
-        :reward_code,
-        pledge_payment_attributes: [
-          :id,
-          :payment_method_div,
-          :payment_vendor_id,
-          :preapproval_key,
-          :status
-        ],
-        pledge_shipping_attributes: [
-          :id,
-          :first_name,
-          :last_name,
-          :nation_id,
-          :tel,
-          :zip_code,
-          :address1,
-          :address2,
-          :address3,
-          :address4
-        ]
-      )
-    end
+  # Only allow a trusted parameter "white list" through.
+  def pledge_params
+    params.require(:pledge).permit(
+      :reward_code,
+      pledge_payment_attributes: [
+        :id,
+        :payment_method_div,
+        :payment_vendor_id,
+        :preapproval_key,
+        :status
+      ],
+      pledge_shipping_attributes: [
+        :id,
+        :first_name,
+        :last_name,
+        :nation_id,
+        :tel,
+        :zip_code,
+        :address1,
+        :address2,
+        :address3,
+        :address4
+      ]
+    )
+  end
+
+  def require_backer
+    render_404 unless @pledge.user == current_user || is_admin?
+  end
 end

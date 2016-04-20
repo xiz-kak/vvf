@@ -75,7 +75,7 @@ class PledgePayment < ActiveRecord::Base
     r = self.pledge.reward
     n_id = self.pledge.pledge_shipping.try(:nation_id)
     self.amount = r.price
-    self.shipping_rate = r.shipping_rate(n_id) || 0
+    self.shipping_rate = n_id ? r.shipping_rate(n_id) : 0
     self.total_amount = amount + shipping_rate
   end
 end

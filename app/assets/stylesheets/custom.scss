@@ -276,14 +276,13 @@
 
 .reward-info {
   .reward-image {
-    height: 200px;
+    height: 220px;
     overflow: hidden;
     img {
       width: 100%;
     }
   }
   .reward-content {
-    width: 80%;
      .item-label {
        color: $gray-light;
        display: block;
@@ -293,3 +292,28 @@
      }
   }
 }
+
+.shipping-info {
+  .form-group {
+    margin-bottom: 0px;
+  }
+  .form-control {
+    margin-bottom: 5px;
+  }
+}
+
+.pledge-attention {
+  border: 1px solid $gray-lighter;
+  border-radius: 2px;
+  padding: 20px;
+}
+
+#pledge-modal {
+  .modal-dialog {
+    width: 80%;
+    .modal-container {
+      width: 80%;
+    }
+  }
+}
+

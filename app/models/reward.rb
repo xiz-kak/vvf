@@ -38,7 +38,7 @@ class Reward < ActiveRecord::Base
   validates :price, presence: true
   validates :count, presence: true
   # default_shipping_rate is required if ships to anywhere_in_the_world
-  validates :default_shipping_rate, presence: true, if: Proc.new { self.ships_to_div == 3 }
+  validates :default_shipping_rate, presence: true, if: Proc.new { self.ships_to_div == Divs::RewardShipsTo::ANYWHERE_IN_THE_WORLD }
   validate :reward_shipping_is_required
 
   def title(locale)
@@ -74,11 +74,11 @@ class Reward < ActiveRecord::Base
   end
 
   def shipping_rate(nation_id)
-    if ships_to_div == 1
+    if ships_to_div == Divs::RewardShipsTo::NO_SHIPPING
       sr = 0.00
-    elsif ships_to_div == 2
+    elsif ships_to_div == Divs::RewardShipsTo::CERTAIN_COUNTRIES
       sr = reward_shippings.find_by(nation_id: nation_id).shipping_rate_z
-    elsif ships_to_div == 3
+    elsif ships_to_div == Divs::RewardShipsTo::ANYWHERE_IN_THE_WORLD
       sr = reward_shippings.find_by(nation_id: nation_id).try(:shipping_rate_z)
       sr = default_shipping_rate_z if sr.blank?
     end

@@ -27,7 +27,10 @@ Rails.application.routes.draw do
     get 'rewards/:reward_code/new_pledge' => 'pledges#new', as: :new_pledge
     post 'shipping_rate' => 'pledges#shipping_rate'
     resources :pledges, :except => :new do
-      get 'complete', :on => :member
+      member do
+        get 'complete'
+        get 'pay'
+      end
       get 'cancel', :on => :collection
     end
 

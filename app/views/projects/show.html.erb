@@ -132,6 +132,21 @@
   </div>
 </section>
 
+<button type="button" data-toggle="modal" data-target="#pledge-modal" data-reward-code="4">Pledge</button>
+<div class="modal fade" id="pledge-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Pledge for "<%= p.title(locale) %>"</h4>
+      </div>
+      <div class="modal-body" id="pledge-info">
+        <!-- pledge content -->
+      </div>
+    </div>
+  </div>
+</div>
+
 <% if @is_preview %>
   <h2>This is preview</h2>
 <% end %>

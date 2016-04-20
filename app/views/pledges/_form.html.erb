@@ -23,9 +23,10 @@
   <section>
     <div class="bg-white">
       <div class="container">
+
         <div class="reward-info">
-          <div class="row">
-            <div class="col col-md-12 my1">
+          <div class="row my2">
+            <div class="col col-md-12">
               <h3>Reward information</h3>
             </div>
           </div>
@@ -49,106 +50,147 @@
           </div>
           <%= f.hidden_field :reward_code %>
         </div><!-- /.reward-info -->
-        <div class="payment-info mt4">
-          <div class="row">
-            <div class="col col-md-12 my1">
-              <h3>Payment information</h3>
+
+        <% if @pledge.reward.ships_to_div == 1 || @pledge.reward.ships_to_div == 2 %>
+          <div class="shipping-info mt4">
+            <div class="row my2">
+              <div class="col col-md-12">
+                <h3>Shipping information</h3>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col col-md-12">
-              <p class="">If this project is successcully funded, your payment will be charged the following amount when the project ends.</p>
-              <h4>Total amount: $<%= @pledge.reward.price_f %></h4>
-              <h5>Reward price: $<%= @pledge.reward.price_f %></h5>
-              <h5>Shipping rate: $<%= @pledge.reward.price_f %></h5>
+            <div class="form-horizontal">
+              <%= f.fields_for :pledge_shipping do |psf| %>
+                <div class="form-group">
+                  <%= psf.label :first_name, class: 'control-label col-sm-2' %>
+                  <div class="col-sm-10">
+                    <%= psf.text_field :first_name, class: 'form-control' %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= psf.label :last_name, class: 'control-label col-sm-2' %>
+                  <div class="col-sm-10">
+                    <%= psf.text_field :last_name, class: 'form-control' %>
+                  </div>
+                </div>
+                <% if @pledge.reward.ships_to_div == Divs::RewardShipsTo::CERTAIN_COUNTRIES %>
+                  <% list = @pledge.reward.reward_shippings.map{ |rs| [rs.nation.name, rs.nation.id] } %>
+                <% else %>
+                  <% list = Nation.shipping_destinations.map{ |n| [n.name, n.id] } %>
+                <% end %>
+                <div class="form-group">
+                  <%= psf.label :nation_id, class: 'control-label col-sm-2' %>
+                  <div class="col-sm-10">
+                    <%= psf.select :nation_id, list, {include_blank: '-- Select a nation --'}, data: {reward_code: @pledge.reward.code}, class: 'form-control' %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= psf.label :tel, class: 'control-label col-sm-2' %>
+                  <div class="col-sm-10">
+                    <%= psf.text_field :tel, class: 'form-control' %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= psf.label :zip_code, class: 'control-label col-sm-2' %>
+                  <div class="col-sm-10">
+                    <%= psf.text_field :zip_code, class: 'form-control' %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= psf.label :address1, class: 'control-label col-sm-2' %>
+                  <div class="col-sm-10">
+                    <%= psf.text_field :address1, class: 'form-control' %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= psf.label :address2, class: 'control-label col-sm-2' %>
+                  <div class="col-sm-10">
+                    <%= psf.text_field :address2, class: 'form-control' %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= psf.label :address3, class: 'control-label col-sm-2' %>
+                  <div class="col-sm-10">
+                    <%= psf.text_field :address3, class: 'form-control' %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= psf.label :address4, class: 'control-label col-sm-2' %>
+                  <div class="col-sm-10">
+                    <%= psf.text_field :address4, class: 'form-control' %>
+                  </div>
+                </div>
+              <% end %>
             </div>
-          </div>
-        </div><!-- /.payment-info -->
+          </div><!-- /.shipping-info -->
+        <% end %>
+
+        <%= f.fields_for :pledge_payment do |ppf| %>
+          <div class="payment-info mt4">
+            <div class="row my2">
+              <div class="col col-md-12">
+                <h3>Payment information</h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-md-12">
+                <p class="">If this project is successcully funded, your payment will be charged the following amount when the project ends.</p>
+                <div class="">
+                  <h4>Total amount: $
+                    <span id="pledge_payment_total_amount">
+                      <%= @pledge.pledge_payment.total_amount_z %>
+                    </span>
+                  </h4>
+                  <h5 class="ml2 mt1">Reward price: $
+                    <span id="pledge_payment_amount">
+                      <%= @pledge.pledge_payment.amount_z %>
+                    </span>
+                  </h5>
+                  <h5 class="ml2 mt1">Shipping rate: $
+                    <span id="pledge_payment_shipping_rate">
+                      <%= @pledge.pledge_payment.shipping_rate_z %>
+                    </span>
+                  </h5>
+                </div>
+                <div class="mt2">
+                  <h4>Payment method</h4>
+                  <div class="ml2 mt2">
+                    <%= image_tag 'paypal_logo.png' %>
+                  </div>
+                </div>
+                <div class="field hide">
+                  <%= ppf.label :payment_method_div %><br>
+                  <%= ppf.select :payment_method_div,
+                    Divs::PledgePaymentMethod.collection %>
+                </div>
+                <div class="field hide">
+                  <%= ppf.label :payment_vendor_id %><br>
+                  <%= ppf.select :payment_vendor_id,
+                    PaymentVendor.sorted.map{|p| [p.name(locale), p.id]} %>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.payment-info -->
+        <% end %>
+
       </div>
     </div>
   </section>
 
-  <!-- Pledge Payment -->
-  <%= f.fields_for :pledge_payment do |ppf| %>
-    <div class="field">
-      <%= ppf.label :amount %><br>
-      <%= ppf.number_field :amount, step: 0.01,
-        value: @pledge.pledge_payment.amount_z, disabled: true %>
+  <section>
+    <div class="container mb6">
+      <div class="actions">
+        <%= f.submit 'Pledge', class: 'btn btn-info btn-lg btn-block' %>
+      </div>
     </div>
-    <div class="field">
-      <%= ppf.label :shipping_rate %><br>
-      <%= ppf.number_field :shipping_rate, step: 0.01,
-        value: @pledge.pledge_payment.shipping_rate_z, disabled: true %>
-    </div>
-    <div class="field">
-      <%= ppf.label :total_amount %><br>
-      <%= ppf.number_field :total_amount, step: 0.01,
-        value: @pledge.pledge_payment.total_amount_z, disabled: true %>
-    </div>
-    <div class="field">
-      <%= ppf.label :payment_method_div %><br>
-      <%= ppf.select :payment_method_div,
-        Divs::PledgePaymentMethod.collection %>
-    </div>
-    <div class="field">
-      <%= ppf.label :payment_vendor_id %><br>
-      <%= ppf.select :payment_vendor_id,
-        PaymentVendor.sorted.map{|p| [p.name(locale), p.id]} %>
-    </div>
-  <% end %>
+  </section>
 
-  <!-- Pledge Shipping -->
-  <% if @pledge.reward.ships_to_div == 2 || @pledge.reward.ships_to_div == 3 %>
-    <%= f.fields_for :pledge_shipping do |psf| %>
-      <div class="field">
-        <%= psf.label :first_name %><br>
-        <%= psf.text_field :first_name %>
+  <section>
+    <div class="container mb6">
+      <div class="pledge-attention">
+        <h4>Vin-Vin Funding is not an EC.</h4>
+        <h5>We support creators and backers to make their dreams come true. </h5>
+        <p class="mt2">Vin-Vin Funding does not guarantee projects or investigate a creator's ability to complete their project. It is the responsibility of the project creator to complete their project as promised, and the claims of this project are theirs alone.</p>
       </div>
-      <div class="field">
-        <%= psf.label :last_name %><br>
-        <%= psf.text_field :last_name %>
-      </div>
-      <% if @pledge.reward.ships_to_div == 2 %>
-        <% list = @pledge.reward.reward_shippings.map{ |rs| [rs.nation.name, rs.nation.id] } %>
-      <% else %>
-        <% list = Nation.shipping_destinations.map{ |n| [n.name, n.id] } %>
-      <% end %>
-      <div class="field">
-        <%= psf.label :nation_id %><br>
-        <%= psf.select :nation_id, list, {include_blank: '-- Select a nation --'}, data: {reward_code: @pledge.reward.id} %>
-      </div>
-      <div class="field">
-        <%= psf.label :tel %><br>
-        <%= psf.text_field :tel %>
-      </div>
-      <div class="field">
-        <%= psf.label :zip_code %><br>
-        <%= psf.text_field :zip_code %>
-      </div>
-      <div class="field">
-        <%= psf.label :address1 %><br>
-        <%= psf.text_field :address1 %>
-      </div>
-      <div class="field">
-        <%= psf.label :address2 %><br>
-        <%= psf.text_field :address2 %>
-      </div>
-      <div class="field">
-        <%= psf.label :address3 %><br>
-        <%= psf.text_field :address3 %>
-      </div>
-      <div class="field">
-        <%= psf.label :address4 %><br>
-        <%= psf.text_field :address4 %>
-      </div>
-    <% end %>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    </div>
+  </section>
 <% end %>
-
-<script type='text/javascript'>
-  
-</script>
