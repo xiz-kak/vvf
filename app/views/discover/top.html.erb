@@ -31,7 +31,7 @@
             <p class="hero-sentence">Throw your net.<br>Get your fish.</p>
           </div>
           <div>
-            <%= link_to 'Start a project', root_path, class: 'hero-start-btn btn btn-lg btn-white btn-ghost' %>
+            <%= link_to 'Start a project', start_projects_path, class: 'hero-start-btn btn btn-lg btn-white btn-ghost' %>
           </div>
         </div>
         <div class="carousel-caption">
@@ -185,7 +185,7 @@
             </div>
             <div class="project-tile-footer">
               <div class="project-tile-category-lang">
-                <%= link_to p.category, class: 'mr2' do %>
+                <%= link_to discover_category_path(p.category), class: 'mr2' do %>
                   <i class="glyphicon glyphicon-tag"></i>
                   <%= p.category.name(locale) %>
                 <% end %>
@@ -232,5 +232,5 @@
 
 <div class="start-project-area">
   <p class="project-start-message">Want to start?<br>Yes, you can now.</p>
-  <%= link_to 'Start a project', root_path, class: 'btn btn-white btn-ghost btn-lg mt2'%>
+  <%= link_to 'Start a project', start_projects_path, class: 'btn btn-white btn-ghost btn-lg mt2'%>
 </div>

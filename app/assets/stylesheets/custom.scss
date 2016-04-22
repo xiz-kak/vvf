@@ -16,6 +16,17 @@
   float: right;
 }
 
+.error-container {
+  position: fixed;
+  top: 30px;
+  left: 10%;
+  right: 10%;
+  z-index: 100;
+  .alert {
+    opacity: 0.9;
+  }
+}
+
 #go-to-top {
   position: fixed;
   bottom: 20px;
@@ -148,6 +159,7 @@
   position: relative;
   font-size: 12px;
   .project-image {
+    border-radius: 6px 6px 0px 0px;
     height: 180px;
     overflow: hidden;
     position: relative;
@@ -160,12 +172,12 @@
   }
   .project-tile-footer {
     padding: 25px 10px 10px 10px;
+    font-size: 5px;
+    position: absolute;
+    bottom: 0px;
   }
   a {
     color: #333333;
-  }
-  .project-tile-footer {
-    font-size: 5px;
   }
   .project-tile-category-lang {
     margin-bottom: 5px;
@@ -309,6 +321,11 @@
 }
 
 #pledge-modal {
+  .modal-header {
+    background-color: $vvf-light-sky;
+    border-radius: 6px;
+    text-align: center;
+  }
   .modal-dialog {
     width: 80%;
     .modal-container {

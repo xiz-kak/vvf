@@ -120,7 +120,9 @@
                     </div>
                   </div>
                   <div class="pledge-button">
-                    <%= link_to 'Pledge this reward', new_pledge_path(r.code), class: 'btn btn-info btn-block' %>
+                    <%= link_to 'Pledge this reward', '#pledge-modal',
+                      class: 'btn btn-info btn-block',
+                      data: {toggle: 'modal', reward_code: r.code} %>
                   </div>
                 </div>
               </li>
@@ -132,13 +134,13 @@
   </div>
 </section>
 
-<button type="button" data-toggle="modal" data-target="#pledge-modal" data-reward-code="4">Pledge</button>
 <div class="modal fade" id="pledge-modal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Pledge for "<%= p.title(locale) %>"</h4>
+        <h2 class="my2"><%= p.title(locale) %></h2>
+        <h5 class="mb1">by <%= link_to p.user.name, p.user %></h5>
       </div>
       <div class="modal-body" id="pledge-info">
         <!-- pledge content -->

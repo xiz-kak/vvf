@@ -23,15 +23,17 @@ Rails.application.routes.draw do
         post 'complete'
         post 'cancel'
       end
+      collection do
+        get 'start' => 'projects#start'
+      end
     end
     get 'rewards/:reward_code/new_pledge' => 'pledges#new', as: :new_pledge
     post 'shipping_rate' => 'pledges#shipping_rate'
     resources :pledges, :except => :new do
       member do
         get 'complete'
-        get 'pay'
+        get 'cancel'
       end
-      get 'cancel', :on => :collection
     end
 
     get 'login' => 'user_sessions#new', :as => :login
@@ -45,7 +47,7 @@ Rails.application.routes.draw do
     get 'discover/top'
     get 'discover/index'
     get 'discover/search'
-    get 'discover/category/:category_code' => 'discover#category', as: :discover_category
+    get 'discover/category/:id' => 'discover#category', as: :discover_category
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

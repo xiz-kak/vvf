@@ -47,7 +47,7 @@ module AdaptivePayments
       # :senderEmail => opts[:email], 指定したemailのみしかpaypalにログインできない
       :requestEnvelope => {
       :errorLanguage => 'en_US' },
-      :cancelUrl => application_url(cancel_pledges_path),
+      :cancelUrl => application_url(cancel_pledge_path(opts[:pledge_id])),
       :returnUrl => application_url(complete_pledge_path(opts[:pledge_id])) }
   end
 

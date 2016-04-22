@@ -1,2 +1,59 @@
-<h1>Discover#search</h1>
-<p>Find me in app/views/discover/search.html.erb</p>
+<section class="pt2">
+  <div class="container px2">
+    <h3 class="mt1 mb3">
+      <%= @projects.size %> <%= @category.name(locale) if @category.present? %> projects <%= "of \"#{@term}\"".html_safe if @term.present? %>
+    </h3>
+    <% @projects.each_with_index do |p, i| %>
+      <%= '<div class="row">'.html_safe if i % 4 == 0 %>
+      <div class="col col-md-3 mb4">
+        <div class="project-tile project-tile-tall-big">
+          <div class="project-image">
+            <%= link_to image_tag(p.image(locale)), p %>
+          </div>
+          <div class="project-tile-content">
+            <h5><%= link_to p.title(locale), p %></h5>
+            <p>by <%= link_to p.user.name, p.user %></p>
+            <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
+          </div>
+          <div class="project-tile-footer">
+            <div class="project-tile-category-lang">
+              <%= link_to discover_category_path(p.category), class: 'mr2' do %>
+                <i class="glyphicon glyphicon-tag"></i>
+                <%= p.category.name(locale) %>
+              <% end %>
+              <i class="glyphicon glyphicon-globe"></i>
+              <% p.project_locales.each do |l|%>
+                <kbd><%= l.language.code %></kbd>
+              <% end %>
+            </div>
+            <div class="project-tile-status-wrap">
+              <div class="project-progress-bar">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-info" style="width:60%">
+                  </div>
+                </div>
+              </div>
+              <div class="project-status">
+                <ul class="project-status list-inline">
+                  <li class="mr1">
+                    <strong class="block h5">33%</strong>
+                    <span class="grey-dark">funded</span>
+                  </li>
+                  <li class="mr1">
+                    <strong class="block h5">$55,324</strong>
+                    <span class="grey-dark">pledged</span>
+                  </li>
+                  <li class="mr1">
+                    <strong class="block h5">15</strong>
+                    <span class="grey-dark">days to go</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%= '</div>'.html_safe if i % 4 == 3 %>
+    <% end %>
+  </div>
+</section>

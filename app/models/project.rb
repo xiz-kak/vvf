@@ -211,6 +211,18 @@ class Project < ActiveRecord::Base
     true
   end
 
+  def self.search_by_category(id)
+    active.where(category_id: id)
+  end
+
+  def self.search_by_term(term)
+    active.joins(:project_headers).where('project_headers.title LIKE ?', "%#{escape_like(term)}%")
+  end
+
+  def self.escape_like(string)
+    string.gsub(/[\\%_]/){|m| "\\#{m}"}
+  end
+
   private
 
   def main_language_is_used

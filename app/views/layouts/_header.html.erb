@@ -16,18 +16,19 @@
   </div>
   <div class="collapse navbar-collapse target">
     <ul class="nav navbar-nav">
-      <li><%= link_to 'Discover', discover_index_path %></li>
-      <li><a href="">Start</a></li>
+      <li><%= link_to 'Discover', discover_search_path %></li>
+      <li><%= link_to 'Start', start_projects_path %></li>
       <li><a href="">About us</a></li>
     </ul>
-    <form class="navbar-form navbar-left" role="search">
+    <%= form_tag('/discover/search', method: 'get', class: 'navbar-form navbar-left') do %>
       <div class="form-group">
-        <input type="text" class="form-control form-control-ghost" placeholder="Search">
+        <%= text_field_tag :term, '', class: 'form-control form-control-ghost',
+          placeholder: 'Search' %>
       </div>
       <button type="submit" class="btn <%= btn_classes %> btn-ghost">
         <i class="glyphicon glyphicon-search"></i>
       </button>
-    </form>
+    <% end %>
     <ul class="nav navbar-nav navbar-right">
       <li class="dropdown">
       <% cur_lang, sel_lang = Language.sorted.pluck(:code).partition do |c| %>
@@ -65,7 +66,7 @@
               <li class="divider"></li>
               <li><%= link_to 'Home', root_path %></li>
               <li><%= link_to 'Projects', projects_path %></li>
-              <li><%= link_to 'Pledge', pledges_path %></li>
+              <li><%= link_to 'Pledges', pledges_path %></li>
             </ul>
           </li>
         <% end %>

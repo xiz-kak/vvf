@@ -22,6 +22,10 @@ class ProjectsController < ApplicationController
     render :show
   end
 
+  # GET /projects/start
+  def start
+  end
+
   # GET /projects/new
   def new
     @project = Project.new

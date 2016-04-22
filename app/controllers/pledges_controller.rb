@@ -1,8 +1,7 @@
 class PledgesController < ApplicationController
   before_action :require_admin, only: [:edit, :update, :destroy]
-  before_action :set_pledge, only: [:show, :edit, :pay, :update, :destroy, :complete]
+  before_action :set_pledge, only: [:show, :edit, :update, :destroy, :complete, :cancel]
   before_action :require_login, except: [:index, :show]
-  before_action :require_backer, only: [:pay]
 
   include AdaptivePayments
 
@@ -39,16 +38,6 @@ class PledgesController < ApplicationController
     @pledge.pledged_at = Time.now
 
     if @pledge.save
-      @is_confirmation = true
-      render :show
-    else
-      render :new
-    end
-  end
-
-  # GET /pledges/1/pay
-  def pay
-    # if @pledge.save
       opts = { :maxTotalAmountOfAllPayments => @pledge.pledge_payment.total_amount,
                :endingDate => Time.now.months_since(1),
                :email => nil, # @pledge.user.email,
@@ -67,10 +56,11 @@ class PledgesController < ApplicationController
 
         render :new
       end
-    # else
-    #   render :new
-    # end
+    else
+      render :new
+    end
   end
+
 
   # PATCH/PUT /pledges/1
   def update
@@ -80,7 +70,6 @@ class PledgesController < ApplicationController
       render :edit
     end
   end
-
   # DELETE /pledges/1
   def destroy
     @pledge.destroy
@@ -89,12 +78,18 @@ class PledgesController < ApplicationController
 
   # GET /pledges/1/complete
   def complete
-    # TODO: 条件が必要
     @pledge.preapprove!
+
+    @project = @pledge.reward.project
+    flash[:info] = 'Successfully pledged'
+    redirect_to @project
   end
 
-  # GET /pledges/cancel
+  # GET /pledges/1/cancel
   def cancel
+    @project = @pledge.reward.project
+    flash[:info] = 'Pledge canceled'
+    redirect_to @project
   end
 
   # POST rewards/1/shipping_rate
@@ -133,9 +128,5 @@ class PledgesController < ApplicationController
         :address4
       ]
     )
-  end
-
-  def require_backer
-    render_404 unless @pledge.user == current_user || is_admin?
   end
 end
