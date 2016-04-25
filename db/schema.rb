@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160401221148) do
+ActiveRecord::Schema.define(version: 20160425115707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -175,6 +175,14 @@ ActiveRecord::Schema.define(version: 20160401221148) do
   add_index "project_locales", ["language_id"], name: "index_project_locales_on_language_id", using: :btree
   add_index "project_locales", ["project_id"], name: "index_project_locales_on_project_id", using: :btree
 
+  create_table "project_pledge_summaries", force: :cascade do |t|
+    t.string   "project_code"
+    t.integer  "funded_count"
+    t.float    "funded_amount"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "projects", force: :cascade do |t|
     t.integer  "category_id"
     t.float    "goal_amount"
@@ -206,6 +214,13 @@ ActiveRecord::Schema.define(version: 20160401221148) do
 
   add_index "reward_contents", ["language_id"], name: "index_reward_contents_on_language_id", using: :btree
   add_index "reward_contents", ["reward_id"], name: "index_reward_contents_on_reward_id", using: :btree
+
+  create_table "reward_pledge_summaries", force: :cascade do |t|
+    t.integer  "reward_code"
+    t.integer  "funded_count"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "reward_shippings", force: :cascade do |t|
     t.integer  "reward_id"
