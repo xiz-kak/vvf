@@ -42,6 +42,8 @@ class Project < ActiveRecord::Base
   has_many :project_headers, dependent: :destroy, inverse_of: :project
   has_many :project_contents, dependent: :destroy, inverse_of: :project
   has_many :rewards, -> { order(:price, :count, :id) }, dependent: :destroy, inverse_of: :project
+  has_one :project_pledge_summary, primary_key: :code, foreign_key: :project_code, dependent: :destroy, inverse_of: :project
+
   accepts_nested_attributes_for :project_locales, allow_destroy: true
   accepts_nested_attributes_for :project_headers, allow_destroy: true
   accepts_nested_attributes_for :project_contents, allow_destroy: true
@@ -211,6 +213,20 @@ class Project < ActiveRecord::Base
     true
   end
 
+  def summary
+    if project_pledge_summary.present?
+      project_pledge_summary
+    else
+      build_project_pledge_summary(funded_count: 0, funded_amount: 0)
+    end
+  end
+
+  def days_to_go
+    return 0 if end_at.blank?
+
+    (end_at.to_date - Date.today).to_i
+  end
+
   def self.search_by_category(id)
     active.where(category_id: id)
   end
@@ -221,6 +237,15 @@ class Project < ActiveRecord::Base
 
   def self.escape_like(string)
     string.gsub(/[\\%_]/){|m| "\\#{m}"}
+  end
+
+  def self.posted_by(user_id)
+    active.where(user_id: user_id)
+  end
+
+  def self.backed_by(user_id)
+    rewards_codes = Pledge.joins(:pledge_payment).where('pledge_payments.status >= 3').where(user_id: user_id).pluck(:reward_code)
+    active.joins(:rewards).where('rewards.code': rewards_codes)
   end
 
   private

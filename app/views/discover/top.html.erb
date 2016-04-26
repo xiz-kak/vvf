@@ -69,7 +69,8 @@
 <div class="favorites-area border-bottom">
   <div class="container favorites-content">
     <div class="row">
-      <% p = Project.find(12) %>
+      <% p = Project.find(12) if Project.exists?(id: 12) %>
+      <% if p.present? %>
       <div class="col col-md-10">
         <div class="row">
           <h3 class="sr-only">Our favorite projects</h3>
@@ -110,27 +111,36 @@
                           <% end %>
                         </div>
                         <div class="project-status-wrap absolute-bottom">
+                          <% sum = p.summary %>
                           <div class="project-progress mb1">
                             <div class="progress">
-                              <div class="progress-bar progress-bar-info" style="width:60%">
+                              <div class="progress-bar progress-bar-info" style="width:<%= sum.achieved %>%">
                               </div>
                             </div>
                           </div>
                           <ul class="project-status list-inline">
                             <li class="mr2">
-                              <strong class="block h4">33%</strong>
+                              <strong class="block h4">
+                                <%= sum.achieved %>%
+                              </strong>
                               <span class="grey-dark">funded</span>
                             </li>
                             <li class="mr2">
-                              <strong class="block h4">$55,324</strong>
+                              <strong class="block h4">
+                                $<%= sum.funded_amount_f %>
+                              </strong>
                               <span class="grey-dark">pledged</span>
                             </li>
                             <li class="mr2">
-                              <strong class="block h4">915</strong>
+                              <strong class="block h4">
+                                <%= sum.funded_count %>
+                              </strong>
                               <span class="grey-dark">backers</span>
                             </li>
                             <li class="mr2">
-                              <strong class="block h4">15</strong>
+                              <strong class="block h4">
+                                <%= p.days_to_go %>
+                              </strong>
                               <span class="grey-dark">days to go</span>
                             </li>
                           </ul>
@@ -144,6 +154,7 @@
           </div>
         </div>
       </div>
+      <% end %>
       <div class="col-md-2">
         <div class="category-nav ml2 mt2 mr2 mb2">
           <ul class="list-no-style pl1">
@@ -165,7 +176,7 @@
           <h3>Recommended for you</h3>
         </div>
         <div class="col col-right">
-          <%= link_to 'See all', root_path, class: 'btn btn-default btn-sm' %>
+          <%= link_to 'See all', discover_search_path, class: 'btn btn-default btn-sm' %>
         </div>
       </div>
     </div>
@@ -195,28 +206,37 @@
                 <% end %>
               </div>
               <div class="project-tile-status-wrap">
+                <% sum = p.summary %>
                 <div class="project-progress-bar">
                   <div class="progress">
-                    <div class="progress-bar progress-bar-info" style="width:60%">
+                    <div class="progress-bar progress-bar-info" style="width:<%= sum.achieved %>%">
                     </div>
                   </div>
                 </div>
                 <div class="project-status">
                   <ul class="project-status list-inline">
                     <li class="mr1">
-                      <strong class="block h5">33%</strong>
+                      <strong class="block h5">
+                        <%= sum.achieved %>%
+                      </strong>
                       <span class="grey-dark">funded</span>
                     </li>
                     <li class="mr1">
-                      <strong class="block h5">$55,324</strong>
+                      <strong class="block h5">
+                        $<%= sum.funded_amount_f %>
+                      </strong>
                       <span class="grey-dark">pledged</span>
                     </li>
                     <li class="mr1">
-                      <strong class="block h5">915</strong>
+                      <strong class="block h5">
+                        <%= sum.funded_count %>
+                      </strong>
                       <span class="grey-dark">backers</span>
                     </li>
                     <li class="mr1">
-                      <strong class="block h5">15</strong>
+                      <strong class="block h5">
+                        <%= p.days_to_go %>
+                      </strong>
                       <span class="grey-dark">days to go</span>
                     </li>
                   </ul>

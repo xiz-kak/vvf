@@ -34,17 +34,18 @@
       </div>
       <div class="col-md-4">
         <div class="project-hero-stats">
+          <% sum = p.summary %>
           <div class="row">
             <div class="col col-md-12 mb3">
-              <div><h1 class="bold">300</h1></div>
+              <div><h1 class="bold"><%= sum.funded_count %></h1></div>
               <span>backers</span>
             </div>
             <div class="col col-md-12 mb3">
-              <div><h1 class="bold">$7,532</h1></div>
-              <span>pledged of <%= p.goal_amount_f %> goal</span>
+              <div><h1 class="bold">$<%= sum.funded_amount_f %></h1></div>
+              <span>pledged of $<%= p.goal_amount_f %> goal</span>
             </div>
             <div class="col col-md-12 mb3">
-              <div><h1 class="bold">16</h1></div>
+              <div><h1 class="bold"><%= p.days_to_go %></h1></div>
               <span>days to go</span>
             </div>
           </div>
@@ -54,7 +55,7 @@
           <div class="py4">
             <div class="row">
               <div class="col col-md-12">
-                <h6 class="mb2">This project will end on <%= p.end_at %></h6>
+                <h6 class="mb2">This project will end on <%= l p.end_at, format: :date %></h6>
               </div>
               <div class="col col-md-8">
                 <h5 class="mb1"><%= p.user.name %></h5>
@@ -102,7 +103,7 @@
               <li class="reward-tile-wrap">
                 <div class="reward-tile">
                   <h3 class="mb1">Reward of $<%= r.price_f %></h3>
-                  <span class="block mb1">0 left of <%= r.count %></span>
+                  <span class="block mb1"><%= r.left_count %> left of <%= r.count %></span>
                   <div class="reward-image mb1">
                     <%= image_tag r.image(locale) %>
                   </div>

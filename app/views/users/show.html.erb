@@ -22,114 +22,118 @@
     <div class="posted-projects py3">
       <h3 class="my2">Posted projects</h3>
       <div class="row">
-        <% p = Project.find(12) %>
-        <div class="col-md-10 project-card-wrap">
-          <div class="project-card">
-            <div class="project-image">
-              <%= link_to image_tag(p.image(locale)), p %>
-            </div>
-            <div class="project-card-description">
-              <h4><%= link_to p.title(locale), p %></h4>
-              <p><%= link_to p.user.name, p.user %></p>
-              <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
-              <div class="project-card-footer">
-                <div class="project-location-category">
-                  <%= link_to discover_category_path(p.category), class: 'mr2' do %>
-                    <i class="glyphicon glyphicon-tag"></i>
-                    <%= p.category.name(locale) %>
-                  <% end %>
-                  <i class="glyphicon glyphicon-globe"></i>
-                  <% p.project_locales.each do |l|%>
-                    <kbd><%= l.language.code %></kbd>
-                  <% end %>
-                </div>
-                <div class="project-status-wrap absolute-bottom">
-                  <div class="project-progress mb1">
-                    <div class="progress">
-                      <div class="progress-bar progress-bar-info" style="width:60%">
+        <% Project.posted_by(@user).each do |p| %>
+          <div class="col-md-10 project-card-wrap">
+            <div class="project-card">
+              <div class="project-image">
+                <%= link_to image_tag(p.image(locale)), p %>
+              </div>
+              <div class="project-card-description">
+                <% sum = p.summary %>
+                <h4><%= link_to p.title(locale), p %></h4>
+                <p><%= link_to p.user.name, p.user %></p>
+                <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
+                <div class="project-card-footer">
+                  <div class="project-location-category">
+                    <%= link_to discover_category_path(p.category), class: 'mr2' do %>
+                      <i class="glyphicon glyphicon-tag"></i>
+                      <%= p.category.name(locale) %>
+                    <% end %>
+                    <i class="glyphicon glyphicon-globe"></i>
+                    <% p.project_locales.each do |l|%>
+                      <kbd><%= l.language.code %></kbd>
+                    <% end %>
+                  </div>
+                  <div class="project-status-wrap absolute-bottom">
+                    <div class="project-progress mb1">
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-info" style="width:<%= sum.achieved %>%">
+                        </div>
                       </div>
                     </div>
+                    <ul class="project-status list-inline">
+                      <li class="mr2">
+                        <strong class="block h4"><%= sum.achieved %>%</strong>
+                        <span class="grey-dark">funded</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4">$<%= sum.funded_amount_f %></strong>
+                        <span class="grey-dark">pledged</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4"><%= sum.funded_count %></strong>
+                        <span class="grey-dark">backers</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4"><%= p.days_to_go %></strong>
+                        <span class="grey-dark">days to go</span>
+                      </li>
+                    </ul>
                   </div>
-                  <ul class="project-status list-inline">
-                    <li class="mr2">
-                      <strong class="block h4">33%</strong>
-                      <span class="grey-dark">funded</span>
-                    </li>
-                    <li class="mr2">
-                      <strong class="block h4">$55,324</strong>
-                      <span class="grey-dark">pledged</span>
-                    </li>
-                    <li class="mr2">
-                      <strong class="block h4">915</strong>
-                      <span class="grey-dark">backers</span>
-                    </li>
-                    <li class="mr2">
-                      <strong class="block h4">15</strong>
-                      <span class="grey-dark">days to go</span>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
       </div>
     </div>
 
     <div class="backed-projects py3">
       <h3 class="my2">Backed projects</h3>
       <div class="row">
-        <% p = Project.find(12) %>
-        <div class="col-md-10 project-card-wrap">
-          <div class="project-card">
-            <div class="project-image">
-              <%= link_to image_tag(p.image(locale)), p %>
-            </div>
-            <div class="project-card-description">
-              <h4><%= link_to p.title(locale), p %></h4>
-              <p><%= link_to p.user.name, p.user %></p>
-              <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
-              <div class="project-card-footer">
-                <div class="project-location-category">
-                  <%= link_to discover_category_path(p.category), class: 'mr2' do %>
-                    <i class="glyphicon glyphicon-tag"></i>
-                    <%= p.category.name(locale) %>
-                  <% end %>
-                  <i class="glyphicon glyphicon-globe"></i>
-                  <% p.project_locales.each do |l|%>
-                    <kbd><%= l.language.code %></kbd>
-                  <% end %>
-                </div>
-                <div class="project-status-wrap absolute-bottom">
-                  <div class="project-progress mb1">
-                    <div class="progress">
-                      <div class="progress-bar progress-bar-info" style="width:60%">
+        <% Project.backed_by(@user).each do |p| %>
+          <div class="col-md-10 project-card-wrap">
+            <div class="project-card">
+              <div class="project-image">
+                <%= link_to image_tag(p.image(locale)), p %>
+              </div>
+              <div class="project-card-description">
+                <% sum = p.summary %>
+                <h4><%= link_to p.title(locale), p %></h4>
+                <p><%= link_to p.user.name, p.user %></p>
+                <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
+                <div class="project-card-footer">
+                  <div class="project-location-category">
+                    <%= link_to discover_category_path(p.category), class: 'mr2' do %>
+                      <i class="glyphicon glyphicon-tag"></i>
+                      <%= p.category.name(locale) %>
+                    <% end %>
+                    <i class="glyphicon glyphicon-globe"></i>
+                    <% p.project_locales.each do |l|%>
+                      <kbd><%= l.language.code %></kbd>
+                    <% end %>
+                  </div>
+                  <div class="project-status-wrap absolute-bottom">
+                    <div class="project-progress mb1">
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-info" style="width:<%= sum.achieved %>%">
+                        </div>
                       </div>
                     </div>
+                    <ul class="project-status list-inline">
+                      <li class="mr2">
+                        <strong class="block h4"><%= sum.achieved %>%</strong>
+                        <span class="grey-dark">funded</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4">$<%= sum.funded_amount_f %></strong>
+                        <span class="grey-dark">pledged</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4"><%= sum.funded_count %></strong>
+                        <span class="grey-dark">backers</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4"><%= p.days_to_go %></strong>
+                        <span class="grey-dark">days to go</span>
+                      </li>
+                    </ul>
                   </div>
-                  <ul class="project-status list-inline">
-                    <li class="mr2">
-                      <strong class="block h4">33%</strong>
-                      <span class="grey-dark">funded</span>
-                    </li>
-                    <li class="mr2">
-                      <strong class="block h4">$55,324</strong>
-                      <span class="grey-dark">pledged</span>
-                    </li>
-                    <li class="mr2">
-                      <strong class="block h4">915</strong>
-                      <span class="grey-dark">backers</span>
-                    </li>
-                    <li class="mr2">
-                      <strong class="block h4">15</strong>
-                      <span class="grey-dark">days to go</span>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
       </div>
     </div>
   </div>

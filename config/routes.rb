@@ -45,7 +45,6 @@ Rails.application.routes.draw do
     get 'oauth/:provider' => 'oauths#oauth', :as => :auth_at_provider
 
     get 'discover/top'
-    get 'discover/index'
     get 'discover/search'
     get 'discover/category/:id' => 'discover#category', as: :discover_category
   end

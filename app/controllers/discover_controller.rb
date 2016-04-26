@@ -2,9 +2,6 @@ class DiscoverController < ApplicationController
   def top
   end
 
-  def index
-  end
-
   def search
     @term = params[:term].blank? ? nil : params[:term]
     if @term

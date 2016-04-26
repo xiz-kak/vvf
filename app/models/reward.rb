@@ -23,7 +23,8 @@
 #
 
 class Reward < ActiveRecord::Base
-  scope :active, -> { where('view_begin_at <= ? AND view_end_at > ?', Time.now, Time.now) }
+  scope :active_bk, -> { where('view_begin_at <= ? AND view_end_at > ?', Time.now, Time.now) }
+  scope :active, -> { joins(:project).merge(Project.active) }
 
   bind_inum :ships_to_div, Divs::RewardShipsTo
 
@@ -31,6 +32,8 @@ class Reward < ActiveRecord::Base
   has_many :reward_contents, dependent: :destroy, inverse_of: :reward
   has_many :reward_shippings, -> { order 'nation_id' }, dependent: :destroy, inverse_of: :reward
   has_many :pledges, primary_key: :code, foreign_key: :reward_code, dependent: :destroy, inverse_of: :reward
+  has_one :reward_pledge_summary, primary_key: :code, foreign_key: :reward_code, dependent: :destroy, inverse_of: :reward
+
   accepts_nested_attributes_for :reward_contents, allow_destroy: true
   accepts_nested_attributes_for :reward_shippings, allow_destroy: true
 
@@ -108,6 +111,22 @@ class Reward < ActiveRecord::Base
     reward_shippings.each { |rs| replica.reward_shippings << rs.replicate }
 
     replica
+  end
+
+  def can_pledge_more?
+    count > summary.funded_count
+  end
+
+  def summary
+    if reward_pledge_summary.present?
+      reward_pledge_summary
+    else
+      build_reward_pledge_summary(funded_count: 0)
+    end
+  end
+
+  def left_count
+    count - summary.funded_count
   end
 
   private

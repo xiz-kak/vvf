@@ -34,8 +34,18 @@ class PledgesController < ApplicationController
   # POST /pledges
   def create
     @pledge = Pledge.new(pledge_params)
+
+    unless @pledge.reward.can_pledge_more?
+      flash[:danger] = 'Sorry. This reward is all gone...'
+
+      return render :new
+    end
+
     @pledge.user = current_user
     @pledge.pledged_at = Time.now
+
+    ProjectPledgeSummary.pledge(@pledge.reward.project.code, @pledge.pledge_payment.total_amount)
+    RewardPledgeSummary.pledge(@pledge.reward.code)
 
     if @pledge.save
       opts = { :maxTotalAmountOfAllPayments => @pledge.pledge_payment.total_amount,
@@ -61,7 +71,6 @@ class PledgesController < ApplicationController
     end
   end
 
-
   # PATCH/PUT /pledges/1
   def update
     if @pledge.update(pledge_params)
@@ -70,6 +79,7 @@ class PledgesController < ApplicationController
       render :edit
     end
   end
+
   # DELETE /pledges/1
   def destroy
     @pledge.destroy
@@ -88,6 +98,10 @@ class PledgesController < ApplicationController
   # GET /pledges/1/cancel
   def cancel
     @project = @pledge.reward.project
+
+    ProjectPledgeSummary.revert(@project.code, @pledge.pledge_payment.total_amount)
+    RewardPledgeSummary.revert(@pledge.reward.code)
+
     flash[:info] = 'Pledge canceled'
     redirect_to @project
   end

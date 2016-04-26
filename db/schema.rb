@@ -176,12 +176,14 @@ ActiveRecord::Schema.define(version: 20160425115707) do
   add_index "project_locales", ["project_id"], name: "index_project_locales_on_project_id", using: :btree
 
   create_table "project_pledge_summaries", force: :cascade do |t|
-    t.string   "project_code"
+    t.string   "project_code",  null: false
     t.integer  "funded_count"
     t.float    "funded_amount"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
+
+  add_index "project_pledge_summaries", ["project_code"], name: "index_project_pledge_summaries_on_project_code", unique: true, using: :btree
 
   create_table "projects", force: :cascade do |t|
     t.integer  "category_id"
@@ -216,11 +218,13 @@ ActiveRecord::Schema.define(version: 20160425115707) do
   add_index "reward_contents", ["reward_id"], name: "index_reward_contents_on_reward_id", using: :btree
 
   create_table "reward_pledge_summaries", force: :cascade do |t|
-    t.integer  "reward_code"
+    t.integer  "reward_code",  null: false
     t.integer  "funded_count"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
+
+  add_index "reward_pledge_summaries", ["reward_code"], name: "index_reward_pledge_summaries_on_reward_code", unique: true, using: :btree
 
   create_table "reward_shippings", force: :cascade do |t|
     t.integer  "reward_id"
