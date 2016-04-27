@@ -61,6 +61,10 @@ class Project < ActiveRecord::Base
     localed_header(locale) ? localed_header(locale).title : ''
   end
 
+  def blurb(locale)
+    localed_header(locale) ? localed_header(locale).blurb : ''
+  end
+
   def image(locale)
     localed_header(locale) ? localed_header(locale).image : ''
   end

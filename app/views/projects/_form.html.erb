@@ -1,61 +1,110 @@
 <%= form_for(@project) do |f| %>
   <% if @project.errors.any? %>
-    <%= render partial: 'layouts/error_container', locals: {errors: @pledge.errors} %>
+    <%= render partial: 'layouts/error_container', locals: {errors: @project.errors} %>
   <% end %>
 
-  <div class="field-group">
-    <h2>- Project Info -</h2>
-    <div class="field">
-      <%= f.label :code %><br>
-      <%= f.text_field :code, disabled: !@project.first_post? %>
+  <section>
+    <div class="full-wide-header py4 px2">
+      <div class="container">
+        <h2 class="mb1">Edit Project</h2>
+      </div>
     </div>
-    <div class="field">
-      <%= f.label :main_language_id %><br>
-      <%= f.select :main_language_id, Language.all.map{|l| [l.name_en, l.id]}, selected: @project.main_language.id %>
-    </div>
-    <div class="field">
-      <%= f.label :category_id %><br>
-      <%= f.select :category_id, Category.all.map{|c| [c.name(locale), c.id]} %>
-    </div>
-    <div class="field">
-      <%= f.label :goal_amount %><br>
-      <%= f.number_field :goal_amount, step: 0.01, value: @project.goal_amount_z %>
-    </div>
-    <div class="field">
-      <%= f.label :duration_days %><br>
-      <%= f.number_field :duration_days %>
-    </div>
-    <div class="field">
-      <%= f.label :applied_begin_date, 'Begin Date' %><br>
-      <%= f.date_select :applied_begin_date %>
-    </div>
+  </section>
 
-    <% # Language.where.not(id: @project.main_language).order(:sort_order).each do |l| %>
-    <% Language.sorted.each do |l| %>
-      <hr>
-      <strong><%= f.label :language_id, l.name_en %></strong>
-      <% pl = @project.get_or_new_locale(l.id) %>
-      <%= f.fields_for :project_locales, pl do |plf| %>
-        <%= render partial: "project_locale_form", locals: {f: plf, pl: pl} %>
-      <% end %>
-      <% ph = @project.get_or_new_header(l.id) %>
-      <%= f.fields_for :project_headers, ph do |phf| %>
-        <%= render partial: "project_header_form", locals: {f: phf} %>
-      <% end %>
-      <% pc = @project.get_or_new_content(l.id)%>
-      <%= f.fields_for :project_contents, pc do |pcf| %>
-        <%= render partial: "project_content_form", locals: {f: pcf } %>
-      <% end %>
-    <% end %>
-
-    <div class="actions">
-      <% if @project.new_record? %>
-        <%= link_to 'Cancel', @project %>
-      <% else %>
-        <%= link_to 'Discard', discard_project_path(@project), data: { confirm: 'Are you sure?' } %>
-      <% end %>
-      <%= f.submit 'Save Draft', name: :save_draft %>
-      <%= f.submit 'Next', name: :edit_rewards %>
+  <section>
+    <div class="container py2">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="form-group">
+            <%= f.label :code %>
+            <%= f.text_field :code, class: 'form-control', disabled: !@project.first_post? %>
+          </div>
+          <div class="form-group">
+            <%= f.label :main_language_id %>
+            <%= f.select :main_language_id, Language.all.map{|l| [l.name_en, l.id]}, { selected: @project.main_language.id }, class: 'form-control' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :category_id %>
+            <%= f.select :category_id, Category.all.map{|c| [c.name(locale), c.id]}, {}, class: 'form-control' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :goal_amount %>
+            <%= f.number_field :goal_amount, step: 0.01, value: @project.goal_amount_z, class: 'form-control' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :duration_days %>
+            <%= f.number_field :duration_days, class: 'form-control' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :applied_begin_date, 'Begin Date' %>
+            <div class="form-inline">
+              <%= f.date_select :applied_begin_date, {}, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <section>
+    <div class="container py2">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+
+          <ul class="nav nav-tabs">
+            <% Language.sorted.each_with_index do |l, i| %>
+              <li class="<%= 'active' if i == 0 %>">
+                <a href="#project_locale_<%= l.id %>" data-toggle="tab">
+                  <%= l.name_en %>
+                </a>
+              </li>
+            <% end %>
+          </ul>
+          <div class="tab-content">
+            <% Language.sorted.each_with_index do |l, i| %>
+              <div class="tab-pane <%= 'active' if i==0 %>" id="project_locale_<%= l.id %>">
+                <% pl = @project.get_or_new_locale(l.id) %>
+                <%= f.fields_for :project_locales, pl do |plf| %>
+                  <%= render partial: "project_locale_form", locals: {f: plf, pl: pl} %>
+                <% end %>
+                <% ph = @project.get_or_new_header(l.id) %>
+                <%= f.fields_for :project_headers, ph do |phf| %>
+                  <%= render partial: "project_header_form", locals: {f: phf} %>
+                <% end %>
+                <% pc = @project.get_or_new_content(l.id)%>
+                <%= f.fields_for :project_contents, pc do |pcf| %>
+                  <%= render partial: "project_content_form", locals: {f: pcf } %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container py2">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.submit 'Save Draft', name: :save_draft, class: 'btn btn-default btn-lg btn-block' %>
+            </div>
+            <div class="col-md-6">
+              <%= f.submit 'Next', name: :edit_rewards, class: 'btn btn-info btn-lg btn-block'%>
+            </div>
+          </div>
+          <h4 class="pt2">
+            <% if @project.new_record? %>
+              <%= link_to 'Cancel', @project %>
+            <% else %>
+              <%= link_to 'Discard', discard_project_path(@project), data: { confirm: 'Are you sure?' } %>
+            <% end %>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </section>
 <% end %>

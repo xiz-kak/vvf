@@ -13,9 +13,10 @@
           <div class="project-tile-content">
             <h5><%= link_to p.title(locale), p %></h5>
             <p>by <%= link_to p.user.name, p.user %></p>
-            <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
+            <p class="grey-dark"><%= p.blurb(locale) %></p>
           </div>
           <div class="project-tile-footer">
+            <% sum = p.summary %>
             <div class="project-tile-category-lang">
               <%= link_to discover_category_path(p.category), class: 'mr2' do %>
                 <i class="glyphicon glyphicon-tag"></i>
@@ -29,22 +30,22 @@
             <div class="project-tile-status-wrap">
               <div class="project-progress-bar">
                 <div class="progress">
-                  <div class="progress-bar progress-bar-info" style="width:60%">
+                  <div class="progress-bar progress-bar-info" style="width:<%= sum.achieved %>%">
                   </div>
                 </div>
               </div>
               <div class="project-status">
                 <ul class="project-status list-inline">
                   <li class="mr1">
-                    <strong class="block h5">33%</strong>
+                    <strong class="block h5"><%= sum.achieved %>%</strong>
                     <span class="grey-dark">funded</span>
                   </li>
                   <li class="mr1">
-                    <strong class="block h5">$55,324</strong>
+                    <strong class="block h5">$<%= sum.funded_amount_f %></strong>
                     <span class="grey-dark">pledged</span>
                   </li>
                   <li class="mr1">
-                    <strong class="block h5">15</strong>
+                    <strong class="block h5"><%= p.days_to_go  %></strong>
                     <span class="grey-dark">days to go</span>
                   </li>
                 </ul>

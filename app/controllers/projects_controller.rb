@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   before_action :require_admin, only: [:destroy, :remand, :approve, :resume, :drop]
   before_action :set_project, only: [:show, :preview, :edit, :edit_rewards, :update, :destroy, :discard, :apply, :approve, :resume, :remand, :suspend, :drop, :complete, :cancel]
-  before_action :require_login, except: [:index, :show]
+  before_action :require_login, except: [:index, :show, :start]
   before_action :require_creator, only: [:discard, :apply, :suspend]
   before_action :require_creator_allowed, only: [:edit, :edit_rewards, :update]
 
@@ -221,6 +221,7 @@ class ProjectsController < ApplicationController
         :image,
         :image_cache,
         :title,
+        :blurb,
         :_destroy
       ],
       project_contents_attributes: [

@@ -178,6 +178,7 @@
   .project-tile-footer {
     padding: 25px 10px 10px 10px;
     font-size: 5px;
+    width: 100%;
     position: absolute;
     bottom: 0px;
   }
@@ -350,4 +351,17 @@
   a {
     color: $basic-link-color;
   }
+}
+
+.full-wide-header {
+  background-color: $vvf-light-sky;
+}
+
+.tab-content {
+  padding: 5px;
+  margin-bottom: 5px;
+  border-right: 2px #ddd solid;
+  border-bottom: 2px #ddd solid;
+  border-left: 1px #ddd solid;
+  border-radius: 0 0 6px 6px;
 }

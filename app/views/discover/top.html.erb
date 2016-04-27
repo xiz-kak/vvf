@@ -98,7 +98,7 @@
                     <div class="project-card-description">
                       <h4><%= link_to p.title(locale), p %></h4>
                       <p><%= link_to p.user.name, p.user %></p>
-                      <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
+                      <p class="grey-dark"><%= p.blurb(locale) %></p>
                       <div class="project-card-footer">
                         <div class="project-location-category">
                           <%= link_to discover_category_path(p.category), class: 'mr2' do %>
@@ -192,7 +192,7 @@
             <div class="project-tile-content">
               <h5><%= link_to p.title(locale), p %></h5>
               <p>by <%= link_to p.user.name, p.user %></p>
-              <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
+              <p class="grey-dark"><%= p.blurb(locale) %></p>
             </div>
             <div class="project-tile-footer">
               <div class="project-tile-category-lang">

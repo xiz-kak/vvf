@@ -102,4 +102,4 @@ calcTotalAmount = ->
 
 $(document).bind 'page:change', ->
   $('.ckeditor').each ->
-    CKEDITOR.replace($(this).attr('id'), {"toolbar":"mini"})
+    CKEDITOR.replace($(this).attr('id'), {"toolbar":"mini", "height":"1000"})

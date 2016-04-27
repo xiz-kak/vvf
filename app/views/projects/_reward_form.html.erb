@@ -1,28 +1,29 @@
-<div class="field-group">
-  <% r = f.object %>
+<div>
+<% r = f.object %>
+  <% child_index = f.options[:child_index] %>
   <% if r.new_record? %>
     <h2>New Reward</h2>
   <% else %>
-    <h2>Reward #<%= f.options[:child_index]+1 %></h2>
+    <h2>Reward #<%= child_index+1 %></h2>
   <% end%>
   <% disabled = !f.object.first_post? %>
-  <div class="field">
-    <%= f.label :price %><br>
-    <%= f.number_field :price, step: 0.01, value: r.price_z, disabled: disabled %>
+  <div class="form-group">
+    <%= f.label :price %>
+    <%= f.number_field :price, step: 0.01, value: r.price_z, class: 'form-control', disabled: disabled %>
   </div>
-  <div class="field">
-    <%= f.label :count %><br>
-    <%= f.number_field :count, disabled: disabled %>
+  <div class="form-group">
+    <%= f.label :count %>
+    <%= f.number_field :count, class: 'form-control', disabled: disabled %>
   </div>
 
-  <div class="field">
-    <%= f.label :ships_to_div, 'Ships to' %><br>
+  <div class="form-group">
+    <%= f.label :ships_to_div, 'Ships to' %>
     <%= f.select :ships_to_div,
       Divs::RewardShipsTo.collection, {selected: f.object.ships_to_div.try(:value)},
-      class: 'reward_ships_to', disabled: disabled,
-      data: { estimated_delivery: "reward_#{f.options[:child_index]}_estimated_delivery",
-              nation_group: "reward_#{f.options[:child_index]}_nation_group",
-              default_shipping_rate: "reward_#{f.options[:child_index]}_default_shipping_rate" } %>
+      class: 'reward_ships_to form-control', disabled: disabled,
+      data: { estimated_delivery: "reward_#{child_index}_estimated_delivery",
+              nation_group: "reward_#{child_index}_nation_group",
+              default_shipping_rate: "reward_#{child_index}_default_shipping_rate" } %>
   </div>
   <% if !f.object.ships_to_div || f.object.ships_to_div == 0 %><!-- if no_shipping -->
     <% style_ed = "style='display: none;'".html_safe %>
@@ -31,31 +32,60 @@
   <% elsif f.object.ships_to_div == 1 %><!-- if only_certain_countries -->
     <% style_dsr = "style='display: none;'".html_safe %>
   <% end %>
-  <div class="field" id="reward_<%= f.options[:child_index] %>_estimated_delivery" <%= style_ed %>>
-    <%= f.label :estimated_delivery %><br>
-    <%= f.date_select :estimated_delivery, disabled: disabled,
-      start_year: Date.today.year, end_year: Date.today.year+2, discard_day: :true %>
+  <div class="field" id="reward_<%= child_index %>_estimated_delivery" <%= style_ed %>>
+    <%= f.label :estimated_delivery %>
+    <div class="form-inline">
+      <%= f.date_select :estimated_delivery, {disabled: disabled,
+          start_year: Date.today.year, end_year: Date.today.year+2, discard_day: :true},
+          class: 'form-control' %>
+    </div>
   </div>
-  <div class="field-group" id="reward_<%= f.options[:child_index] %>_nation_group" <%= style_ng %>>
-    <%= f.fields_for :reward_shippings do |rsf| %>
-      <%= render partial: "reward_shipping_form", locals: {f: rsf, disabled: disabled} %>
-    <% end %>
-    <%= link_to_add_field("Add Nation", f, :reward_shippings, {}) unless disabled %>
+  <div class="nation-group my2" id="reward_<%= child_index %>_nation_group" <%= style_ng %>>
+    <h5>Shipping destinations & rates</h5>
+    <div class="form-horizontal ml1">
+      <div class="form-group">
+        <div class="col-md-5">
+          <label class="control-label">Nation</label>
+        </div>
+        <div class="col-md-5">
+          <label class="control-label">Shipping rate</label>
+        </div>
+        <div class="col-md-2">
+        </div>
+      </div>
+      <%= f.fields_for :reward_shippings do |rsf| %>
+        <%= render partial: "reward_shipping_form", locals: {f: rsf, disabled: disabled} %>
+      <% end %>
+      <%= link_to_add_field("Add Nation", f, :reward_shippings, {}) unless disabled %>
+    </div>
   </div>
-  <div class="field" id="reward_<%= f.options[:child_index] %>_default_shipping_rate" <%= style_dsr %>>
-    <%= f.label :default_shipping_rate, 'Shipping rate of the rest of the world' %><br>
-    <%= f.number_field :default_shipping_rate, step: 0.01, value: r.default_shipping_rate_z, disabled: disabled %>
+  <div class="form-group" id="reward_<%= child_index %>_default_shipping_rate" <%= style_dsr %>>
+    <%= f.label :default_shipping_rate, 'Shipping rate of the rest of the world' %>
+    <%= f.number_field :default_shipping_rate, step: 0.01, value: r.default_shipping_rate_z, class: 'form-control', disabled: disabled %>
   </div>
 
-  <% @project.project_locales_sorted.each do |pl| %>
-    <% l = Language.find(pl.language_id) %>
-    <hr>
-    <strong><%= f.label :language_id, l.name_en %></strong>
-    <% rc = r.get_or_new_content(l.id) %>
-    <%= f.fields_for :reward_contents, rc do |rcf| %>
-      <%= render partial: "reward_content_form", locals: {f: rcf} %>
+
+  <ul class="nav nav-tabs">
+    <% @project.project_locales_sorted.each_with_index do |pl, i| %>
+      <li class="<%= 'active' if i == 0 %>">
+        <a href="#project_locale_<%= child_index %>_<%= pl.id %>" data-toggle="tab">
+          <%= pl.language.name_en %>
+        </a>
+      </li>
     <% end %>
-  <% end %>
+  </ul>
+  <div class="tab-content">
+    <% @project.project_locales_sorted.each_with_index do |pl, i| %>
+      <div class="tab-pane <%= 'active' if i==0 %>" id="project_locale_<%= child_index %>_<%= pl.id %>">
+        <% rc = r.get_or_new_content(pl.language) %>
+        <%= f.fields_for :reward_contents, rc do |rcf| %>
+          <%= render partial: "reward_content_form", locals: {f: rcf} %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
   <%= link_to_remove_field("Remove", f, {}) %>
   <%= f.hidden_field :id %>
+  <hr>
 </div>

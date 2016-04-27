@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
 
   # Callback of require_login
   def not_authenticated
-    redirect_to login_path, alert: "Please login first"
+    redirect_to login_path, flash: {info: "Please login first"}
   end
 
   def set_locale

@@ -13,12 +13,12 @@ module ApplicationHelper
     end
 
     # Generate Add button
-    link_to(name, '#', class: "add_field", data: {id: id, fields: fields.gsub("\n","")})
+    link_to(name, '#', class: "add_field btn btn-info btn-sm", data: {id: id, fields: fields.gsub("\n","")})
   end
 
   # Remove button
   def link_to_remove_field(name, f, options={})
     # Generate Remove button with hidden field
-    f.hidden_field(:_destroy) + link_to(name, '#', class: "remove_field")
+    f.hidden_field(:_destroy) + link_to(name, '#', class: "remove_field btn btn-danger btn-sm")
   end
 end

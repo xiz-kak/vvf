@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425115707) do
+ActiveRecord::Schema.define(version: 20160427035953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 20160425115707) do
     t.string   "image"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "blurb"
   end
 
   add_index "project_headers", ["language_id"], name: "index_project_headers_on_language_id", using: :btree

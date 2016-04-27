@@ -1,17 +1,15 @@
 <% disabled = disabled || false %>
-<div class="field-group">
-  <div class="field">
-    <%= f.label :nation_id %><br>
+
+<div class="form-group">
+  <div class="col-md-5">
     <% unless disabled %>
-      <%= f.select :nation_id,
-        Nation.shipping_destinations.map{|n| [n.name, n.id]} %>
+      <%= f.select :nation_id, Nation.shipping_destinations.map{|n| [n.name, n.id]}, {}, class: 'form-control' %>
     <% else %>
-      <%= f.text_field :nation_id, value: Nation.find(f.object.nation_id).name, disabled: disabled %>
+      <%= f.text_field :nation_id, value: Nation.find(f.object.nation_id).name, disabled: disabled, class: 'form-control' %>
     <% end %>
   </div>
-  <div class="field">
-    <%= f.label :shipping_rate %><br>
-    <%= f.number_field :shipping_rate, step: 0.01, value: f.object.shipping_rate_z, disabled: disabled %>
+  <div class="col-md-5">
+    <%= f.number_field :shipping_rate, step: 0.01, value: f.object.shipping_rate_z, disabled: disabled, class: 'form-control' %>
   </div>
   <%= link_to_remove_field("Remove", f, {}) unless disabled %>
   <%= f.hidden_field :id %>
