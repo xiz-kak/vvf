@@ -365,3 +365,19 @@
   border-left: 1px #ddd solid;
   border-radius: 0 0 6px 6px;
 }
+
+
+.social {
+  .button {
+    float: left;
+    overflow: hidden;
+    margin-right: 5px;
+    margin-bottom: 4px;
+    &.facebook {
+        margin-right: 17px;
+    }
+    &.twitter {
+        width: 90px;
+    }
+  }
+}

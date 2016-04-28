@@ -23,12 +23,29 @@
               <kbd><%= l.language.code %></kbd>
             <% end %>
           </div>
-          <p class="h3 mb3">This is a description of this project this explains the background of the project and some stories.</p>
+          <p class="h3 mb3"><%= p.blurb(locale) %></p>
           <div class="mb3">
-            <ul class="list-inline">
-              <li><a href="#" class="btn btn-default btn-sm">f Share</a></li>
-              <li><a href="#" class="btn btn-default btn-sm">t Tweet</a></li>
-            </ul>
+            <div class="social clearfix">
+              <!-- Facebook -->
+              <div class="button facebook">
+                <div id="fb-root"></div>
+                <div class="fb-share-button"
+                  data-href="<%= request.url %>"
+                  data-layout="button_count"
+                  data-send="false"
+                  data-width="120"
+                  data-show-faces="false">
+                </div>
+              </div>
+              <!-- Twitter -->
+              <div class="button twitter">
+                <a href="https://twitter.com/share" class="twitter-share-button"
+                  data-lang="en"
+                  data-url="<%= request.url %>"
+                  data-text="<%= p.title(locale) %>"
+                >Tweet</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
