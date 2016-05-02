@@ -15,6 +15,7 @@
     <div class="container py2">
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
+          <% @project.rewards.build if @project.rewards.size == 0 %>
           <%= f.fields_for :rewards do |rf| %>
             <%= render partial: "reward_form", locals: {f: rf} %>
           <% end %>

@@ -7,28 +7,12 @@
   <%= f.text_area :blurb, class: 'form-control' %>
 </div>
 <div class="form-group">
-  <% field_id = "ph-image-field-#{f.object.language_id}" %>
-  <% fake_field_id = "ph-image-field-fake-#{f.object.language_id}" %>
   <%= f.label :image %><br>
   <% if f.object.image.present? %>
     <%= image_tag f.object.image.url, height: 300, class: 'mb1' %>
   <% end %>
-  <%= f.file_field :image, class: 'hide', id: field_id, data: { target_id: fake_field_id } %>
-  <div class="input-group">
-    <input type="text" id="<%= fake_field_id %>" class="form-control" placeholder="select file..." readonly />
-    <span class="input-group-btn">
-      <button type="button" class="btn btn-default" onclick="$('#<%= field_id %>').click();">
-        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-      </button>
-    </span>
-  </div>
+  <%= f.file_field :image %>
   <%= f.hidden_field :image_cache %>
 </div>
 <%= f.hidden_field :language_id %>
 <%= f.hidden_field :id %>
-
-<script>
-  $('input[id *= image-field]').change(function() {
-    $('#' + $(this).data('target-id')).val($(this).val().replace("C:\\fakepath\\", ""));
-  });
-</script>

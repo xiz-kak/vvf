@@ -90,7 +90,7 @@ class Reward < ActiveRecord::Base
 
   def get_or_new_content(language_id)
     rc = reward_contents.find { |r| r.language_id == language_id }
-    rc = reward_contents.langed(language_id)
+    rc = reward_contents.langed(language_id) if rc.blank?
     rc = reward_contents.build(language_id: language_id) if rc.blank?
     rc
   end
