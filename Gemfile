@@ -18,6 +18,7 @@ gem 'dotenv-rails'
 gem 'ckeditor'
 
 gem 'carrierwave'
+gem 'fog'
 gem 'mini_magick'
 
 gem 'js_cookie_rails'
