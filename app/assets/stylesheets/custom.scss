@@ -17,14 +17,15 @@
 }
 
 .error-container {
-  position: fixed;
-  top: 30px;
-  left: 10%;
-  right: 10%;
-  z-index: 100;
-  .alert {
-    opacity: 0.9;
-  }
+   position: fixed;
+   top: 30px;
+   left: 10%;
+   right: 10%;
+   z-index: 100;
+   .alert {
+     // margin-bottom: 0px;
+     opacity: 0.9;
+   }
 }
 
 #go-to-top {
@@ -379,5 +380,21 @@
     &.twitter {
         width: 90px;
     }
+  }
+}
+
+.floating-panel-right {
+  position: fixed;
+  top: 150px;
+  right: 0px;
+  width: 120px;
+  background-color: white;
+  border: 1px solid $gray-light;
+  border-radius: 4px 0px 0px 4px;
+  text-align: center;
+  padding: 50px 0px;
+  z-index: 99;
+  a {
+    width: 100px;
   }
 }

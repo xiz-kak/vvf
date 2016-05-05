@@ -9,7 +9,7 @@
           </small>
         <% end %>
       </h2>
-      <h4>backed 1 projects</h4>
+      <h4>backed <%= Pledge.pledged_by(@user.id).size %> projects</h4>
       <h5 class="mt2"><kbd>f</kbd><a href="https://www.facebook.com"> shizukakakimoto.9</a></h5>
       <h5 class="mt1"><kbd>t</kbd><a href="https://www.twitter.com"> xiz-tky</a></h5>
     </div>

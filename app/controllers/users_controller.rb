@@ -30,7 +30,7 @@ class UsersController < ApplicationController
         redirect_to :users, notice: 'User was successfully created.'
       else
         auto_login(@user)
-        redirect_to root_path, notice: 'User was successfully created.'
+        redirect_to root_path, notice: 'Welcome!! You are successfully signed up.'
       end
     else
       render :new

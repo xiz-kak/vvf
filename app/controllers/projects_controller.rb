@@ -18,7 +18,6 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/preview
   def preview
-    @is_preview = true
     render :show
   end
 

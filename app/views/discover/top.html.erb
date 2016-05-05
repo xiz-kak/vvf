@@ -69,7 +69,7 @@
 <div class="favorites-area border-bottom">
   <div class="container favorites-content">
     <div class="row">
-      <% p = Project.find(12) if Project.exists?(id: 12) %>
+      <% p = Project.active.first if Project.active.count > 0 %>
       <% if p.present? %>
       <div class="col col-md-10">
         <div class="row">

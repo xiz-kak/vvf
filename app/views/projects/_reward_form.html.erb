@@ -8,7 +8,7 @@
   <% end%>
   <% disabled = !f.object.first_post? %>
   <div class="form-group">
-    <%= f.label :price %>
+    <%= f.label :price %><small>&nbsp;(USD)</small>
     <%= f.number_field :price, step: 0.01, value: r.price_z, class: 'form-control', disabled: disabled %>
   </div>
   <div class="form-group">
@@ -60,7 +60,7 @@
     </div>
   </div>
   <div class="form-group" id="reward_<%= child_index %>_default_shipping_rate" <%= style_dsr %>>
-    <%= f.label :default_shipping_rate, 'Shipping rate of the rest of the world' %>
+    <%= f.label :default_shipping_rate, 'Shipping rate of the rest of the world (USD)' %>
     <%= f.number_field :default_shipping_rate, step: 0.01, value: r.default_shipping_rate_z, class: 'form-control', disabled: disabled %>
   </div>
 
