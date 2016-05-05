@@ -9,6 +9,6 @@ database:
     - bundle exec rake db:create db:migrate db:seed --trace
 deployment:
   staging:
-    branch: master
+    branch: develop
     heroku:
-      appname: vvf-stg
+      appname: vvf-dev
