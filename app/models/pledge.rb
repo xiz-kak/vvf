@@ -34,6 +34,8 @@ class Pledge < ActiveRecord::Base
     where('pledge_payments.status in (?, ?)', Divs::PledgePaymentStatus::PREAPPROVED.to_i, Divs::PledgePaymentStatus::PAY_ERROR.to_i)
   }
 
+  scope :pledged_by, -> (user_id){ where(user_id: user_id) }
+
   validate :pledgeable
 
   def preapproval_key(key)

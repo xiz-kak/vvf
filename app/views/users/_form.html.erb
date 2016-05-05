@@ -3,36 +3,39 @@
     <%= render partial: 'layouts/error_container', locals: {errors: @user.errors} %>
   <% end %>
 
-  <div class="container bg-white">
-    <div class="form-horizontal">
-      <div class="form-group">
-        <%= f.label :name, class: 'control-label col-md-2' %>
-        <div class="col-md-4">
-          <%= f.text_field :name, class: 'form-control' %>
-        </div>
+  <div class="form-horizontal">
+    <div class="form-group">
+      <%= f.label :name, class: 'control-label col-md-2' %>
+      <div class="col-md-4">
+        <%= f.text_field :name, class: 'form-control' %>
       </div>
-      <div class="form-group">
-        <%= f.label :email, class: 'control-label col-md-2' %>
-        <div class="col-md-4">
-          <%= f.text_field :email, value: @user.email, class: 'form-control' %>
-        </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :email, class: 'control-label col-md-2' %>
+      <div class="col-md-4">
+        <%= f.text_field :email, value: @user.email, class: 'form-control' %>
       </div>
-      <div class="form-group">
-        <%= f.label :password, class: 'control-label col-md-2' %>
-        <div class="col-md-4">
-          <%= f.password_field :password, class: 'form-control' %>
-        </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :password, class: 'control-label col-md-2' %>
+      <div class="col-md-4">
+        <%= f.password_field :password, class: 'form-control' %>
       </div>
-      <div class="form-group">
-        <%= f.label :password_confirmation, class: 'control-label col-md-2' %>
-        <div class="col-md-4">
-          <%= f.password_field :password_confirmation, class: 'form-control' %>
-        </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :password_confirmation, class: 'control-label col-md-2' %>
+      <div class="col-md-4">
+        <%= f.password_field :password_confirmation, class: 'form-control' %>
       </div>
-      <div class="col-md-offset-2">
+    </div>
+    <div class="col-md-offset-2">
+      <% if logged_in? %>
         <%= f.submit 'Save settings', class: 'btn btn-info' %>
-        <%= link_to 'View profile', @user, class: 'ml2' %>
-      </div>
+        <span><%= link_to 'View profile', @user, class: 'ml2' %></span>
+      <% else %>
+        <%= f.submit 'Sign up', class: 'btn btn-info' %>
+        <span>&nbsp;or&nbsp;&nbsp;<%= link_to 'Login', login_path %></span>
+      <% end %>
     </div>
   </div>
 

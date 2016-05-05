@@ -1,1 +1,38 @@
-<%= render 'form' %>
+<section>
+  <div class="full-wide-header py4 px2">
+    <div class="container">
+      <h2 class="mb1 col-md-offset-2">Sign up</h2>
+    </div>
+  </div>
+</section>
+
+<div class="container bg-white">
+  <div class="row my2">
+    <div class="col-md-6 col-md-offset-2">
+      <%= link_to 'Sign up with Facebook', auth_at_provider_path(provider: :facebook),
+        class: 'btn btn-primary btn-block' %>
+    </div>
+  </div>
+  <div class="row my2">
+    <div class="col-md-6 col-md-offset-2">
+      <%= link_to 'Sign up with Twitter', auth_at_provider_path(provider: :twitter),
+        class: 'btn btn-info btn-block' %>
+    </div>
+  </div>
+  <div class="row my2">
+    <div class="col-md-2 col-md-offset-2">
+      <hr>
+    </div>
+    <div class="col-md-2 center pt1">
+      <span>or</span>
+    </div>
+    <div class="col-md-2">
+      <hr>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+
+  <%= render 'form' %>
+</div>
+

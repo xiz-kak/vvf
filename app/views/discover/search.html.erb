@@ -1,7 +1,7 @@
 <section class="pt2">
   <div class="container px2">
     <h3 class="mt1 mb3">
-      <%= @projects.size %> <%= @category.name(locale) if @category.present? %> projects <%= "of \"#{@term}\"".html_safe if @term.present? %>
+      <%= @projects.size %>&nbsp;<%= @category.name(locale) if @category.present? %>&nbsp;<%= 'project'.pluralize(@projects.size) %>&nbsp;<%= "of \"#{@term}\"".html_safe if @term.present? %>
     </h3>
     <% @projects.each_with_index do |p, i| %>
       <%= '<div class="row">'.html_safe if i % 4 == 0 %>

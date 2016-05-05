@@ -28,7 +28,7 @@
             <%= f.select :category_id, Category.all.map{|c| [c.name(locale), c.id]}, {}, class: 'form-control' %>
           </div>
           <div class="form-group">
-            <%= f.label :goal_amount %>
+            <%= f.label :goal_amount %><small>&nbsp;(USD)</small>
             <%= f.number_field :goal_amount, step: 0.01, value: @project.goal_amount_z, class: 'form-control' %>
           </div>
           <div class="form-group">
