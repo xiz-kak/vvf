@@ -45,9 +45,13 @@
       </div>
       <div class="copyright-mark mt4">
         <span >
-          <i class="glyphicon glyphicon-copyright-mark"></i>2016
+          <i class="glyphicon glyphicon-copyright-mark"></i><%= Date.today.year %>
         </span>
       </div>
     </div>
   </div>
+      <div>
+        <span>&nbsp;&nbsp;<%= "Version: #{BUILD_INFO['version']}" %></span>
+        <span>&nbsp;&nbsp;<%= "Build: #{BUILD_INFO['build_date']}" %></span>
+      </div>
 </footer>
