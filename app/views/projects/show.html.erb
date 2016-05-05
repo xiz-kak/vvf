@@ -182,6 +182,8 @@
         <h3 class="my1">This is<br>your project</h3>
         <%= link_to 'Drop', drop_project_path(@project), class: 'btn btn-danger btn-lg my1', data: { confirm: 'Are you sure?' } %>
         <%= link_to 'Resume', resume_project_path(@project), class: 'btn btn-info btn-lg my1', data: { confirm: 'Are you sure?' } %>
+      <% else %>
+        <h3 class="my1">This project is in <%= @project.status_div.t %> status</h3>
       <% end %>
     </div>
   <% end %>
