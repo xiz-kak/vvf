@@ -27,6 +27,7 @@ Rails.application.routes.draw do
         get 'start' => 'projects#start'
       end
     end
+    get 'project/:project_code' => 'projects#show_by_code', as: :project_by_code
     get 'rewards/:reward_code/new_pledge' => 'pledges#new', as: :new_pledge
     post 'shipping_rate' => 'pledges#shipping_rate'
     resources :pledges, :except => :new do

@@ -8,10 +8,10 @@
       <div class="col col-md-3 mb4">
         <div class="project-tile project-tile-tall-big">
           <div class="project-image">
-            <%= link_to image_tag(p.image(locale)), p %>
+            <%= link_to image_tag(p.image(locale)), project_by_code_path(p.code) %>
           </div>
           <div class="project-tile-content">
-            <h5><%= link_to p.title(locale), p %></h5>
+            <h5><%= link_to p.title(locale), project_by_code_path(p.code) %></h5>
             <p>by <%= link_to p.user.name, p.user %></p>
             <p class="grey-dark"><%= p.blurb(locale) %></p>
           </div>

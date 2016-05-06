@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   before_action :require_admin, only: [:destroy, :remand, :approve, :resume, :drop]
   before_action :set_project, only: [:show, :preview, :edit, :edit_rewards, :update, :destroy, :discard, :apply, :approve, :resume, :remand, :suspend, :drop, :complete, :cancel]
-  before_action :require_login, except: [:index, :show, :start]
+  before_action :require_login, except: [:index, :show, :show_by_code, :start]
   before_action :require_creator, only: [:discard, :apply, :suspend]
   before_action :require_creator_allowed, only: [:edit, :edit_rewards, :update]
 
@@ -14,6 +14,14 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1
   def show
+  end
+
+  # GET /project/:project_code
+  # To set project_code to address bar.
+  # Be sure to exist valid active project.
+  def show_by_code
+    @project = Project.active.find_by(code: params[:project_code])
+    render :show
   end
 
   # GET /projects/1/preview
