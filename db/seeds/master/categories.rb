@@ -10,7 +10,7 @@ ctgr.category_locales.create(language_id: language_id_ja, name: 'アート')
 ctgr=Category.create(sort_order: 2)
 ctgr.category_locales.create(language_id: language_id_en, name: 'Crafts')
 ctgr.category_locales.create(language_id: language_id_vi, name: '')
-ctgr.category_locales.create(language_id: language_id_ja, name: 'アート')
+ctgr.category_locales.create(language_id: language_id_ja, name: '制作物')
 
 ctgr=Category.create(sort_order: 3)
 ctgr.category_locales.create(language_id: language_id_en, name: 'Fashion')
