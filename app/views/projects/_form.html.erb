@@ -16,10 +16,6 @@
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
           <div class="form-group">
-            <%= f.label :code %>
-            <%= f.text_field :code, class: 'form-control', disabled: !@project.first_post? %>
-          </div>
-          <div class="form-group">
             <%= f.label :main_language_id %>
             <%= f.select :main_language_id, Language.all.map{|l| [l.name_en, l.id]}, { selected: @project.main_language.id }, class: 'form-control' %>
           </div>

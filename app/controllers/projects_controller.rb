@@ -57,7 +57,7 @@ class ProjectsController < ApplicationController
     @project.user = current_user
     @project.status_div = Divs::ProjectStatus::DRAFT
 
-    return render :new unless @project.code_exists?
+    @project.code = Time.now.strftime('%Y%m%d-%H%M%S') + '-by-' + current_user.id.to_s
 
     if @project.save(validate: params[:save_draft].blank?)
       if params[:save_draft]
@@ -210,7 +210,7 @@ class ProjectsController < ApplicationController
     end
     params.require(:project).permit(
       :id,
-      :code,
+      # :code,
       :category_id,
       :goal_amount,
       :duration_days,

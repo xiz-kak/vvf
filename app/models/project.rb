@@ -49,7 +49,7 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :project_contents, allow_destroy: true
   accepts_nested_attributes_for :rewards, allow_destroy: true
 
-  validates :code, presence: true, length: { maximum: 30 }, format: { with: /\A[a-z0-9_]+\z/i }
+  validates :code, presence: true, length: { maximum: 50 }, format: { with: /\A[a-z0-9\-]+\z/i }
   validates :category, presence: true
   validates :goal_amount, presence: true
   validates :duration_days, presence: true
@@ -203,15 +203,6 @@ class Project < ActiveRecord::Base
   def rewards_exist
     if rewards.size == 0
       errors[:base] << 'At lease 1 reward is required.'
-      return
-    end
-    true
-  end
-
-  # validate if code exists
-  def code_exists?
-    if code.blank?
-      errors.add(:code, 'cannot be blank.')
       return
     end
     true
