@@ -7,7 +7,7 @@
 #  pledged_at  :datetime
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  reward_code :string
+#  reward_code :integer
 #
 # Indexes
 #

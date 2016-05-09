@@ -16,6 +16,7 @@
 #  end_at             :datetime
 #  view_begin_at      :datetime
 #  view_end_at        :datetime
+#  paypal_account     :string
 #
 # Indexes
 #
@@ -53,6 +54,8 @@ class Project < ActiveRecord::Base
   validates :category, presence: true
   validates :goal_amount, presence: true
   validates :duration_days, presence: true
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :paypal_account, presence: true, format: { with: VALID_EMAIL_REGEX }
   validate :main_language_is_used
 
   END_OF_THE_WORLD = Time.parse('2999/12/31')
