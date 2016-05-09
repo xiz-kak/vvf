@@ -69,97 +69,113 @@
 <div class="favorites-area border-bottom">
   <div class="container favorites-content">
     <div class="row">
-      <% p = Project.active.first if Project.active.count > 0 %>
-      <% if p.present? %>
       <div class="col col-md-10">
         <div class="row">
           <h3 class="sr-only">Our favorite projects</h3>
-          <div class="projects-slider">
-            <div class="row">
-              <div class="col col-md-12">
-                <div class="title">
-                  <div class="row">
-                    <div class="col">
-                      <h3>
-                        <%= link_to 'Our Favorites:', discover_category_path(1) %>
-                        <%= link_to 'Art', discover_category_path(1) %>
-                      </h3>
-                    </div>
-                    <div class="col col-right">
-                      <%= link_to 'See all this category', discover_category_path(1), class: 'see-all-category' %>
-                    </div>
-                  </div>
-                </div>
-                <div class="project-card-wrap">
-                  <div class="project-card">
-                    <div class="project-image">
-                      <%= link_to image_tag(p.image(locale)), project_by_code_path(p.code) %>
-                    </div>
-                    <div class="project-card-description">
-                      <h4><%= link_to p.title(locale), project_by_code_path(p.code) %></h4>
-                      <p><%= link_to p.user.name, p.user %></p>
-                      <p class="grey-dark"><%= p.blurb(locale) %></p>
-                      <div class="project-card-footer">
-                        <div class="project-location-category">
-                          <%= link_to discover_category_path(p.category), class: 'mr2' do %>
-                            <i class="glyphicon glyphicon-tag"></i>
-                            <%= p.category.name(locale) %>
-                          <% end %>
-                          <i class="glyphicon glyphicon-globe"></i>
-                          <% p.project_locales.each do |l|%>
-                            <kbd><%= l.language.code %></kbd>
-                          <% end %>
+          <div class="tab-content">
+            <% Project.favorites.each_with_index do |(c, p), i| %>
+            <div id="cat-<%= c.to_s %>" class="tab-pane fade <%= 'in active' if i == 0 %>">
+              <div class="projects-slider">
+                <div class="row">
+                  <div class="col col-md-12">
+                    <div class="title">
+                      <div class="row">
+                        <div class="col">
+                          <h3>
+                            <%= link_to "Our Favorites: #{Category.find(c).name(locale)}", discover_category_path(c) %>
+                          </h3>
                         </div>
-                        <div class="project-status-wrap absolute-bottom">
-                          <% sum = p.summary %>
-                          <div class="project-progress mb1">
-                            <div class="progress">
-                              <div class="progress-bar progress-bar-info" style="width:<%= sum.achieved %>%">
+                        <div class="col col-right">
+                          <%= link_to 'See all this category', discover_category_path(c), class: 'see-all-category' %>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="project-card-wrap">
+                      <div class="project-card">
+                        <% if p.present? %>
+                        <div class="project-image">
+                          <%= link_to image_tag(p.image(locale)), project_by_code_path(p.code) %>
+                        </div>
+                        <div class="project-card-description">
+                          <h4><%= link_to p.title(locale), project_by_code_path(p.code) %></h4>
+                          <p><%= link_to p.user.name, p.user %></p>
+                          <p class="grey-dark"><%= p.blurb(locale) %></p>
+                          <div class="project-card-footer">
+                            <div class="project-location-category">
+                              <%= link_to discover_category_path(p.category), class: 'mr2' do %>
+                                <i class="glyphicon glyphicon-tag"></i>
+                                <%= p.category.name(locale) %>
+                              <% end %>
+                              <i class="glyphicon glyphicon-globe"></i>
+                              <% p.project_locales.each do |l|%>
+                                <kbd><%= l.language.code %></kbd>
+                              <% end %>
+                            </div>
+                            <div class="project-status-wrap absolute-bottom">
+                              <% sum = p.summary %>
+                              <div class="project-progress mb1">
+                                <div class="progress">
+                                  <div class="progress-bar progress-bar-info" style="width:<%= sum.achieved %>%">
+                                  </div>
+                                </div>
                               </div>
+                              <ul class="project-status list-inline">
+                                <li class="mr2">
+                                  <strong class="block h4">
+                                    <%= sum.achieved %>%
+                                  </strong>
+                                  <span class="grey-dark">funded</span>
+                                </li>
+                                <li class="mr2">
+                                  <strong class="block h4">
+                                    $<%= sum.funded_amount_f %>
+                                  </strong>
+                                  <span class="grey-dark">pledged</span>
+                                </li>
+                                <li class="mr2">
+                                  <strong class="block h4">
+                                    <%= sum.funded_count %>
+                                  </strong>
+                                  <span class="grey-dark">backers</span>
+                                </li>
+                                <li class="mr2">
+                                  <strong class="block h4">
+                                    <%= p.days_to_go %>
+                                  </strong>
+                                  <span class="grey-dark">days to go</span>
+                                </li>
+                              </ul>
                             </div>
                           </div>
-                          <ul class="project-status list-inline">
-                            <li class="mr2">
-                              <strong class="block h4">
-                                <%= sum.achieved %>%
-                              </strong>
-                              <span class="grey-dark">funded</span>
-                            </li>
-                            <li class="mr2">
-                              <strong class="block h4">
-                                $<%= sum.funded_amount_f %>
-                              </strong>
-                              <span class="grey-dark">pledged</span>
-                            </li>
-                            <li class="mr2">
-                              <strong class="block h4">
-                                <%= sum.funded_count %>
-                              </strong>
-                              <span class="grey-dark">backers</span>
-                            </li>
-                            <li class="mr2">
-                              <strong class="block h4">
-                                <%= p.days_to_go %>
-                              </strong>
-                              <span class="grey-dark">days to go</span>
-                            </li>
-                          </ul>
                         </div>
+                        <% else %>
+                        <div>
+                          <h4>
+                            No project exists yet..&nbsp;&nbsp;Please start your project!!
+                          </h4><br>
+                        </div>
+                        <div>
+                          <%= link_to 'Start a project', start_projects_path,
+                            class: 'btn btn-default btn-lg' %>
+                        </div>
+                        <% end %>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <% end %>
           </div>
         </div>
       </div>
-      <% end %>
       <div class="col-md-2">
         <div class="category-nav ml2 mt2 mr2 mb2">
           <ul class="list-no-style pl1">
-            <% Category.sorted.each do |c| %>
-              <li><%= link_to c.name(locale), discover_category_path(c) %></li>
+            <% Category.sorted.each_with_index do |c, i| %>
+              <li class="<%= 'active' if i == 0 %>">
+                <%= link_to c.name(locale), "#cat-#{c.id.to_s}", data: { toggle: 'tab' } %>
+              </li>
             <% end %>
           </ul>
         </div>

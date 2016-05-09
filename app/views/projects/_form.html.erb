@@ -56,7 +56,7 @@
               </li>
             <% end %>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content lang-tab-content">
             <% Language.sorted.each_with_index do |l, i| %>
               <div class="tab-pane <%= 'active' if i==0 %>" id="project_locale_<%= l.id %>">
                 <% pl = @project.get_or_new_locale(l.id) %>

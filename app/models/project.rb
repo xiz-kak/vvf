@@ -243,6 +243,14 @@ class Project < ActiveRecord::Base
     active.joins(:rewards).where('rewards.code': rewards_codes)
   end
 
+  def self.favorites
+    favorites = Hash.new
+    Category.sorted.each do |c|
+      favorites[c.id] = Project.active.find_by(category_id: c)
+    end
+    favorites
+  end
+
   private
 
   def main_language_is_used

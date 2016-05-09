@@ -153,6 +153,12 @@
   border-left-style: solid;
   border-left-color: #666666;
   height: 320px;
+  li.active {
+    a {
+      color: $vvf-orange;
+      text-decoration: underline;
+    }
+  }
 }
 
 .project-tile {
@@ -358,7 +364,7 @@
   background-color: $vvf-light-sky;
 }
 
-.tab-content {
+.lang-tab-content {
   padding: 5px;
   margin-bottom: 5px;
   border-right: 2px #ddd solid;
