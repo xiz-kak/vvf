@@ -44,10 +44,10 @@ class PledgesController < ApplicationController
     @pledge.user = current_user
     @pledge.pledged_at = Time.now
 
-    ProjectPledgeSummary.pledge(@pledge.reward.project.code, @pledge.pledge_payment.total_amount)
-    RewardPledgeSummary.pledge(@pledge.reward.code)
-
     if @pledge.save
+      ProjectPledgeSummary.pledge(@pledge.reward.project.code, @pledge.pledge_payment.total_amount)
+      RewardPledgeSummary.pledge(@pledge.reward.code)
+
       opts = { :maxTotalAmountOfAllPayments => @pledge.pledge_payment.total_amount,
                :endingDate => Time.now.months_since(1),
                :email => nil, # @pledge.user.email,

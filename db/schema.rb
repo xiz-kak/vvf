@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427035953) do
+ActiveRecord::Schema.define(version: 20160509055126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(version: 20160427035953) do
     t.datetime "pledged_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.string   "reward_code"
+    t.integer  "reward_code"
   end
 
   add_index "pledges", ["reward_code"], name: "index_pledges_on_reward_code", using: :btree
@@ -200,6 +200,7 @@ ActiveRecord::Schema.define(version: 20160427035953) do
     t.datetime "end_at"
     t.datetime "view_begin_at"
     t.datetime "view_end_at"
+    t.string   "paypal_account"
   end
 
   add_index "projects", ["category_id"], name: "index_projects_on_category_id", using: :btree

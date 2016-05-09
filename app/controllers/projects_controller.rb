@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :require_admin, only: [:destroy, :remand, :approve, :resume, :drop]
+  before_action :require_admin, only: [:destroy, :remand, :approve, :resume, :drop, :complete, :cancel]
   before_action :set_project, only: [:show, :preview, :edit, :edit_rewards, :update, :destroy, :discard, :apply, :approve, :resume, :remand, :suspend, :drop, :complete, :cancel]
   before_action :require_login, except: [:index, :show, :show_by_code, :start]
   before_action :require_creator, only: [:discard, :apply, :suspend]
@@ -150,9 +150,9 @@ class ProjectsController < ApplicationController
   # POST /project/1/complete
   def complete
     @project.pledges.each do |pledge|
-      opts = { :email => 'shizuka.kakimoto-receiver@jepco.org', # 調達者のPayPalアカウントが入る
+      opts = { :email => pledge.reward.project.paypal_account,
                :preapprovalKey => pledge.pledge_payment.preapproval_key,
-               :amount => pledge.reward.price }
+               :amount => pledge.pledge_payment.total_amount }
 
       pay = adaptive_payments_api.build_pay(approval_options(opts))
       pay_response = adaptive_payments_api.pay(pay)
@@ -215,6 +215,7 @@ class ProjectsController < ApplicationController
       :goal_amount,
       :duration_days,
       :applied_begin_date,
+      :paypal_account,
       project_locales_attributes: [
         :id,
         :language_id,
