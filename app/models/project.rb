@@ -17,6 +17,7 @@
 #  view_begin_at      :datetime
 #  view_end_at        :datetime
 #  paypal_account     :string
+#  commission_rate    :integer
 #
 # Indexes
 #

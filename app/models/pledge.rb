@@ -49,12 +49,16 @@ class Pledge < ActiveRecord::Base
     pledge_payment.payment_status = Divs::PledgePaymentStatus::PREAPPROVAL_ERROR
   end
 
-  def approve!
-    pledge_payment.payment_status = Divs::PledgePaymentStatus::APPROVED
+  def cancel!
+    pledge_payment.payment_status = Divs::PledgePaymentStatus::CANCELED
   end
 
-  def cancel!
-    pledge_payment.payment_status = Divs::PledgePaymentStatus::APPROVED
+  def cancel_error!
+    pledge_payment.payment_status = Divs::PledgePaymentStatus::CANCEL_ERROR
+  end
+
+  def pay!
+    pledge_payment.payment_status = Divs::PledgePaymentStatus::PAID
   end
 
   def pay_error!

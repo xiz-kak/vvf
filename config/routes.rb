@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :nations
     resources :divisions
     resources :payment_vendors
+    resources :app_settings, :except => [:new, :create, :destroy]
     resources :projects do
       member do
         get 'preview' => 'projects#preview'

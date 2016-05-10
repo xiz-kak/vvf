@@ -56,8 +56,8 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     @project.user = current_user
     @project.status_div = Divs::ProjectStatus::DRAFT
-
     @project.code = Time.now.strftime('%Y%m%d-%H%M%S') + '-by-' + current_user.id.to_s
+    @project.commission_rate = AppSetting.default_commission_rate
 
     if @project.save(validate: params[:save_draft].blank?)
       if params[:save_draft]
@@ -152,13 +152,15 @@ class ProjectsController < ApplicationController
     @project.pledges.each do |pledge|
       opts = { :email => pledge.reward.project.paypal_account,
                :preapprovalKey => pledge.pledge_payment.preapproval_key,
-               :amount => pledge.pledge_payment.total_amount }
+               :amount => pledge.pledge_payment.total_amount,
+               :commissionRate => @project.commission_rate
+      }
 
       pay = adaptive_payments_api.build_pay(approval_options(opts))
       pay_response = adaptive_payments_api.pay(pay)
 
       if pay_response.success? && pay_response.paymentExecStatus == EXEC_STATUS_COMPLETED
-        pledge.approve!
+        pledge.pay!
         approve_log(pay_response, approval_options(opts))
       else
         pledge.pay_error!
@@ -177,7 +179,7 @@ class ProjectsController < ApplicationController
       if cancel_preapproval_response.success?
         pledge.cancel!
       else
-        pledge.pay_error!
+        pledge.cancel_error!
         payment_error_log(cancel_preapproval_response)
       end
     end
