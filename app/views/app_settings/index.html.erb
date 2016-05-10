@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing App Settings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+      <th>Description</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @app_settings.each do |app_setting| %>
+      <tr>
+        <td><%= app_setting.key %></td>
+        <td><%= app_setting.value %></td>
+        <td><%= app_setting.description %></td>
+        <td><%= link_to 'Show', app_setting %></td>
+        <td><%= link_to 'Edit', edit_app_setting_path(app_setting) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

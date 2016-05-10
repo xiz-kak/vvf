@@ -1,0 +1,29 @@
+<%= form_for(@app_setting) do |f| %>
+  <% if @app_setting.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@app_setting.errors.count, "error") %> prohibited this app_setting from being saved:</h2>
+
+      <ul>
+      <% @app_setting.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :key %><br>
+    <%= f.text_field :key, disabled: true %>
+  </div>
+  <div class="field">
+    <%= f.label :value %><br>
+    <%= f.text_field :value %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_field :description, disabled: true %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -46,7 +46,7 @@ module AdaptivePayments
       # :feesPayer => 'EACHRECEIVER',
       # :senderEmail => opts[:email], 指定したemailのみしかpaypalにログインできない
       :requestEnvelope => {
-      :errorLanguage => 'en_US' },
+        :errorLanguage => 'en_US' },
       :cancelUrl => application_url(cancel_pledge_path(opts[:pledge_id])),
       :returnUrl => application_url(complete_pledge_path(opts[:pledge_id])) }
   end
@@ -60,27 +60,32 @@ module AdaptivePayments
       :preapprovalKey => opts[:preapprovalKey],
       :cancelUrl => application_url(cancel_project_path),
       :returnUrl => application_url(complete_project_path),
-    }.merge(approval_receiver_list(amount: opts[:amount], email: opts[:email]))
+      :feesPayer => 'PRIMARYRECEIVER',
+    }.merge(approval_receiver_list(opts[:amount], opts[:email], opts[:commissionRate]))
   end
 
   def cancel_preapproval_options(key)
     { :preapprovalKey => key }
   end
 
-  def approval_receiver_list(amount:, email:)
+  def approval_receiver_list(amount, email, commission_rate)
+    commission = amount * commission_rate / 100.to_f
+
     { :receiverList => {
-        :receiver => [{ :amount => admin_payment_amount(amount),
-                        :email => AdaptivePayments.admin_email },
-                      { :amount => amount - admin_payment_amount(amount),
-                        :email => email }] }}
-  end
-
-  def admin_payment_amount(amount)
-    @admin_payment_amount ||= amount * commission_rate
-  end
-
-  def commission_rate
-    20 / 100.to_f
+        :receiver => [
+          {
+            :email => AdaptivePayments.admin_email,
+            :amount => amount,
+            :primary => true
+          },
+          {
+            :email => email,
+            :amount => amount - commission,
+            :primary => false
+          }
+        ]
+      }
+    }
   end
 
   def preapproval_url(key)
@@ -104,10 +109,6 @@ module AdaptivePayments
   end
 
   def self.admin_email
-    if Rails.env.production?
-      ENV['PAYPAL_APP_ID'] || 'shizuka.kakimoto-facilitator@jepco.org'
-    else
-      'shizuka.kakimoto-facilitator@jepco.org'
-    end
+    ENV['PAYPAL_EMAIL']
   end
 end

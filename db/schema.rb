@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160509055126) do
+ActiveRecord::Schema.define(version: 20160510113441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "app_settings", force: :cascade do |t|
+    t.string   "key"
+    t.string   "value"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "authentications", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -201,6 +209,7 @@ ActiveRecord::Schema.define(version: 20160509055126) do
     t.datetime "view_begin_at"
     t.datetime "view_end_at"
     t.string   "paypal_account"
+    t.integer  "commission_rate"
   end
 
   add_index "projects", ["category_id"], name: "index_projects_on_category_id", using: :btree
