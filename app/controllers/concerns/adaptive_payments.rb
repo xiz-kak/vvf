@@ -7,11 +7,31 @@ module AdaptivePayments
     @api ||= PayPal::SDK::AdaptivePayments::API.new
   end
 
+  def preapprove(pledge)
+    opts = { :maxTotalAmountOfAllPayments => pledge.pledge_payment.total_amount,
+             :endingDate => pledge.reward.project.end_at.months_since(1),
+             :pledge_id => pledge.id }
+
+    preapproval = adaptive_payments_api.build_preapproval(preapproval_options(opts))
+    preapproval_response = adaptive_payments_api.preapproval(preapproval)
+
+    if preapproval_response.success?
+      pledge.preapproval_key(preapproval_response.preapprovalKey)
+      preapprove_log(preapproval_response)
+      redirect_to preapproval_url(preapproval_response.preapprovalKey)
+      return true
+    else
+      pledge.preapprove_error!
+      payment_error_log(preapproval_response, 'PREAPPROVE')
+      return false
+    end
+  end
+
   def pay_to_creator(pledge)
     opts = { :email => pledge.reward.project.paypal_account,
              :preapprovalKey => pledge.pledge_payment.preapproval_key,
              :amount => pledge.pledge_payment.total_amount,
-             :commissionRate => @project.commission_rate
+             :commissionRate => pledge.reward.project.commission_rate
     }
 
     pay = adaptive_payments_api.build_pay(approval_options(opts))
@@ -44,6 +64,12 @@ module AdaptivePayments
     end
   end
 
+  private
+
+  def preapprove_log(response)
+    logger.info("[PAYPAL][PREAPPROVE][SUCCESS] preapprovalKey: #{response.preapprovalKey} correlationId: #{response.responseEnvelope.correlationId}")
+  end
+
   def pay_log(pay_response, opts)
     each_amount = "paid"
     opts[:receiverList][:receiver].map do |receiver|
@@ -73,8 +99,6 @@ module AdaptivePayments
        "  errorId: #{errorInfo[:errorId]} with errorMessage: #{errorInfo[:message]}"
   end
 
-  private
-
   def preapproval_options(opts = {})
     { :currencyCode => 'USD',
       :maxTotalAmountOfAllPayments => opts[:maxTotalAmountOfAllPayments],
@@ -84,8 +108,6 @@ module AdaptivePayments
       :maxNumberOfPayments => 1,
       :maxNumberOfPaymentsPerPeriod => 1,
       :pinType => 'NOT_REQUIRED',
-      # :feesPayer => 'EACHRECEIVER',
-      # :senderEmail => opts[:email], 指定したemailのみしかpaypalにログインできない
       :requestEnvelope => {
         :errorLanguage => 'en_US' },
       :cancelUrl => application_url(cancel_pledge_path(opts[:pledge_id])),
