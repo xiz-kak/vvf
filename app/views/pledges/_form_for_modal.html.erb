@@ -180,3 +180,41 @@
     </section>
   <% end %>
 </div>
+
+<script type="text/javascript">
+  $('#pledge_pledge_shipping_attributes_nation_id').on('change', function() {
+    return $.ajax({
+      url: "/shipping_rate",
+      type: "POST",
+      data: {
+        reward_code: $(this).data('reward-code'),
+        nation_id: $(this).val()
+      },
+      dataType: "json",
+      success: function(data, status, xhr) {
+        $('#pledge_payment_shipping_rate').text(xhr.responseText);
+        return calcTotalAmount();
+      },
+      error: function(xhr, status, error) {
+        return alert('Failed to load shipping_rate!!\n[Error] ' + error);
+      }
+    });
+  });
+
+  calcTotalAmount = function() {
+    var numA, numB;
+    numA = $('#pledge_payment_amount').text();
+    numB = $('#pledge_payment_shipping_rate').text();
+    numA = parseFloat(numA);
+    numB = parseFloat(numB);
+    if (numA === null) {
+      $('#pledge_payment_amount').text('');
+      return false;
+    }
+    if (numB === null) {
+      $('#pledge_payment_shipping_rate').text('');
+      return false;
+    }
+    return $('#pledge_payment_total_amount').text((numA + numB).toFixed(2));
+  };
+</script>

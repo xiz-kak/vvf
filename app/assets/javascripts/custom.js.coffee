@@ -13,17 +13,21 @@ $(document).on 'ready page:load', ->
 
   Cookies.set('tzoffset', (new Date()).getTimezoneOffset())
 
+  ###
   $('#pledge_pledge_shipping_attributes_nation_id').on 'change', ->
+    alert('a')
     $.ajax
       url: "/shipping_rate"
       type: "POST"
       data: {reward_code: $(this).data('reward-code'), nation_id: $(this).val()}
       dataType: "json"
       success: (data, status, xhr) ->
+        alert(xhr.responseText)
         $('#pledge_payment_shipping_rate').text(xhr.responseText)
         calcTotalAmount()
       error: (xhr, status, error) ->
         alert('Failed to load shipping_rate!!\n[Error] '+error)
+  ###
 
   # Ignite change event.
   changeShipsToDiv()
@@ -87,6 +91,7 @@ switchOnShipsTo = (el) ->
       $('#'+el.data('nation-group')).show()
       $('#'+el.data('default-shipping-rate')).show()
 
+###
 calcTotalAmount = ->
   numA = $('#pledge_payment_amount').text()
   numB = $('#pledge_payment_shipping_rate').text()
@@ -99,6 +104,7 @@ calcTotalAmount = ->
     $('#pledge_payment_shipping_rate').text('')
     return false
   $('#pledge_payment_total_amount').text((numA+numB).toFixed(2))
+###
 
 $(document).bind 'page:change', ->
   $('.ckeditor').each ->

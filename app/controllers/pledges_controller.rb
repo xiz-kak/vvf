@@ -1,7 +1,8 @@
 class PledgesController < ApplicationController
-  before_action :require_admin, only: [:edit, :update, :destroy]
+  before_action :require_admin, only: [:destroy]
   before_action :set_pledge, only: [:show, :edit, :update, :destroy, :complete, :cancel]
   before_action :require_login, except: [:index, :show]
+  before_action :require_backer, only: [:edit, :update]
 
   include AdaptivePayments
 
@@ -29,6 +30,9 @@ class PledgesController < ApplicationController
 
   # GET /pledges/1/edit
   def edit
+    if !is_admin? && @pledge.pledge_payment.status != Divs::PledgePaymentStatus::UNPAID
+      return redirect_to @pledge, alert: 'This payment is proceeded. You cannot modify.'
+    end
   end
 
   # POST /pledges
@@ -36,8 +40,7 @@ class PledgesController < ApplicationController
     @pledge = Pledge.new(pledge_params)
 
     unless @pledge.reward.can_pledge_more?
-      flash[:danger] = 'Sorry. This reward is all gone...'
-
+      flash.now[:danger] = 'Sorry. This reward is all gone...'
       return render :new
     end
 
@@ -48,34 +51,36 @@ class PledgesController < ApplicationController
       ProjectPledgeSummary.pledge(@pledge.reward.project.code, @pledge.pledge_payment.total_amount)
       RewardPledgeSummary.pledge(@pledge.reward.code)
 
-      opts = { :maxTotalAmountOfAllPayments => @pledge.pledge_payment.total_amount,
-               :endingDate => Time.now.months_since(1),
-               :email => nil, # @pledge.user.email,
-               :pledge_id => @pledge.id }
-
-      preapproval = adaptive_payments_api.build_preapproval(preapproval_options(opts))
-      preapproval_response = adaptive_payments_api.preapproval(preapproval)
-
-      if preapproval_response.success?
-        @pledge.preapproval_key(preapproval_response.preapprovalKey)
-
-        redirect_to preapproval_url(preapproval_response.preapprovalKey)
+      if preapprove(@pledge)
+        # redirected already to somewhere inside paypal
       else
-        @pledge.preapprove_error!
-        payment_error_log(preapproval_response)
-
-        render :new
+        flash.now[:danger] = 'Failed to preapprove the payment. Please try again.'
+        render :edit
       end
     else
+      flash.now[:danger] = 'Failed to save. Please try again.'
       render :new
     end
   end
 
   # PATCH/PUT /pledges/1
   def update
+    if @pledge.pledge_payment.status != Divs::PledgePaymentStatus::UNPAID
+      return redirect_to :back, alert: 'This paymenr is proceeded already. You cannot modify.'
+    end
+
     if @pledge.update(pledge_params)
-      redirect_to @pledge, notice: 'Pledge was successfully updated.'
+      ProjectPledgeSummary.pledge(@pledge.reward.project.code, @pledge.pledge_payment.total_amount)
+      RewardPledgeSummary.pledge(@pledge.reward.code)
+
+      if preapprove(@pledge)
+        # redirected already to somewhere inside paypal
+      else
+        flash.now[:danger] = 'Failed to preapprove the payment. Please try again.'
+        render :edit
+      end
     else
+      flash.now[:danger] = 'Failed to save. Please try again.'
       render :edit
     end
   end
@@ -102,8 +107,8 @@ class PledgesController < ApplicationController
     ProjectPledgeSummary.revert(project.code, @pledge.pledge_payment.total_amount)
     RewardPledgeSummary.revert(@pledge.reward.code)
 
-    flash[:info] = 'Pledge canceled'
-    redirect_to project
+    flash.now[:info] = 'Pledge canceled'
+    render :edit
   end
 
   # POST rewards/1/shipping_rate
@@ -142,5 +147,9 @@ class PledgesController < ApplicationController
         :address4
       ]
     )
+  end
+
+  def require_backer
+    return render_404 unless @pledge.user == current_user || is_admin?
   end
 end

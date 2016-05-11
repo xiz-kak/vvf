@@ -26,6 +26,8 @@
 #
 
 class PledgePayment < ActiveRecord::Base
+  bind_inum :status, Divs::PledgePaymentStatus
+
   belongs_to :payment_vendor
   belongs_to :pledge, inverse_of: :pledge_payment
 
