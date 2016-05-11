@@ -90,20 +90,20 @@ class PledgesController < ApplicationController
   def complete
     @pledge.preapprove!
 
-    @project = @pledge.reward.project
+    project = @pledge.reward.project
     flash[:info] = 'Successfully pledged'
-    redirect_to @project
+    redirect_to project
   end
 
   # GET /pledges/1/cancel
   def cancel
-    @project = @pledge.reward.project
+    project = @pledge.reward.project
 
-    ProjectPledgeSummary.revert(@project.code, @pledge.pledge_payment.total_amount)
+    ProjectPledgeSummary.revert(project.code, @pledge.pledge_payment.total_amount)
     RewardPledgeSummary.revert(@pledge.reward.code)
 
     flash[:info] = 'Pledge canceled'
-    redirect_to @project
+    redirect_to project
   end
 
   # POST rewards/1/shipping_rate
