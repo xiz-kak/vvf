@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
-  before_action :require_admin, only: [:destroy, :remand, :approve, :resume, :drop, :complete, :cancel]
-  before_action :set_project, only: [:show, :preview, :edit, :edit_rewards, :update, :destroy, :discard, :apply, :approve, :resume, :remand, :suspend, :drop, :complete, :cancel]
+  before_action :require_admin, only: [:destroy, :remand, :approve, :resume, :drop, :pay, :pay_back]
+  before_action :set_project, only: [:show, :preview, :edit, :edit_rewards, :update, :destroy, :discard, :apply, :approve, :resume, :remand, :suspend, :drop, :pay, :pay_back]
   before_action :require_login, except: [:index, :show, :show_by_code, :start]
   before_action :require_creator, only: [:discard, :apply, :suspend]
   before_action :require_creator_allowed, only: [:edit, :edit_rewards, :update]
@@ -147,42 +147,42 @@ class ProjectsController < ApplicationController
     redirect_to projects_url, notice: 'Project was successfully destroyed.'
   end
 
-  # POST /project/1/complete
-  def complete
+  # GET /project/1/pay
+  def pay
+    s_cnt = f_cnt = 0
     @project.pledges.each do |pledge|
-      opts = { :email => pledge.reward.project.paypal_account,
-               :preapprovalKey => pledge.pledge_payment.preapproval_key,
-               :amount => pledge.pledge_payment.total_amount,
-               :commissionRate => @project.commission_rate
-      }
-
-      pay = adaptive_payments_api.build_pay(approval_options(opts))
-      pay_response = adaptive_payments_api.pay(pay)
-
-      if pay_response.success? && pay_response.paymentExecStatus == EXEC_STATUS_COMPLETED
-        pledge.pay!
-        approve_log(pay_response, approval_options(opts))
+      if pay_to_creator(pledge)
+        s_cnt += 1
       else
-        pledge.pay_error!
-        payment_error_log(pay_response)
+        f_cnt += 1
       end
     end
+
+    redirect_to projects_path, notice: "Payment completed [ Success: #{s_cnt}, Failure: #{f_cnt} ]"
   end
 
-  # POST /project/1/cancel
-  def cancel
+  # GET /project/1/pay_back
+  def pay_back
+    s_cnt = f_cnt = 0
     @project.pledges.each do |pledge|
-      cancel_preapproval = adaptive_payments_api.
-                             build_cancel_preapproval(cancel_preapproval_options(pledge.pledge_payment.preapproval_key))
-      cancel_preapproval_response = adaptive_payments_api.cancel_preapproval(cancel_preapproval)
-
-      if cancel_preapproval_response.success?
-        pledge.cancel!
+      if pay_back_to_backer(pledge)
+        s_cnt += 1
       else
-        pledge.cancel_error!
-        payment_error_log(cancel_preapproval_response)
+        f_cnt += 1
       end
     end
+
+    redirect_to projects_path, notice: "Back-payment completed [ Success: #{s_cnt}, Failure: #{f_cnt} ]"
+  end
+
+  # GET /projects/complete
+  def complete
+    redirect_to @project, notice: 'Payment is completed!'
+  end
+
+  # GET /projects/cancel
+  def cancel
+    redirect_to @project, notice: 'Payment is canceled!'
   end
 
   private

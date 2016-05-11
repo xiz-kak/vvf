@@ -21,11 +21,13 @@ Rails.application.routes.draw do
         get 'resume' => 'projects#resume'
         get 'suspend' => 'projects#suspend'
         get 'drop' => 'projects#drop'
-        post 'complete'
-        post 'cancel'
+        get 'pay'
+        get 'pay_back'
       end
       collection do
         get 'start' => 'projects#start'
+        get 'complete'
+        get 'cancel'
       end
     end
     get 'project/:project_code' => 'projects#show_by_code', as: :project_by_code

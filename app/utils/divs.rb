@@ -24,8 +24,8 @@ module Divs
     define :UNPAID, 1
     define :PREAPPROVAL_ERROR, 2
     define :PREAPPROVED, 3
-    define :CANCEL_ERROR, 5
-    define :CANCELED, 6
+    define :PAY_BACK_ERROR, 5
+    define :PAY_BACKED, 6
     define :PAY_ERROR, 8
     define :PAID, 9
   end

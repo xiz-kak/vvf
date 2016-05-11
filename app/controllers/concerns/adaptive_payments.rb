@@ -7,7 +7,44 @@ module AdaptivePayments
     @api ||= PayPal::SDK::AdaptivePayments::API.new
   end
 
-  def approve_log(pay_response, opts)
+  def pay_to_creator(pledge)
+    opts = { :email => pledge.reward.project.paypal_account,
+             :preapprovalKey => pledge.pledge_payment.preapproval_key,
+             :amount => pledge.pledge_payment.total_amount,
+             :commissionRate => @project.commission_rate
+    }
+
+    pay = adaptive_payments_api.build_pay(approval_options(opts))
+    pay_response = adaptive_payments_api.pay(pay)
+
+    if pay_response.success? && pay_response.paymentExecStatus == EXEC_STATUS_COMPLETED
+      pledge.pay!
+      pay_log(pay_response, approval_options(opts))
+      return true
+    else
+      pledge.pay_error!
+      payment_error_log(pay_response, 'PAY')
+      return false
+    end
+  end
+
+  def pay_back_to_backer(pledge)
+    cancel_preapproval = adaptive_payments_api.
+                           build_cancel_preapproval(cancel_preapproval_options(pledge.pledge_payment.preapproval_key))
+    cancel_preapproval_response = adaptive_payments_api.cancel_preapproval(cancel_preapproval)
+
+    if cancel_preapproval_response.success?
+      pledge.pay_back!
+      pay_back_log(cancel_preapproval_response)
+      return true
+    else
+      pledge.pay_back_error!
+      payment_error_log(cancel_preapproval_response, 'PAYBACK')
+      return false
+    end
+  end
+
+  def pay_log(pay_response, opts)
     each_amount = "paid"
     opts[:receiverList][:receiver].map do |receiver|
       if receiver[:email] == AdaptivePayments.admin_email
@@ -17,18 +54,22 @@ module AdaptivePayments
       end
     end
 
-    logger.info("payKey: #{pay_response.payKey} correlationId: #{pay_response.responseEnvelope.correlationId}" \
+    logger.info("[PAYPAL][PAY][SUCCESS] payKey: #{pay_response.payKey} correlationId: #{pay_response.responseEnvelope.correlationId}" \
                 " Successfully #{each_amount}")
   end
 
-  def payment_error_log(response)
+  def pay_back_log(pay_response)
+    logger.info("[PAYPAL][PAYBACK][SUCCESS] correlationId: #{pay_response.responseEnvelope.correlationId}")
+  end
+
+  def payment_error_log(response, type)
     errorInfo = response.error.map { |item|
       { errorId: item.errorId,
         message: item.message,
       }
     }.first.merge({ correlationId: response.responseEnvelope.correlationId })
 
-    logger.error "Failed correlationId: #{errorInfo[:correlationId]}" \
+    logger.error "[PAYPAL][#{type}][FAILED] correlationId: #{errorInfo[:correlationId]}" \
        "  errorId: #{errorInfo[:errorId]} with errorMessage: #{errorInfo[:message]}"
   end
 
@@ -58,9 +99,9 @@ module AdaptivePayments
         :errorLanguage => 'en_US' },
       :reverseAllParallelPaymentsOnError => true,
       :preapprovalKey => opts[:preapprovalKey],
-      :cancelUrl => application_url(cancel_project_path),
-      :returnUrl => application_url(complete_project_path),
-      :feesPayer => 'PRIMARYRECEIVER',
+      :cancelUrl => application_url(cancel_projects_path),
+      :returnUrl => application_url(complete_projects_path),
+      :feesPayer => 'PRIMARYRECEIVER'
     }.merge(approval_receiver_list(opts[:amount], opts[:email], opts[:commissionRate]))
   end
 
