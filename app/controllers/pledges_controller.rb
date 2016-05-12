@@ -48,9 +48,6 @@ class PledgesController < ApplicationController
     @pledge.pledged_at = Time.now
 
     if @pledge.save
-      ProjectPledgeSummary.pledge(@pledge.reward.project.code, @pledge.pledge_payment.total_amount)
-      RewardPledgeSummary.pledge(@pledge.reward.code)
-
       if preapprove(@pledge)
         # redirected already to somewhere inside paypal
       else
@@ -70,9 +67,6 @@ class PledgesController < ApplicationController
     end
 
     if @pledge.update(pledge_params)
-      ProjectPledgeSummary.pledge(@pledge.reward.project.code, @pledge.pledge_payment.total_amount)
-      RewardPledgeSummary.pledge(@pledge.reward.code)
-
       if preapprove(@pledge)
         # redirected already to somewhere inside paypal
       else
@@ -95,6 +89,9 @@ class PledgesController < ApplicationController
   def complete
     @pledge.preapprove!
 
+    ProjectPledgeSummary.pledge(@pledge.reward.project.code, @pledge.pledge_payment.amount)
+    RewardPledgeSummary.pledge(@pledge.reward.code)
+
     project = @pledge.reward.project
     flash[:info] = 'Successfully pledged'
     redirect_to project
@@ -103,9 +100,6 @@ class PledgesController < ApplicationController
   # GET /pledges/1/cancel
   def cancel
     project = @pledge.reward.project
-
-    ProjectPledgeSummary.revert(project.code, @pledge.pledge_payment.total_amount)
-    RewardPledgeSummary.revert(@pledge.reward.code)
 
     flash.now[:info] = 'Pledge canceled'
     render :edit

@@ -42,16 +42,17 @@ class ProjectPledgeSummary < ActiveRecord::Base
     sum.save
   end
 
-  def self.revert(project_code, funded_amount)
-    sum = ProjectPledgeSummary.find_by(project_code: project_code)
+  ## Currently not used
+  # def self.revert(project_code, funded_amount)
+  #   sum = ProjectPledgeSummary.find_by(project_code: project_code)
 
-    if sum.present?
-      sum.funded_count -= 1
-      sum.funded_amount -= funded_amount
+  #   if sum.present?
+  #     sum.funded_count -= 1
+  #     sum.funded_amount -= funded_amount
 
-      sum.save
-    else
-      logger.error("Illegal revert of ProjectPledgeSummary. Error: Not Exist. projectCoder #{project_code}.")
-    end
-  end
+  #     sum.save
+  #   else
+  #     logger.error("Illegal revert of ProjectPledgeSummary. Error: Not Exist. projectCoder #{project_code}.")
+  #   end
+  # end
 end

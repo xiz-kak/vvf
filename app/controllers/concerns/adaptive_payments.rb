@@ -30,7 +30,8 @@ module AdaptivePayments
   def pay_to_creator(pledge)
     opts = { :email => pledge.reward.project.paypal_account,
              :preapprovalKey => pledge.pledge_payment.preapproval_key,
-             :amount => pledge.pledge_payment.total_amount,
+             :amount => pledge.pledge_payment.amount,
+             :shipping_rate => pledge.pledge_payment.shipping_rate,
              :commissionRate => pledge.reward.project.commission_rate
     }
 
@@ -124,15 +125,16 @@ module AdaptivePayments
       :cancelUrl => application_url(cancel_projects_path),
       :returnUrl => application_url(complete_projects_path),
       :feesPayer => 'PRIMARYRECEIVER'
-    }.merge(approval_receiver_list(opts[:amount], opts[:email], opts[:commissionRate]))
+    }.merge(approval_receiver_list(opts[:amount], opts[:shipping_rate], opts[:email], opts[:commissionRate]))
   end
 
   def cancel_preapproval_options(key)
     { :preapprovalKey => key }
   end
 
-  def approval_receiver_list(amount, email, commission_rate)
-    commission = amount * commission_rate / 100.to_f
+  def approval_receiver_list(amount, shipping_rate, email, commission_rate)
+    commission = (amount * commission_rate / 100.to_f).to_d.floor(2).to_f
+    commission += ((amount + shipping_rate) * 0.05).to_d.floor(2).to_f
 
     { :receiverList => {
         :receiver => [

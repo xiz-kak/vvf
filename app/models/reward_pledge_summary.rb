@@ -25,15 +25,16 @@ class RewardPledgeSummary < ActiveRecord::Base
     sum.save
   end
 
-  def self.revert(reward_code)
-    sum = RewardPledgeSummary.find_by(reward_code: reward_code)
+  ## Currently not used
+  # def self.revert(reward_code)
+  #   sum = RewardPledgeSummary.find_by(reward_code: reward_code)
 
-    if sum.present?
-      sum.funded_count -= 1
+  #   if sum.present?
+  #     sum.funded_count -= 1
 
-      sum.save
-    else
-      logger.error("Illegal revert of RewardPledgeSummary. Error: Not Exist. rewardCode: #{reward_code}")
-    end
-  end
+  #     sum.save
+  #   else
+  #     logger.error("Illegal revert of RewardPledgeSummary. Error: Not Exist. rewardCode: #{reward_code}")
+  #   end
+  # end
 end
