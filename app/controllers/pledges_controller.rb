@@ -54,8 +54,8 @@ class PledgesController < ApplicationController
       if preapprove(@pledge)
         # redirected already to somewhere inside paypal
       else
-        flash.now[:danger] = 'Failed to preapprove the payment. Please try again.'
-        render :edit
+        flash[:danger] = 'Failed to preapprove the payment. Please try again.'
+        redirect_to @pledge.reward.project
       end
     else
       flash.now[:danger] = 'Failed to save. Please try again.'
@@ -76,8 +76,8 @@ class PledgesController < ApplicationController
       if preapprove(@pledge)
         # redirected already to somewhere inside paypal
       else
-        flash.now[:danger] = 'Failed to preapprove the payment. Please try again.'
-        render :edit
+        flash[:danger] = 'Failed to preapprove the payment. Please try again.'
+        redirect_to @pledge.reward.project
       end
     else
       flash.now[:danger] = 'Failed to save. Please try again.'

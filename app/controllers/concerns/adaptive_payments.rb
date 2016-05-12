@@ -9,7 +9,7 @@ module AdaptivePayments
 
   def preapprove(pledge)
     opts = { :maxTotalAmountOfAllPayments => pledge.pledge_payment.total_amount,
-             :endingDate => pledge.reward.project.end_at.months_since(1),
+             :endingDate => pledge.reward.project.end_at.months_since(1).to_time,
              :pledge_id => pledge.id }
 
     preapproval = adaptive_payments_api.build_preapproval(preapproval_options(opts))
