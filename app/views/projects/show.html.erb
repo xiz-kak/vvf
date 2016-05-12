@@ -121,7 +121,7 @@
                     <%= image_tag r.image(locale) %>
                   </div>
                   <div class="reward-description mb1">
-                    <%= r.description(locale) %>
+                    <%= simple_format h r.description(locale) %>
                   </div>
                   <div class="reward-footer mb1">
                     <div class="reward-footer-item">
@@ -168,7 +168,7 @@
     <div class="floating-panel-right">
       <% if @project.user == current_user && (@project.status_div_temp? || @project.status_div_draft? || @project.status_div_remanded?) %>
         <h3 class="my1">This is<br>Preview</h3>
-        <%= link_to 'Back', edit_rewards_project_path(@project), class: 'btn btn-default btn-lg my1' %>
+        <%= link_to 'Edit', edit_project_path(@project), class: 'btn btn-default btn-lg my1' %>
         <%= link_to 'Apply', apply_project_path(@project), class: 'btn btn-info btn-lg my1', data: { confirm: 'Are you sure?' } %>
       <% elsif current_user.is_admin && @project.status_div_applied? %>
         <h3 class="my1">This is<br>Preview</h3>

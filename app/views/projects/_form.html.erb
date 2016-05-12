@@ -4,6 +4,29 @@
   <% end %>
 
   <section>
+    <div class="full-wide-header py3 px2">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2">
+            <div class="row">
+              <div class="col-md-6">
+                <%= link_to '#', class: 'btn btn-primary btn-lg btn-block' do %>
+                  Step1<br><br><h3>Project Basics</h3>
+                <% end %>
+              </div>
+              <div class="col-md-6">
+                <%= f.button :submit, name: :edit_rewards, class: 'btn btn-default btn-lg btn-block' do %>
+                  Step2<br><br><h3>Rewards</h3>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
     <div class="container py2">
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -16,15 +39,15 @@
             <%= f.select :category_id, Category.all.map{|c| [c.name(locale), c.id]}, {}, class: 'form-control' %>
           </div>
           <div class="form-group">
-            <%= f.label :goal_amount %><small>&nbsp;(USD)</small>
-            <%= f.number_field :goal_amount, step: 0.01, value: @project.goal_amount_z, class: 'form-control' %>
+            <%= f.label :goal_amount, 'Goal amount (USD)'%>
+            <%= f.number_field :goal_amount, step: 1, value: @project.goal_amount.to_i, class: 'form-control' %>
           </div>
           <div class="form-group">
-            <%= f.label :duration_days %>
+            <%= f.label :duration_days, 'Duration days (1-60)' %>
             <%= f.number_field :duration_days, class: 'form-control' %>
           </div>
           <div class="form-group">
-            <%= f.label :applied_begin_date, 'Begin Date' %>
+            <%= f.label :applied_begin_date, 'Begin date' %>
             <div class="form-inline">
               <%= f.date_select :applied_begin_date, {}, class: 'form-control' %>
             </div>
