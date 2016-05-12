@@ -61,7 +61,7 @@ class ProjectsController < ApplicationController
 
     if @project.save(validate: params[:save_draft].blank?)
       if params[:save_draft]
-        redirect_to @project, notice: 'Draft was successfully saved.'
+        redirect_to :back, notice: 'Draft was successfully saved.'
       elsif params[:edit_rewards]
         redirect_to edit_rewards_project_path(@project)
       end
@@ -86,7 +86,7 @@ class ProjectsController < ApplicationController
       if params[:edit_rewards]
         redirect_to edit_rewards_project_path(@project)
       elsif params[:save_draft]
-        redirect_to @project, notice: 'Draft was successfully saved.'
+        redirect_to :back, notice: 'Draft was successfully saved.'
       elsif params[:preview]
         redirect_to preview_project_path(@project)
       end

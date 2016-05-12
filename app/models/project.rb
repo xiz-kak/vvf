@@ -53,8 +53,12 @@ class Project < ActiveRecord::Base
 
   validates :code, presence: true, length: { maximum: 50 }, format: { with: /\A[a-z0-9\-]+\z/i }
   validates :category, presence: true
-  validates :goal_amount, presence: true
-  validates :duration_days, presence: true
+  validates :goal_amount, presence: true,
+             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :duration_days, presence: true,
+             numericality: {
+               only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 60
+             }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :paypal_account, presence: true, format: { with: VALID_EMAIL_REGEX }
   validate :main_language_is_used
