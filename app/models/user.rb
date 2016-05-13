@@ -31,22 +31,12 @@ class User < ActiveRecord::Base
   validates :password, confirmation: true, if: -> { new_record? || changes["password"] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes["password"] }
 
-  include Encryptor
-
   def uses_twitter?
     authentications.exists?(provider: :twitter)
   end
 
   def uses_facebook?
     authentications.exists?(provider: :facebook)
-  end
-
-  def email=(val)
-    write_attribute(:email, encrypt(val))
-  end
-
-  def email
-    decrypt(read_attribute(:email)) if read_attribute(:email).present?
   end
 
   private
