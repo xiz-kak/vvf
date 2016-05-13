@@ -1,13 +1,11 @@
 class UserSessionsController < ApplicationController
 
-  include Encryptor
-
   def new
     @user = User.new
   end
 
   def create
-    if @user = login(encrypt(params[:email]), params[:password])
+    if @user = login(params[:email], params[:password])
       redirect_back_or_to(root_path, info: 'Login successful')
     else
       flash.now[:danger] = 'Login failed'
