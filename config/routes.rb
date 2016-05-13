@@ -25,6 +25,7 @@ Rails.application.routes.draw do
         get 'pay_back'
       end
       collection do
+        get 'pledge_list'
         get 'start' => 'projects#start'
         get 'complete'
         get 'cancel'
@@ -35,6 +36,8 @@ Rails.application.routes.draw do
     post 'shipping_rate' => 'pledges#shipping_rate'
     resources :pledges, :except => :new do
       member do
+        get 'pay'
+        get 'pay_back'
         get 'complete'
         get 'cancel'
       end

@@ -1,6 +1,6 @@
 class PledgesController < ApplicationController
-  before_action :require_admin, only: [:destroy]
-  before_action :set_pledge, only: [:show, :edit, :update, :destroy, :complete, :cancel]
+  before_action :require_admin, only: [:destroy, :pay, :pay_back]
+  before_action :set_pledge, only: [:show, :edit, :update, :destroy, :complete, :cancel, :pay, :pay_back]
   before_action :require_login, except: [:index, :show]
   before_action :require_backer, only: [:edit, :update]
 
@@ -8,7 +8,20 @@ class PledgesController < ApplicationController
 
   # GET /pledges
   def index
-    @pledges = Pledge.all
+    if params[:project_code]
+      @project = Project.find_by(code: params[:project_code])
+      if @project.present? && (is_admin? || @project.user == current_user)
+        @pledges = Project.find_by(code: params[:project_code]).pledges
+      end
+    end
+
+    if @pledges.blank?
+      if is_admin?
+        @pledges = Pledge.sorted
+      else
+        return render_404 if @pledges.blank?
+      end
+    end
   end
 
   # GET /pledges/1
@@ -83,6 +96,44 @@ class PledgesController < ApplicationController
   def destroy
     @pledge.destroy
     redirect_to pledges_url, notice: 'Pledge was successfully destroyed.'
+  end
+
+  # GET /pledges/1/pay
+  def pay
+    payable_status = []
+    payable_status << Divs::PledgePaymentStatus::PREAPPROVED
+    payable_status << Divs::PledgePaymentStatus::PAY_BACK_ERROR
+    payable_status << Divs::PledgePaymentStatus::PAY_ERROR
+
+    if payable_status.include?(@pledge.pledge_payment.status)
+      if pay_to_creator(@pledge)
+        flash[:success] = "Payment successfully completed"
+      else
+        flash[:danger] = "Payment failed"
+      end
+    else
+      flash[:danger] = "\"#{@pledge.pledge_payment.status.t}\" cannot be executed payment."
+    end
+    redirect_to action: :index
+  end
+
+  # GET /pledges/1/pay_back
+  def pay_back
+    payable_status = []
+    payable_status << Divs::PledgePaymentStatus::PREAPPROVED
+    payable_status << Divs::PledgePaymentStatus::PAY_BACK_ERROR
+    payable_status << Divs::PledgePaymentStatus::PAY_ERROR
+
+    if payable_status.include?(@pledge.pledge_payment.status)
+      if pay_back_to_backer(@pledge)
+        flash[:success] = "Back payment successfully completed"
+      else
+        flash[:danger] = "Back payment failed"
+      end
+    else
+      flash[:danger] = "\"#{@pledge.pledge_payment.status.t}\" cannot be executed back payment."
+    end
+    redirect_to action: :index
   end
 
   # GET /pledges/1/complete
