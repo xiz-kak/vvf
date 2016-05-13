@@ -132,8 +132,17 @@ class Project < ActiveRecord::Base
     pc
   end
 
+  def pledges_to_pay
+    Pledge.to_pay.joins(:reward).where('rewards.project_id = ?', id).merge(Reward.sorted).order(:pledged_at)
+  end
+
+  # Pledges in status after preapproved (include pay backed and errors)
+  def backed_pledges
+    Pledge.joins(:pledge_payment).joins(:reward).where('pledge_payments.status >= ?', Divs::PledgePaymentStatus::PREAPPROVED.to_i).where('rewards.project_id = ?', id).merge(Reward.sorted).order(:pledged_at)
+  end
+
   def pledges
-    Pledge.preapproved.joins(:reward).where('rewards.project_id = ?', id)
+    Pledge.joins(:reward).where('rewards.project_id = ?', id).merge(Reward.sorted).order(:pledged_at)
   end
 
   def first_post?
@@ -230,6 +239,11 @@ class Project < ActiveRecord::Base
     (end_at.to_date - Date.today).to_i
   end
 
+  def finished?
+    return false if end_at.blank?
+    end_at < Time.now
+  end
+
   def self.search_by_category(id)
     active.where(category_id: id)
   end
@@ -243,7 +257,13 @@ class Project < ActiveRecord::Base
   end
 
   def self.posted_by(user_id)
-    active.where(user_id: user_id)
+    statuses = []
+    statuses << Divs::ProjectStatus::ACTIVE.value
+    statuses << Divs::ProjectStatus::DRAFT.value
+    statuses << Divs::ProjectStatus::APPLIED.value
+    statuses << Divs::ProjectStatus::REMANDED.value
+
+    where(user_id: user_id).where(status_div: statuses).order(:status_div)
   end
 
   def self.backed_by(user_id)

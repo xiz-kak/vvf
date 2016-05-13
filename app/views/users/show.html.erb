@@ -22,12 +22,16 @@
 
     <div class="posted-projects py3">
       <h3 class="my2">Posted projects</h3>
-      <div class="row">
-        <% Project.posted_by(@user).each do |p| %>
-          <div class="col-md-10 project-card-wrap">
+      <% Project.posted_by(@user).each do |p| %>
+        <div class="row project-card-wrap">
+          <div class="col-md-10">
             <div class="project-card">
               <div class="project-image">
-                <%= link_to image_tag(p.image(locale)), project_by_code_path(p.code) %>
+                <% if p.status_div_draft? || p.status_div_remanded? %>
+                  <%= image_tag(p.image(locale)) %>
+                <% else %>
+                  <%= link_to image_tag(p.image(locale)), project_by_code_path(p.code) %>
+                <% end %>
               </div>
               <div class="project-card-description">
                 <% sum = p.summary %>
@@ -75,15 +79,34 @@
               </div>
             </div>
           </div>
-        <% end %>
-      </div>
+          <div class="col-md-2">
+            <p>
+              <h5>Status:</h5>
+              <h3 class="mt1 ml2">
+                <% if p.finished? %>
+                  <%= 'Finished' %>
+                <% else %>
+                  <%= p.status_div.t %>
+                <% end %>
+              </h3>
+            </p>
+            <% if p.status_div_draft? || p.status_div_remanded? %>
+              <%= link_to 'Edit', edit_project_path(p), class: 'btn btn-default btn-block' %>
+            <% elsif p.status_div_active? || p.status_div_suspended? %>
+              <%= link_to 'See pledges', '#pledge-list-modal',
+                class: 'btn btn-default btn-block',
+                data: {toggle: 'modal', project_code: p.code} %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
 
     <div class="backed-projects py3">
       <h3 class="my2">Backed projects</h3>
-      <div class="row">
-        <% Project.backed_by(@user).each do |p| %>
-          <div class="col-md-10 project-card-wrap">
+      <% Project.backed_by(@user).each do |p| %>
+        <div class="row project-card-wrap">
+          <div class="col-md-10">
             <div class="project-card">
               <div class="project-image">
                 <%= link_to image_tag(p.image(locale)), project_by_code_path(p.code) %>
@@ -134,8 +157,62 @@
               </div>
             </div>
           </div>
-        <% end %>
-      </div>
+          <div class="col-md-2">
+            <p>
+              <h5>Status:</h5>
+              <h3 class="mt1 ml2">
+                <% if p.finished? %>
+                  <%= 'Finished' %>
+                <% else %>
+                  <%= p.status_div.t %>
+                <% end %>
+              </h3>
+            </p>
+            <% if p.status_div_active? || p.status_div_suspended? %>
+              <%= link_to 'See pledges', '#pledge-list-modal',
+                class: 'btn btn-default btn-block',
+                data: {toggle: 'modal', project_code: p.code, pledged_by: 'me'} %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </section>
+
+<div class="modal fade" id="pledge-list-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h2 class="my2">Pledge List</h2>
+      </div>
+      <div class="modal-body" id="pledge-list-info">
+        <!-- pledge list -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    $('#pledge-list-modal').on('show.bs.modal', function(event) {
+      var project_code = $(event.relatedTarget).data('project-code');
+      var pledged_by = $(event.relatedTarget).data('pledged-by');
+      var modal = $(this);
+      $.ajax({
+        url: "/projects/pledge_list",
+        type: "GET",
+        data: {project_code: project_code, pledged_by: pledged_by},
+        dataType: "html",
+        success: function(data, status, xhr) {
+          return modal.find('#pledge-list-info').html(data);
+        },
+        error: function(xhr, status, error) {
+          modal.modal('hide');
+          return alert('Failed to load pledge list!!\n[Error] ' + error);
+        }
+      });
+    });
+  });
+</script>

@@ -1,15 +1,5 @@
 <section>
-  <div class="full-wide-header py3 px2">
-    <div class="container">
-      <h2>
-        Pledge List<%= " for project: #{@project.title(locale)}" if @project.present? %>
-      </h2>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
+  <div class="container modal-container">
     <h4 class="my1 text-right">Count: <%= @pledges.size %></h4>
     <table class="table">
       <thead>
@@ -20,8 +10,6 @@
           <th>Amount</th>
           <th>Shipping rate</th>
           <th>Total</th>
-          <th>Payment status</th>
-          <th colspan="5"></th>
         </tr>
       </thead>
 
@@ -34,12 +22,6 @@
             <td><%= pledge.pledge_payment.amount_f %></td>
             <td><%= pledge.pledge_payment.shipping_rate_f %></td>
             <td><%= pledge.pledge_payment.total_amount_f %></td>
-            <td><%= pledge.pledge_payment.status.t %></td>
-            <td><%= link_to 'Show', pledge %></td>
-            <td><%= link_to 'Edit', edit_pledge_path(pledge) %></td>
-            <td><%= link_to 'Destroy', pledge, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-            <td><%= link_to 'Pay', pay_pledge_path(pledge, project_code: @project.try(:id)) %></td>
-            <td><%= link_to 'Pay Back', pay_back_pledge_path(pledge, project_code: @project.try(:id)) %></td>
           </tr>
         <% end %>
       </tbody>

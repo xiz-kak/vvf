@@ -29,10 +29,16 @@ class Pledge < ActiveRecord::Base
   has_one :pledge_shipping, dependent: :destroy, inverse_of: :pledge
   accepts_nested_attributes_for :pledge_shipping, allow_destroy: true
 
-  scope :preapproved, lambda {
+  scope :to_pay, lambda {
     joins(:pledge_payment).
     where('pledge_payments.status in (?, ?)', Divs::PledgePaymentStatus::PREAPPROVED.to_i, Divs::PledgePaymentStatus::PAY_ERROR.to_i)
   }
+
+  scope :by_status, -> (pledge_payment_status){
+    joins(:pledge_payment).where('pledge_payments.status = ?', pledge_payment_status.to_i)
+  }
+
+  scope :sorted, -> { joins(:reward).merge(Reward.sorted).order(:pledged_at) }
 
   validate :pledgeable
 

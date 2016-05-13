@@ -20,6 +20,7 @@ class ProjectPledgeSummary < ActiveRecord::Base
   belongs_to :project, -> { active }, primary_key: :code, foreign_key: :project_code, inverse_of: :project_pledge_summary
 
   def achieved
+    return 0 if project.status_div_draft?
     (funded_amount / project.goal_amount * 100).round
   end
 

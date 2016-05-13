@@ -12,6 +12,19 @@ class ProjectsController < ApplicationController
     @projects = Project.all.order(:id)
   end
 
+  # GET /projects/pledge_list
+  # for ajax
+  def pledge_list
+    p = Project.active.find_by(code: params[:project_code])
+    @pledges = p.backed_pledges
+
+    if p.user != current_user || params[:pledged_by] == 'me'
+      @pledges = @pledges.where(user: current_user)
+    end
+
+    render partial: 'show_pledge_list'
+  end
+
   # GET /projects/1
   def show
   end
@@ -56,7 +69,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     @project.user = current_user
     @project.status_div = Divs::ProjectStatus::DRAFT
-    @project.code = Time.now.strftime('%Y%m%d-%H%M%S') + '-by-' + current_user.id.to_s
+    @project.code = Time.now.strftime('%Y%m%d-%H%M%S%3N') + '-by-' + current_user.id.to_s
     @project.commission_rate = AppSetting.default_commission_rate
 
     if @project.save(validate: params[:save_draft].blank?)
@@ -150,7 +163,7 @@ class ProjectsController < ApplicationController
   # GET /project/1/pay
   def pay
     s_cnt = f_cnt = 0
-    @project.pledges.each do |pledge|
+    @project.pledges_to_pay.each do |pledge|
       if pay_to_creator(pledge)
         s_cnt += 1
       else
@@ -164,7 +177,7 @@ class ProjectsController < ApplicationController
   # GET /project/1/pay_back
   def pay_back
     s_cnt = f_cnt = 0
-    @project.pledges.each do |pledge|
+    @project.pledges_to_pay.each do |pledge|
       if pay_back_to_backer(pledge)
         s_cnt += 1
       else

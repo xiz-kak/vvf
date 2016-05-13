@@ -25,6 +25,7 @@
 class Reward < ActiveRecord::Base
   scope :active_bk, -> { where('view_begin_at <= ? AND view_end_at > ?', Time.now, Time.now) }
   scope :active, -> { joins(:project).merge(Project.active) }
+  scope :sorted, -> { order(:project_id, :price, :count) }
 
   bind_inum :ships_to_div, Divs::RewardShipsTo
 

@@ -39,12 +39,12 @@ restoreFacebookRoot = ->
 
 loadFacebookSDK = ->
   window.fbAsyncInit = initializeFacebookSDK
-  $.getScript("//connect.facebook.net/ja_JP/all.js#xfbml=1")
+  $.getScript("//connect.facebook.net/en_US/all.js#xfbml=1")
 
 initializeFacebookSDK = ->
   FB.init
-    appId     : 561411260688867
-    channelUrl: '//vvf-stg.herokuapp.com/channel.html'
+    # appId     : 561411260688867
+    # channelUrl: '//vvf-stg.herokuapp.com/channel.html'
     status    : true
     cookie    : true
     xfbml     : true
