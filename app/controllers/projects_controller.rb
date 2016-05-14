@@ -33,7 +33,8 @@ class ProjectsController < ApplicationController
   # To set project_code to address bar.
   # Be sure to exist valid active project.
   def show_by_code
-    @project = Project.active.find_by(code: params[:project_code])
+    @project = Project.find_by(code: params[:project_code])
+    require_creator if !@project.status_div_active?
     render :show
   end
 
