@@ -104,7 +104,7 @@ module AdaptivePayments
     { :currencyCode => 'USD',
       :maxTotalAmountOfAllPayments => opts[:maxTotalAmountOfAllPayments],
       :displayMaxTotalAmount => TRUE,
-      :startingDate => Time.now,
+      :startingDate => Time.zone.now,
       :endingDate => opts[:endingDate],
       :maxNumberOfPayments => 1,
       :maxNumberOfPaymentsPerPeriod => 1,

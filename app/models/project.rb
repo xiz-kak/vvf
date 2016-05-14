@@ -163,16 +163,20 @@ class Project < ActiveRecord::Base
   end
 
   def approve!
-    now_time = Time.now
-    begin_date = applied_begin_date > now_time ? applied_begin_date : Date.tomorrow.to_time
+    if applied_begin_date > Time.now
+      begin_date = applied_begin_date
+    else
+      late_days = ((Time.now - applied_begin_date)/(24*3600)).ceil
+      begin_date = applied_begin_date + late_days*24*3600
+    end
 
     active_records = Project.where.not(id: id)
     .where(code: code, status_div: Divs::ProjectStatus::ACTIVE)
 
     active_records.each do |r|
-      if r.view_begin_at > now_time
+      if r.view_begin_at > Time.now
         r.update_attributes(view_begin_at: begin_date, view_end_at: begin_date)
-      elsif r.view_end_at > now_time
+      elsif r.view_end_at > Time.now
         r.update_attribute(:view_end_at, begin_date)
       end
     end
