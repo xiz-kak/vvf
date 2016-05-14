@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
 
   def render_500(e = nil)
     logger.info "Rendering 500 with exception: #{e.message}" if e
-    Airbrake.notify(e) if e # Airbrake/Errbitを使う場合はこちら
+    # Airbrake.notify(e) if e # Airbrake/Errbitを使う場合はこちら
 
     if request.xhr?
       render json: { error: '500 error' }, status: 500

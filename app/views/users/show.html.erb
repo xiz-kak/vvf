@@ -169,7 +169,7 @@
               </h3>
             </p>
             <% if p.status_div_active? || p.status_div_suspended? %>
-              <%= link_to 'See pledges', '#pledge-list-modal',
+              <%= link_to 'See my pledges', '#pledge-list-modal',
                 class: 'btn btn-default btn-block',
                 data: {toggle: 'modal', project_code: p.code, pledged_by: 'me'} %>
             <% end %>

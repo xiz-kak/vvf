@@ -54,7 +54,7 @@ class Project < ActiveRecord::Base
   validates :code, presence: true, length: { maximum: 50 }, format: { with: /\A[a-z0-9\-]+\z/i }
   validates :category, presence: true
   validates :goal_amount, presence: true,
-             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+             numericality: { only_integer: true, greater_than_or_equal_to: 1 }
   validates :duration_days, presence: true,
              numericality: {
                only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 60
