@@ -24,30 +24,57 @@
 
       a("//platform.twitter.com/widgets.js","twitter-wjs");
     })(this, document);
+
+    $(function() {
+      var h = $(window).height();
+
+      $('#loader-bg, #loader').height(h).css('display','block');
+    });
+
+    // After all loaded, stop loading view
+    $(window).load(function () {
+      stopload();
+    });
+
+    // After certain seconds past, stop loading view
+    $(function(){
+      setTimeout('stopload()', 10000);
+    });
+
+    function stopload(){
+      $('#loader-bg').delay(900).fadeOut(800);
+      $('#loader').delay(600).fadeOut(300);
+    }
   </script>
-
-
-  <p id="go-to-top"><a href="#"><%= image_tag 'vvf_color_mark.png', size: '70x80' %></a></p>
-  <%= render 'layouts/header' %>
-  <% flash.each do |message_type, message| %>
-    <% if message_type == 'notice' %>
-      <% message_type = 'info '%>
-    <% elsif message_type == 'alert' %>
-      <% message_type = 'danger '%>
-    <% end %>
-    <div class="error-container">
-      <div class="alert alert-<%= message_type %>">
-        <button class="close" data-dismiss="alert">&times;</button>
-        <%= message %>
-      </div>
+  <div id="loader-bg">
+    <div id="loader">
+      <%= image_tag 'vvf_loading.gif', size: '20x20', alt: 'Now Loading...' %>
+      <p class="mt3">Now Loading...</p>
     </div>
-  <% end %>
-  <!--<div>
-    <p id="notice"><%= flash[:notice] %></p>
-    <p id="alert"><%= flash[:alert] %></p>
-  </div>-->
-  <%= yield %>
-  <%= render 'layouts/footer' %>
-  <%= debug(params) if Rails.env.development? %>
+  </div>
+  <div id="loaded-content">
+    <p id="go-to-top"><a href="#"><%= image_tag 'vvf_color_mark.png', size: '70x80' %></a></p>
+    <%= render 'layouts/header' %>
+    <% flash.each do |message_type, message| %>
+      <% if message_type == 'notice' %>
+        <% message_type = 'info '%>
+      <% elsif message_type == 'alert' %>
+        <% message_type = 'danger '%>
+      <% end %>
+      <div class="error-container">
+        <div class="alert alert-<%= message_type %>">
+          <button class="close" data-dismiss="alert">&times;</button>
+          <%= message %>
+        </div>
+      </div>
+    <% end %>
+    <!--<div>
+      <p id="notice"><%= flash[:notice] %></p>
+      <p id="alert"><%= flash[:alert] %></p>
+    </div>-->
+    <%= yield %>
+    <%= render 'layouts/footer' %>
+    <%= debug(params) if Rails.env.development? %>
+  </div>
 </body>
 </html>

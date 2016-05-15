@@ -3,6 +3,10 @@
   @include vendor-prefixed(transition, 0.3s);
 }
 
+.navbar-fixed-top, .navbar-fixed-bottom {
+  z-index: 50;
+}
+
 .navbar-ghost {
   border-radius: 0px;
   border: none;

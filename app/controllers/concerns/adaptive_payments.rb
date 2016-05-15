@@ -132,6 +132,8 @@ module AdaptivePayments
     { :preapprovalKey => key }
   end
 
+  # shipping_rate in $
+  # commision_rate in % (e.g. 15)
   def approval_receiver_list(amount, shipping_rate, email, commission_rate)
     commission = (amount * commission_rate / 100.to_f).to_d.floor(2).to_f
     commission += ((amount + shipping_rate) * 0.05).to_d.floor(2).to_f
@@ -140,12 +142,12 @@ module AdaptivePayments
         :receiver => [
           {
             :email => AdaptivePayments.admin_email,
-            :amount => amount,
+            :amount => amount + shipping_rate,
             :primary => true
           },
           {
             :email => email,
-            :amount => amount - commission,
+            :amount => amount + shipping_rate - commission,
             :primary => false
           }
         ]
