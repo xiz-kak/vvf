@@ -1,5 +1,4 @@
 ready = ->
-
   # Facebook
   loadFacebookSDK()
   bindFacebookEvents() unless fb_events_bound
@@ -39,11 +38,11 @@ restoreFacebookRoot = ->
 
 loadFacebookSDK = ->
   window.fbAsyncInit = initializeFacebookSDK
-  $.getScript("//connect.facebook.net/en_US/all.js#xfbml=1")
+  $.getScript('//connect.facebook.net/en_US/all.js#xfbml=1')
 
 initializeFacebookSDK = ->
   FB.init
-    # appId     : 561411260688867
+    appId     : $('#fb-root').data('app-id')
     # channelUrl: '//vvf-stg.herokuapp.com/channel.html'
     status    : true
     cookie    : true
@@ -67,4 +66,4 @@ renderTweetButtons = ->
   twttr.widgets.load()
 
 loadTwitterSDK = ->
-  $.getScript("//platform.twitter.com/widgets.js")
+  $.getScript('//platform.twitter.com/widgets.js')

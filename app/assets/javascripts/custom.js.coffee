@@ -1,4 +1,11 @@
-$(document).on 'ready page:load', ->
+exec_on_ready = ->
+  $('#loader-bg, #loader').height($(window).height()).css('display','block')
+
+  setTimeout(stopload(), 100)
+
+  $(window).on 'load', ->
+    stopload()
+
   $('form').on 'click', '.add_field', (event) ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
@@ -74,6 +81,8 @@ $(document).on 'ready page:load', ->
         modal.modal('hide')
         alert('Failed to load pledge info!!\n[Error] '+error)
 
+$(document).ready(exec_on_ready)
+$(document).on('page:load', exec_on_ready)
 
 changeShipsToDiv = ->
   $('.reward_ships_to').on 'change', ->
@@ -112,3 +121,7 @@ calcTotalAmount = ->
 $(document).bind 'page:change', ->
   $('.ckeditor').each ->
     CKEDITOR.replace($(this).attr('id'), {"toolbar":"mini", "height":"500"})
+
+stopload = ->
+  $('#loader-bg').delay(900).fadeOut(800)
+  $('#loader').delay(600).fadeOut(300)
