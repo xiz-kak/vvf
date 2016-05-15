@@ -164,7 +164,14 @@
     <section>
       <div class="my6">
         <div class="actions">
-          <%= f.submit 'Pledge', class: 'btn btn-info btn-lg btn-block' %>
+          <% if !@pledge.reward.project.status_div_active? %>
+            <%= f.submit 'Pledge', class: 'btn btn-info btn-lg btn-block', disabled: true %>
+          <% elsif Rails.env.production? %>
+            <%= f.submit 'Pledge', class: 'btn btn-info btn-lg btn-block', disabled: true %>
+            <h4 class="mt1 center text-danger">*Vin-Vin Funding is still in Beta. Pledge will be available after July.</h4>
+          <% else %>
+            <%= f.submit 'Pledge', class: 'btn btn-info btn-lg btn-block' %>
+          <% end %>
         </div>
       </div>
     </section>

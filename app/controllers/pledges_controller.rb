@@ -60,6 +60,10 @@ class PledgesController < ApplicationController
     @pledge.user = current_user
     @pledge.pledged_at = Time.now
 
+    if Rails.env.production?
+      return redirect_to :back, alert: 'Vin-Vin Funding is still in Beta. Pledge will be available after July.'
+    end
+
     if @pledge.save
       if preapprove(@pledge)
         # redirected already to somewhere inside paypal
