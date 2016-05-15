@@ -136,7 +136,7 @@
                   <div class="pledge-button">
                     <%= link_to 'Pledge this reward', '#pledge-modal',
                       class: 'btn btn-info btn-block',
-                      data: {toggle: 'modal', reward_code: r.code} %>
+                      data: {toggle: 'modal', logged_in: logged_in?, reward_code: r.code} %>
                   </div>
                 </div>
               </li>

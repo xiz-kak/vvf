@@ -58,6 +58,9 @@ $(document).on 'ready page:load', ->
     return false
   $('#pledge-modal').on 'show.bs.modal', (event) ->
     button = $(event.relatedTarget)
+    if button.data('logged-in') == false
+      document.location = '/login' # 一旦これで回避　ログインダイアログを頑張って作る
+      return
     reward_code = button.data('reward-code')
     modal = $(this)
     $.ajax
