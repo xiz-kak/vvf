@@ -122,7 +122,7 @@ Rails.application.config.sorcery.configure do |config|
   # config.facebook.access_permissions = ["email", "publish_actions"]
   config.facebook.user_info_path = "me?fields=email,name,verified,gender,locale"
   config.facebook.scope = "email"
-  config.facebook.display = "popup"
+  # config.facebook.display = "popup"
   config.facebook.api_version = "v2.5"
   #
   # config.github.key = ""
