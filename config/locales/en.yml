@@ -23,3 +23,7 @@ en:
       pay_backed: '[CMP]Pay backed'
       pay_error: '[ERR]Pay error'
       paid: '[CMP]Paid'
+    faq_category:
+      general: 'General topics'
+      for_creators: 'For creators'
+      for_backers: 'For backers'
