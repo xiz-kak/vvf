@@ -5,8 +5,8 @@
 <table>
   <thead>
     <tr>
-      <th>Sort order</th>
       <th>Faq category</th>
+      <th>Sort order</th>
       <th>Question</th>
       <th>Answer</th>
       <th>Answer detail</th>
@@ -17,8 +17,8 @@
   <tbody>
     <% @faqs.each do |faq| %>
       <tr>
-        <td><%= faq.sort_order %></td>
         <td><%= faq.faq_category_div.t %></td>
+        <td><%= faq.sort_order %></td>
         <td><%= faq.question(locale).html_safe %></td>
         <td><%= faq.answer(locale).html_safe %></td>
         <td><%= faq.answer_detail(locale).html_safe %></td>
