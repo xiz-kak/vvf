@@ -11,8 +11,14 @@
       </h2>
       <% backed_count = Project.backed_by(@user.id).count %>
       <h4>backed <%= backed_count %>&nbsp;<%= 'project'.pluralize(backed_count) %></h4>
-      <h5 class="mt2"><kbd>f</kbd><a href="https://www.facebook.com"> shizukakakimoto.9</a></h5>
-      <h5 class="mt1"><kbd>t</kbd><a href="https://www.twitter.com"> xiz-tky</a></h5>
+      <div class="mt2">
+        <% if auth_fb = @user.authentications.find_by(provider: :facebook) %>
+          <%= link_to image_tag('icon_fb_48.png'), "http://facebook.com/#{auth_fb.uid.to_s}", target: '_blank' %>
+        <% end %>
+        <% if auth_tw = @user.authentications.find_by(provider: :twitter) %>
+          <%= link_to image_tag('icon_tw_48.png'), "https://twitter.com/intent/user?user_id=#{auth_tw.uid.to_s}", target: '_blank' %>
+        <% end %>
+      </div>
     </div>
   </div>
 </section>

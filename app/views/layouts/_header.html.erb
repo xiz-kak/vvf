@@ -85,40 +85,42 @@
 </header>
 
 <div class="modal fade" id="signup-modal">
-  <div class="modal-dialog modal-sm modal-dialog-middle">
+  <div class="modal-dialog modal-dialog-middle">
     <div class="modal-content">
       <div class="modal-header">
         <button class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Sign up</h4>
+        <h2 class="modal-title">Sign up</h2>
       </div>
       <div class="modal-body">
-        <div class="container">
-        </div>
-        <%= link_to 'Sign up with Facebook', auth_at_provider_path(provider: :facebook),
-          class: 'btn btn-primary btn-block' %>
-        <%= link_to 'Sign up with Twitter', auth_at_provider_path(provider: :twitter),
-          class: 'btn btn-info btn-block' %>
-        <%= link_to 'Sign up with E-mail', new_user_path,
-          class: 'btn btn-default btn-block' %>
+        <%= link_to auth_at_provider_path(provider: :facebook), class: 'btn btn-primary btn-block btn-lg my1' do %>
+          <h3><%= image_tag('icon_fb_64_w.png', size: '35x35') %>&nbsp;&nbsp;Facebook</h3>
+        <% end %>
+        <%= link_to auth_at_provider_path(provider: :twitter), class: 'btn btn-info btn-block btn-lg my1' do %>
+          <h3><%= image_tag('icon_tw_64_w.png', size: '35x35') %>&nbsp;&nbsp;Twitter</h3>
+        <% end %>
+        <hr>
+        <%= link_to 'Sign up with E-mail', new_user_path %>
       </div>
     </div>
   </div>
 </div>
 
 <div class="modal fade" id="login-modal">
-  <div class="modal-dialog modal-sm modal-dialog-middle">
+  <div class="modal-dialog modal-dialog-middle">
     <div class="modal-content">
       <div class="modal-header">
         <button class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Login</h4>
+        <h2 class="modal-title">Login</h2>
       </div>
       <div class="modal-body">
-        <%= link_to 'Login with Facebook', auth_at_provider_path(provider: :facebook),
-          class: 'btn btn-primary btn-block' %>
-        <%= link_to 'Login with Twitter', auth_at_provider_path(provider: :twitter),
-          class: 'btn btn-info btn-block' %>
-        <%= link_to 'Login with E-mail', :login,
-          class: 'btn btn-default btn-block' %>
+        <%= link_to auth_at_provider_path(provider: :facebook), class: 'btn btn-primary btn-block btn-lg my1' do %>
+          <h3><%= image_tag('icon_fb_64_w.png', size: '35x35') %>&nbsp;&nbsp;Facebook</h3>
+        <% end %>
+        <%= link_to auth_at_provider_path(provider: :twitter), class: 'btn btn-info btn-block btn-lg my1' do %>
+          <h3><%= image_tag('icon_tw_64_w.png', size: '35x35') %>&nbsp;&nbsp;Twitter</h3>
+        <% end %>
+        <hr>
+        <%= link_to 'Login with E-mail', :login, class: 'btn btn-default btn-block' %>
       </div>
     </div>
   </div>
