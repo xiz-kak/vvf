@@ -1,0 +1,36 @@
+<section>
+  <div class="full-wide-header py4 px2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>FAQ</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <% Divs::FaqCategory.map do |fc| %>
+          <h2 class="ml4 mt5 mb3"><%= fc.t %></h2>
+          <ul class="list-no-style">
+            <% Faq.sorted.where(faq_category_div: fc.to_i).each do |f| %>
+              <li class="faq-item">
+                <h4><%= f.question(locale).html_safe %></h4>
+                <div class="faq-answer">
+                  <p class="faq-answer-first-line"><%= f.answer(locale).html_safe %></p>
+                  <p><%= f.answer_detail(locale).html_safe %></p>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+  </div>
+</section>

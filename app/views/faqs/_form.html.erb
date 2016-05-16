@@ -1,0 +1,43 @@
+<%= form_for(@faq) do |f| %>
+  <% if @faq.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@faq.errors.count, "error") %> prohibited this faq from being saved:</h2>
+
+      <ul>
+      <% @faq.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field-group">
+    <div class="field">
+      <%= f.label :sort_order %><br>
+      <%= f.number_field :sort_order %>
+    </div>
+    <div class="field">
+      <%= f.label :faq_category_div, 'FAQ Category' %><br>
+      <%= f.select :faq_category_div,
+        Divs::FaqCategory.collection, {selected: f.object.faq_category_div.try(:value)} %>
+    </div>
+    <br>
+    <h4>HTML mark downs</h4>
+    <p>
+      改行: <%= "<br>" %><br>
+      リンク: <%= "<a href='/projects/start'>Start a project</a>" %><br>
+        *hrefは最初の'/'が大事
+    </p>
+    <% Language.sorted.each do |l| %>
+      <hr>
+      <strong><%= f.label :language_id, l.name_en %></strong>
+      <% fc = @faq.get_or_new_content(l.id) %>
+      <%= f.fields_for :faq_contents, fc do |fcf| %>
+        <%= render partial: "faq_content_form", locals: {f: fcf} %>
+      <% end %>
+    <% end %>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  </div>
+<% end %>

@@ -432,3 +432,14 @@
     width: 100px;
   }
 }
+
+li.faq-item {
+  margin-top: 50px;
+  .faq-answer {
+    margin: 25px 0px 10px 10px;
+    .faq-answer-first-line {
+      font-style: italic;
+      font-size: 16px;
+    }
+  }
+}

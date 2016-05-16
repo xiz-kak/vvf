@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :divisions
     resources :payment_vendors
     resources :app_settings, :except => [:new, :create, :destroy]
+    resources :faqs
     resources :projects do
       member do
         get 'preview' => 'projects#preview'
@@ -54,6 +55,9 @@ Rails.application.routes.draw do
     get 'discover/top'
     get 'discover/search'
     get 'discover/category/:id' => 'discover#category', as: :discover_category
+
+    get 'pages/faq'
+    get 'pages/term'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

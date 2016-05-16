@@ -29,4 +29,10 @@ module Divs
     define :PAY_ERROR, 8
     define :PAID, 9
   end
+
+  class FaqCategory < Inum::Base
+    define :GENERAL, 1
+    define :FOR_CREATORS, 2
+    define :FOR_BACKERS, 3
+  end
 end

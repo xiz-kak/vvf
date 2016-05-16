@@ -23,3 +23,7 @@ ja:
       pay_backed: '[CMP]払戻完了'
       pay_error: '[ERR]支払エラー'
       paid: '[CMP]支払完了'
+    faq_category:
+      general: 'サービス全般'
+      for_creators: 'For 調達者'
+      for_backers: 'For 支援者'
