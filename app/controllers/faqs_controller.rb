@@ -3,7 +3,7 @@ class FaqsController < ApplicationController
 
   # GET /faqs
   def index
-    @faqs = Faq.all
+    @faqs = Faq.order(:faq_category_div, :sort_order)
   end
 
   # GET /faqs/1

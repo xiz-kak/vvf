@@ -11,19 +11,21 @@
 </p>
 
 <p>
-  <strong>Question:</strong>
+<strong>Question:</strong><br>
   <%= @faq.question(locale).html_safe %>
 </p>
 
 <p>
-  <strong>Answer:</strong>
+  <strong>Answer:</strong><br>
   <%= @faq.answer(locale).html_safe %>
 </p>
 
 <p>
-  <strong>Answer detail:</strong>
+  <strong>Answer detail:</strong><br>
   <%= @faq.answer_detail(locale).html_safe %>
 </p>
 
 <%= link_to 'Edit', edit_faq_path(@faq) %> |
-<%= link_to 'List', faqs_path %>
+<%= link_to 'List', faqs_path %> |
+<%= link_to 'Add New', new_faq_path %>
+

@@ -19,9 +19,9 @@
       <tr>
         <td><%= faq.sort_order %></td>
         <td><%= faq.faq_category_div.t %></td>
-        <td><%= faq.question(locale) %></td>
-        <td><%= faq.answer(locale) %></td>
-        <td><%= faq.answer_detail(locale) %></td>
+        <td><%= faq.question(locale).html_safe %></td>
+        <td><%= faq.answer(locale).html_safe %></td>
+        <td><%= faq.answer_detail(locale).html_safe %></td>
         <td><%= link_to 'Show', faq %></td>
         <td><%= link_to 'Edit', edit_faq_path(faq) %></td>
         <td><%= link_to 'Destroy', faq, method: :delete, data: { confirm: 'Are you sure?' } %></td>
