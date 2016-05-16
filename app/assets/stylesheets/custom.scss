@@ -18,7 +18,7 @@
 
 .error-container {
    position: fixed;
-   top: 30px;
+   top: 52px;
    left: 10%;
    right: 10%;
    z-index: 100;
@@ -103,6 +103,18 @@
   background-image: image-url("AdobeStock_64649603.jpeg");
   .hero-subtitle {
     margin-top: 300px;
+  }
+}
+
+.hero-image-start {
+  height: 500px;
+  background-image: image-url("AdobeStock_105076842.jpeg");
+  .start-project-wrap {
+    text-align: center;
+    .project-start-message {
+      font-size: 90px;
+      color: white;
+    }
   }
 }
 
@@ -232,7 +244,7 @@
 }
 
 .global-footer {
-  height: 350px;
+  height: 420px;
   background-color: $vvf-orange;
   color: $white-smoke;
   a {

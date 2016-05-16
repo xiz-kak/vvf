@@ -11,16 +11,18 @@
   <section>
     <div class="container bg-white">
 
-      <div class="row my2">
+      <div class="row my1">
         <div class="col-md-6 col-md-offset-2">
-          <%= link_to 'Login with Facebook', auth_at_provider_path(provider: :facebook),
-            class: 'btn btn-primary btn-block' %>
+          <%= link_to auth_at_provider_path(provider: :facebook), class: 'btn btn-primary btn-block btn-lg my1' do %>
+            <h3><%= image_tag('icon_fb_64_w.png', size: '35x35') %>&nbsp;&nbsp;Facebook</h3>
+          <% end %>
         </div>
       </div>
-      <div class="row my2">
+      <div class="row my1">
         <div class="col-md-6 col-md-offset-2">
-          <%= link_to 'Login with Twitter', auth_at_provider_path(provider: :twitter),
-            class: 'btn btn-info btn-block' %>
+          <%= link_to auth_at_provider_path(provider: :twitter), class: 'btn btn-info btn-block btn-lg my1' do %>
+            <h3><%= image_tag('icon_tw_64_w.png', size: '35x35') %>&nbsp;&nbsp;Twitter</h3>
+          <% end %>
         </div>
       </div>
       <div class="row my2">
@@ -37,7 +39,7 @@
         </div>
       </div>
 
-      <div class="form-horizontal">
+      <div class="form-horizontal col-md-offset-2">
         <div class="form-group">
           <%= label_tag :email, nil, class: 'control-label col-md-2' %>
           <div class="col-md-4">
@@ -55,6 +57,7 @@
           <span>&nbsp;or&nbsp;&nbsp;<%= link_to 'Sign up', new_user_path %></span>
         </div>
       </div>
+
     </div>
   </section>
 
