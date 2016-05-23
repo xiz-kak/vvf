@@ -1,7 +1,7 @@
 exec_on_ready = ->
   $('#loader-bg, #loader').height($(window).height()).css('display','block')
 
-  setTimeout(stopload(), 100)
+  setTimeout(stopload(), 10000)
 
   $(window).on 'load', ->
     stopload()
