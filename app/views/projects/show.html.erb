@@ -28,7 +28,6 @@
             <div class="social clearfix">
               <!-- Facebook -->
               <div class="button facebook">
-                <div id="fb-root"></div>
                 <div class="fb-share-button"
                   data-href="<%= request.url %>"
                   data-layout="button_count"
@@ -186,4 +185,12 @@
       <% end %>
     </div>
   <% end %>
+<% end %>
+
+<% content_for :project_ogp do %>
+  <meta property="og:title" content="<%= p.title(locale) %>" />
+  <meta property="og:type" content="article" />
+  <meta property="og:description" content="<%= p.blurb(locale) %>" />
+  <meta property="og:url" content="<%= request.url %>" />
+  <meta property="og:image" content="<%= p.image(locale) %>" />
 <% end %>
