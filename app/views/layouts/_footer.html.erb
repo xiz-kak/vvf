@@ -47,6 +47,31 @@
                 <li><%= mail_to 'info@vinvin-funding.com' %></li>
               </ul>
             </div>
+
+            <div class="my2">
+              <div class="social clearfix">
+                <!-- Facebook -->
+                <div class="button facebook">
+                  <div class="fb-share-button"
+                    data-href="<%= ENV['APP_URL'] %>"
+                    data-layout="button_count"
+                    data-width="120"
+                    data-show-faces="false"
+                    data-mobile-iframe="true">
+                  </div>
+                </div>
+                <!-- Twitter -->
+                <div class="button twitter">
+                  <a href="https://twitter.com/share" class="twitter-share-button"
+                    data-lang="en"
+                    data-url="<%= ENV['APP_URL'] %>"
+                    data-text="Vin-Vin Funding is a platform which supports &quot;people who try something new in Vietnam&quot;"
+                    data-hashtags="vvf,crowdfunding"
+                  >Tweet</a>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

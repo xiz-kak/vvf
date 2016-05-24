@@ -5,7 +5,7 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <%= yield :project_ogp %>
+  <%= yield :ogp_meta_data %>
 </head>
 <body>
   <div id="fb-root" data-app-id="<%= ENV['FACEBOOK_KEY'] %>"></div>
