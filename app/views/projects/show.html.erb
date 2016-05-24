@@ -42,6 +42,7 @@
                   data-lang="en"
                   data-url="<%= request.url %>"
                   data-text="<%= p.title(locale) %>"
+                  data-hashtags="vvf,crowdfunding"
                 >Tweet</a>
               </div>
             </div>
@@ -188,9 +189,16 @@
 <% end %>
 
 <% content_for :project_ogp do %>
+  <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
   <meta property="og:title" content="<%= p.title(locale) %>" />
   <meta property="og:type" content="article" />
   <meta property="og:description" content="<%= p.blurb(locale) %>" />
   <meta property="og:url" content="<%= request.url %>" />
+  <meta property="og:site_name" content="VinVin-Funding" />
   <meta property="og:image" content="<%= p.image(locale) %>" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@vinvin_funding">
+  <meta name="twitter:title" content="<%= p.title(locale) %>">
+  <meta name="twitter:description" content="<%= p.blurb(locale) %>">
+  <meta name="twitter:image" content="<%= p.image(locale) %>">
 <% end %>
