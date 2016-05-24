@@ -5,50 +5,10 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <%= yield :project_ogp %>
 </head>
 <body>
   <div id="fb-root" data-app-id="<%= ENV['FACEBOOK_KEY'] %>"></div>
-  <script>
-    /*
-    (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=<%= ENV['FACEBOOK_KEY'] %>";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-    (function(w,d){
-      var s,e = d.getElementsByTagName("script")[0],
-      a=function(u,f){if(!d.getElementById(f)){s=d.createElement("script");
-      s.async=!0;s.src=u;if(f){s.id=f;}e.parentNode.insertBefore(s,e);}};
-
-      a("//platform.twitter.com/widgets.js","twitter-wjs");
-    })(this, document);
-    */
-
-    /*
-    $(function() {
-      var h = $(window).height();
-
-      $('#loader-bg, #loader').height(h).css('display','block');
-    });
-
-    // After all loaded, stop loading view
-    $(window).load(function () {
-      stopload();
-    });
-
-    // After certain seconds past, stop loading view
-    $(function(){
-      setTimeout('stopload()', 10);
-    });
-
-    function stopload(){
-      $('#loader-bg').delay(900).fadeOut(800);
-      $('#loader').delay(600).fadeOut(300);
-    }
-    */
-  </script>
   <div id="loader-bg">
     <div id="loader">
       <%= image_tag 'vvf_loading.gif', size: '20x20', alt: 'Now Loading...' %>
@@ -71,10 +31,6 @@
         </div>
       </div>
     <% end %>
-    <!--<div>
-      <p id="notice"><%= flash[:notice] %></p>
-      <p id="alert"><%= flash[:alert] %></p>
-    </div>-->
     <%= yield %>
     <%= render 'layouts/footer' %>
     <%= debug(params) if Rails.env.development? %>
