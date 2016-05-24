@@ -255,3 +255,18 @@
   <p class="project-start-message">Want to start?<br>Yes, you can start now.</p>
   <%= link_to 'Start a project', start_projects_path, class: 'btn btn-white btn-ghost btn-lg mt2'%>
 </div>
+
+<% content_for :ogp_meta_data do %>
+  <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
+  <meta property="og:title" content="Vin-Vin Funding" />
+  <meta property="og:type" content="article" />
+  <meta property="og:description" content="Vin-Vin Funding is a platform which supports &quot;people who try something new in Vietnam&quot;" />
+  <meta property="og:url" content="<%= ENV['APP_URL'] %>" />
+  <meta property="og:site_name" content="VinVin-Funding" />
+  <meta property="og:image" content="<%= "#{ENV['APP_URL']}#{asset_path 'vvf_top_image.png'}" %>" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@vinvin_funding">
+  <meta name="twitter:title" content="Vin-Vin Funding">
+  <meta name="twitter:description" content="Vin-Vin Funding is a platform which supports &quot;people who try something new in Vietnam&quot;">
+  <meta name="twitter:image" content="<%= "#{ENV['APP_URL']}#{asset_path 'vvf_top_image.png'}" %>">
+<% end %>

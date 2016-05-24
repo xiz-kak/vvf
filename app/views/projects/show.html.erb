@@ -188,7 +188,7 @@
   <% end %>
 <% end %>
 
-<% content_for :project_ogp do %>
+<% content_for :ogp_meta_data do %>
   <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
   <meta property="og:title" content="<%= p.title(locale) %>" />
   <meta property="og:type" content="article" />
