@@ -16,7 +16,7 @@ ja:
     pledge_payment_method:
       wallet: 'ウォレット'
     pledge_payment_status:
-      unpaid: '未支払'
+      unpaid: '未承認'
       preapproval_error: '[ERR]事前承認エラー'
       preapproved: '事前承認済'
       pay_back_error: '[ERR]払戻エラー'

@@ -13,7 +13,7 @@
       <th>Languages</th>
       <th>Rewards</th>
       <th>Status</th>
-      <th colspan="6"></th>
+      <th colspan="7"></th>
     </tr>
   </thead>
 
@@ -34,6 +34,7 @@
         <td><%= link_to 'Edit', edit_project_path(project) %></td>
         <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <td><%= link_to 'Preview', preview_project_path(project) %></td>
+        <td><%= link_to 'Pledges', pledges_path(project_code: project.code) %></td>
         <td><%= link_to 'Pay', pay_project_path(project) %></td>
         <td><%= link_to 'Pay Back', pay_back_project_path(project) %></td>
       </tr>

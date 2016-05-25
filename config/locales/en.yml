@@ -16,7 +16,7 @@ en:
     pledge_payment_method:
       wallet: 'Wallet'
     pledge_payment_status:
-      unpaid: 'Unpaid'
+      unpaid: 'Not preapproved'
       preapproval_error: '[ERR]Preapproval error'
       preapproved: 'Preapproved'
       pay_back_error: '[ERR]Pay back error'
