@@ -3,6 +3,16 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :require_self, only: [:edit, :update, :destroy]
 
+  # GET /users/1/activate
+  def activate
+    if (@user = User.load_from_activation_token(params[:id]))
+      @user.activate!
+      redirect_to login_path, notice: 'Welcome to Vin-Vin Funding! Your account was successfully activated. Please login from here.'
+    else
+      not_authenticated
+    end
+  end
+
   # GET /users
   def index
     @users = User.all
@@ -29,8 +39,7 @@ class UsersController < ApplicationController
       if current_user && current_user.is_admin
         redirect_to :users, notice: 'User was successfully created.'
       else
-        auto_login(@user)
-        redirect_to root_path, notice: 'Welcome!! You are successfully signed up.'
+        redirect_to root_path, notice: 'We sent an E-mail to your address. Please check your mail box and activate your account.'
       end
     else
       render :new
