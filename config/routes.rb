@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
   scope '(:locale)', locale: /en|vi|ja/ do
     root 'discover#top'
-    resources :users
+    resources :users  do
+      member do
+        get :activate
+      end
+    end
     resources :languages
     resources :categories
     resources :nations
