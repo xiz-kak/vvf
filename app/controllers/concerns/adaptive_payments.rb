@@ -35,12 +35,12 @@ module AdaptivePayments
              :commissionRate => pledge.reward.project.commission_rate
     }
 
-    pay = adaptive_payments_api.build_pay(approval_options(opts))
+    pay = adaptive_payments_api.build_pay(payment_options(opts))
     pay_response = adaptive_payments_api.pay(pay)
 
     if pay_response.success? && pay_response.paymentExecStatus == EXEC_STATUS_COMPLETED
       pledge.pay!
-      pay_log(pay_response, approval_options(opts))
+      pay_log(pay_response, payment_options(opts))
       return true
     else
       pledge.pay_error!
@@ -115,7 +115,7 @@ module AdaptivePayments
       :returnUrl => application_url(complete_pledge_path(opts[:pledge_id])) }
   end
 
-  def approval_options(opts = {})
+  def payment_options(opts = {})
     { :actionType => 'PAY',
       :currencyCode => 'USD',
       :requestEnvelope => {
@@ -124,8 +124,8 @@ module AdaptivePayments
       :preapprovalKey => opts[:preapprovalKey],
       :cancelUrl => application_url(cancel_projects_path),
       :returnUrl => application_url(complete_projects_path),
-      :feesPayer => 'PRIMARYRECEIVER'
-    }.merge(approval_receiver_list(opts[:amount], opts[:shipping_rate], opts[:email], opts[:commissionRate]))
+      :feesPayer => 'SECONDARYONLY'
+    }.merge(payment_receiver_list(opts[:amount], opts[:shipping_rate], opts[:email], opts[:commissionRate]))
   end
 
   def cancel_preapproval_options(key)
@@ -134,20 +134,20 @@ module AdaptivePayments
 
   # shipping_rate in $
   # commision_rate in % (e.g. 15)
-  def approval_receiver_list(amount, shipping_rate, email, commission_rate)
+  def payment_receiver_list(amount, shipping_rate, email, commission_rate)
     commission = (amount * commission_rate / 100.to_f).to_d.floor(2).to_f
     commission += ((amount + shipping_rate) * 0.05).to_d.floor(2).to_f
 
     { :receiverList => {
         :receiver => [
           {
-            :email => AdaptivePayments.admin_email,
+            :email => email,
             :amount => amount + shipping_rate,
             :primary => true
           },
           {
-            :email => email,
-            :amount => amount + shipping_rate - commission,
+            :email => AdaptivePayments.admin_email,
+            :amount => commission,
             :primary => false
           }
         ]
