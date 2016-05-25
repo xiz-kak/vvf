@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>
+      Welcome to Vin-Vin Funding!
+    </h1>
+    <p>
+      ================================================================================
+    </p>
+    <p>
+      Hello <%= @user.name %>,
+    </p>
+    <p>
+    You have successfully signed up to <a href="<%= ENV['APP_URL']%>">Vin-Vin Funding</a>.
+    </p>
+    <p>
+      Now we are ready to activate your account. 
+      <br>To activate your account, please access this link.
+    </p>
+    <p>
+      <%= @url %>
+      <br>*This link will be expired in 24 hours.
+    </p>
+    <br>
+    <p>
+      If you didn't create a Vin-Vin Funding account, please just delete this email.
+    </p>
+  </body>
+</html>
