@@ -1,0 +1,25 @@
+<section>
+  <div class="full-wide-header py4 px2">
+    <div class="container">
+      <h2 class="mb1 col-md-offset-2">Password reset</h2>
+    </div>
+  </div>
+</section>
+
+<div class="container bg-white">
+  <%= form_tag password_resets_path, :method => :post do %>
+    <div class="form-horizontal col-md-offset-2">
+      <div class="form-group">
+        <%= label_tag :email, nil, class: 'control-label col-md-2' %>
+        <div class="col-md-4">
+          <%= text_field_tag :email, nil, class: 'form-control' %>
+        </div>
+      </div>
+      <div class="col-md-offset-2">
+        <%= submit_tag "Reset my password!", class: 'btn btn-info' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+

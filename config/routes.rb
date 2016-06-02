@@ -61,6 +61,8 @@ Rails.application.routes.draw do
     get 'discover/category/:id' => 'discover#category', as: :discover_category
 
     get 'pages/faq'
+
+    resources :password_resets
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
