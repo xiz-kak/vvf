@@ -9,7 +9,7 @@ class UserMailer < ApplicationMailer
     @user = user
     @url  = "#{ENV['APP_URL']}/users/#{user.activation_token}/activate"
     mail(:to => user.email,
-         :subject => "Welcome to Vin-Vin Funding")
+         :subject => "[VinVin-Funding] Welcome to Vin-Vin Funding")
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -21,6 +21,13 @@ class UserMailer < ApplicationMailer
     @user = user
     @url  = "#{ENV['APP_URL']}/login"
     mail(:to => user.email,
-         :subject => "Your account is now activated")
+         :subject => "[VinVin-Funding] Your account is now activated")
+  end
+
+  def reset_password_email(user)
+    @user = User.find user.id
+    @url  = "#{ENV['APP_URL']}#{edit_password_reset_url(id: @user.reset_password_token, only_path: true)}"
+    mail(:to => user.email,
+         :subject => "[VinVin-Funding] Your password has been reset")
   end
 end

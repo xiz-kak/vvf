@@ -2,22 +2,26 @@
 #
 # Table name: users
 #
-#  id                          :integer          not null, primary key
-#  email                       :string           not null
-#  crypted_password            :string
-#  salt                        :string
-#  created_at                  :datetime
-#  updated_at                  :datetime
-#  name                        :string
-#  is_admin                    :boolean          default(FALSE)
-#  activation_state            :string
-#  activation_token            :string
-#  activation_token_expires_at :datetime
+#  id                              :integer          not null, primary key
+#  email                           :string           not null
+#  crypted_password                :string
+#  salt                            :string
+#  created_at                      :datetime
+#  updated_at                      :datetime
+#  name                            :string
+#  is_admin                        :boolean          default(FALSE)
+#  activation_state                :string
+#  activation_token                :string
+#  activation_token_expires_at     :datetime
+#  reset_password_token            :string
+#  reset_password_token_expires_at :datetime
+#  reset_password_email_sent_at    :datetime
 #
 # Indexes
 #
-#  index_users_on_activation_token  (activation_token)
-#  index_users_on_email             (email) UNIQUE
+#  index_users_on_activation_token      (activation_token)
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token)
 #
 
 class User < ActiveRecord::Base
