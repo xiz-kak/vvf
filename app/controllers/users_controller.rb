@@ -39,7 +39,7 @@ class UsersController < ApplicationController
       if current_user && current_user.is_admin
         redirect_to :users, notice: 'User was successfully created.'
       else
-        redirect_to root_path, notice: 'We sent an E-mail to your address. Please check your mail box and activate your account.'
+        redirect_to root_path, notice: "Thank you for signing up! We sent an E-mail to \"#{@user.email}\". Please check your mail box and activate your account."
       end
     else
       render :new
