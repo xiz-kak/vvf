@@ -19,14 +19,14 @@
   </div>
   <div class="collapse navbar-collapse target">
     <ul class="nav navbar-nav">
-      <li><%= link_to 'Discover', discover_search_path %></li>
-      <li><%= link_to 'Start', start_projects_path %></li>
-      <li><%= link_to 'About', 'http://lp.vinvin-funding.com', target: '_blank' %></li>
+      <li><%= link_to t('header.discover'), discover_search_path %></li>
+      <li><%= link_to t('header.start'), start_projects_path %></li>
+      <li><%= link_to t('header.about'), 'http://lp.vinvin-funding.com', target: '_blank' %></li>
     </ul>
     <%= form_tag('/discover/search', method: 'get', class: 'navbar-form navbar-left') do %>
       <div class="form-group">
         <%= text_field_tag :term, '', class: 'form-control form-control-ghost',
-          placeholder: 'Search' %>
+          placeholder: t('header.search') %>
       </div>
       <button type="submit" class="btn <%= btn_classes %> btn-ghost">
         <i class="glyphicon glyphicon-search"></i>
@@ -52,10 +52,10 @@
             <%= current_user.name %>
           </a>
           <ul class="dropdown-menu">
-            <li><%= link_to 'My page', current_user %></li>
-            <li><%= link_to 'Settings', edit_user_path(current_user) %></li>
+            <li><%= link_to t('header.mypage'), current_user %></li>
+            <li><%= link_to t('header.settings'), edit_user_path(current_user) %></li>
             <li class="divider"></li>
-            <li><%= link_to 'Logout', :logout, method: :post %></li>
+            <li><%= link_to t('header.logout'), :logout, method: :post %></li>
           </ul>
         </li>
         <% if current_user.is_admin %>
@@ -77,8 +77,8 @@
           </li>
         <% end %>
       <% else %>
-        <li><a data-toggle="modal" href="#signup-modal">Sign up</a></li>
-        <li><a data-toggle="modal" href="#login-modal">Login</a></li>
+        <li><a data-toggle="modal" href="#signup-modal"><%= t('header.signup') %></a></li>
+        <li><a data-toggle="modal" href="#login-modal"><%= t('header.login') %></a></li>
       <% end %>
     </ul>
   </div>
@@ -89,7 +89,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button class="close" data-dismiss="modal">&times;</button>
-        <h2 class="modal-title">Sign up</h2>
+        <h2 class="modal-title"><%= t('signup_modal.signup') %></h2>
       </div>
       <div class="modal-body">
         <%= link_to auth_at_provider_path(provider: :facebook), class: 'btn btn-primary btn-block btn-lg my1' do %>
@@ -99,7 +99,7 @@
           <h3><%= image_tag('icon_tw_64_w.png', size: '35x35') %>&nbsp;&nbsp;Twitter</h3>
         <% end %>
         <hr>
-        <%= link_to 'Sign up with E-mail', new_user_path %>
+        <%= link_to t('signup_modal.signup_with_email'), new_user_path %>
       </div>
     </div>
   </div>
@@ -110,7 +110,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button class="close" data-dismiss="modal">&times;</button>
-        <h2 class="modal-title">Login</h2>
+        <h2 class="modal-title"><%= t('login_modal.login') %></h2>
       </div>
       <div class="modal-body">
         <%= link_to auth_at_provider_path(provider: :facebook), class: 'btn btn-primary btn-block btn-lg my1' do %>
@@ -120,9 +120,9 @@
           <h3><%= image_tag('icon_tw_64_w.png', size: '35x35') %>&nbsp;&nbsp;Twitter</h3>
         <% end %>
         <hr>
-        <%= link_to 'Login with E-mail', :login, class: 'btn btn-default btn-block' %>
+        <%= link_to t('login_modal.login_with_email'), :login, class: 'btn btn-default btn-block' %>
         <br>
-        <%= link_to 'Forgot Password?', new_password_reset_path %>
+        <%= link_to t('login_modal.forgot_password'), new_password_reset_path %>
       </div>
     </div>
   </div>

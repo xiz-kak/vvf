@@ -6,7 +6,7 @@
       <% checked = pl.use_this_language == "1" %>
     <% end %>
     <%= f.check_box :use_this_language, checked: checked %>
-    <span>Use this language</span>
+    <span><%= t('project_model.use_this_language') %></span>
   </label>
 </div>
 <%= f.hidden_field :language_id %>

@@ -1,15 +1,15 @@
 <section>
   <div class="container modal-container">
-    <h4 class="my1 text-right">Count: <%= @pledges.size %></h4>
+    <h4 class="my1 text-right"><%= t('profile_pledge_modal.count', pledge_count: @pledges.size) %></h4>
     <table class="table">
       <thead>
         <tr>
-          <th>Reward</th>
-          <th>User</th>
-          <th>Pledged date</th>
-          <th>Amount</th>
-          <th>Shipping rate</th>
-          <th>Total</th>
+          <th><%= t('pledge_model.reward') %></th>
+          <th><%= t('pledge_model.user') %></th>
+          <th><%= t('pledge_model.pledged_date') %></th>
+          <th><%= t('pledge_model.amount') %></th>
+          <th><%= t('pledge_model.shipping_rate') %></th>
+          <th><%= t('pledge_model.total') %></th>
         </tr>
       </thead>
 

@@ -9,7 +9,7 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by_email(params[:email])
 
     if @user.blank?
-      return redirect_to(new_password_reset_path, :notice => 'Failed to find your email address. Please try again.')
+      return redirect_to(new_password_reset_path, :notice => t('msg.email_not_exists'))
     end
 
     # This line sends an email to the user with instructions on how to reset their password (a url with a random token)
@@ -17,9 +17,9 @@ class PasswordResetsController < ApplicationController
 
       # Tell the user instructions have been sent whether or not email was found.
       # This is to not leak information to attackers about which emails exist in the system.
-      redirect_to(root_path, :notice => "Instructions have been sent to \"#{@user.email}\".")
+      redirect_to(root_path, :notice => t('msg.instructions_sent_email', email: @user.email))
     else
-      redirect_to(root_path, :notice => 'Failed to send email to you. Please try again.')
+      redirect_to(root_path, :notice => t('msg.email_sent_failed'))
     end
   end
 
@@ -48,7 +48,7 @@ class PasswordResetsController < ApplicationController
     @user.password_confirmation = params[:user][:password_confirmation]
     # the next line clears the temporary token and updates the password
     if @user.change_password!(params[:user][:password])
-      redirect_to(login_path, :notice => 'Password was successfully updated. Please login again.')
+      redirect_to(login_path, :notice => t('msg.password_updated'))
     else
       render :action => "edit"
     end

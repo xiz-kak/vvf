@@ -56,7 +56,7 @@
     <div class="row">
       <div class="col col-md-10">
         <div class="row">
-          <h3 class="sr-only">Our favorite projects</h3>
+          <h3 class="sr-only"><%= t('top_favorite.favorites') %></h3>
           <div class="tab-content">
             <% Project.favorites.each_with_index do |(c, p), i| %>
             <div id="cat-<%= c.to_s %>" class="tab-pane fade <%= 'in active' if i == 0 %>">
@@ -67,11 +67,11 @@
                       <div class="row">
                         <div class="col">
                           <h3>
-                            <%= link_to "Our Favorites: #{Category.find(c).name(locale)}", discover_category_path(c) %>
+                            <%= link_to "#{t('top_favorite.favorites')}: #{Category.find(c).name(locale)}", discover_category_path(c) %>
                           </h3>
                         </div>
                         <div class="col col-right">
-                          <%= link_to 'See all this category', discover_category_path(c), class: 'see-all-category' %>
+                          <%= link_to t('top_favorite.see_all_this_category'), discover_category_path(c), class: 'see-all-category' %>
                         </div>
                       </div>
                     </div>
@@ -135,12 +135,10 @@
                         </div>
                         <% else %>
                         <div>
-                          <h4>
-                            No project exists yet..&nbsp;&nbsp;Please start your project!!
-                          </h4><br>
+                          <h4><%= t('top_favorite.no_project_msg') %></h4><br>
                         </div>
                         <div>
-                          <%= link_to 'Start a project', start_projects_path,
+                          <%= link_to t('top_favorite.start'), start_projects_path,
                             class: 'btn btn-default btn-lg' %>
                         </div>
                         <% end %>
@@ -174,10 +172,10 @@
     <div class="recommended-title pb2">
       <div class="row">
         <div class="col">
-          <h3>Recommended for you</h3>
+          <h3><%= t('top_recommend.recommends') %></h3>
         </div>
         <div class="col col-right">
-          <%= link_to 'See all', discover_search_path, class: 'btn btn-default btn-sm' %>
+          <%= link_to t('top_recommend.see_all'), discover_search_path, class: 'btn btn-default btn-sm' %>
         </div>
       </div>
     </div>
@@ -252,8 +250,11 @@
 </div>
 
 <div class="start-project-area">
-  <p class="project-start-message">Want to start?<br>Yes, you can start now.</p>
-  <%= link_to 'Start a project', start_projects_path, class: 'btn btn-white btn-ghost btn-lg mt2'%>
+  <p class="project-start-message">
+    <%= t('top_start_msg.message_line_1') %><br>
+    <%= t('top_start_msg.message_line_2') %>
+  </p>
+  <%= link_to t('top_start_msg.start'), start_projects_path, class: 'btn btn-white btn-ghost btn-lg mt2'%>
 </div>
 
 <% content_for :ogp_meta_data do %>

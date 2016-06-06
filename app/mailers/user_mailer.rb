@@ -7,7 +7,7 @@ class UserMailer < ApplicationMailer
   #
   def activation_needed_email(user)
     @user = user
-    @url  = "#{ENV['APP_URL']}/users/#{user.activation_token}/activate"
+    @url  = "#{ENV['APP_URL']}/#{locale}/users/#{user.activation_token}/activate"
     mail(:to => user.email,
          :subject => "[VinVin-Funding] Welcome to Vin-Vin Funding")
   end
@@ -19,14 +19,14 @@ class UserMailer < ApplicationMailer
   #
   def activation_success_email(user)
     @user = user
-    @url  = "#{ENV['APP_URL']}/login"
+    @url  = "#{ENV['APP_URL']}/#{locale}/login"
     mail(:to => user.email,
          :subject => "[VinVin-Funding] Your account is now activated")
   end
 
   def reset_password_email(user)
     @user = User.find user.id
-    @url  = "#{ENV['APP_URL']}#{edit_password_reset_url(id: @user.reset_password_token, only_path: true)}"
+    @url  = "#{ENV['APP_URL']}/#{locale}#{edit_password_reset_url(id: @user.reset_password_token, only_path: true)}"
     mail(:to => user.email,
          :subject => "[VinVin-Funding] Your password has been reset")
   end

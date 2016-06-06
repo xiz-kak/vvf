@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   def activate
     if (@user = User.load_from_activation_token(params[:id]))
       @user.activate!
-      redirect_to login_path, notice: 'Welcome to Vin-Vin Funding! Your account was successfully activated. Please login from here.'
+      redirect_to login_path, notice: t('msg.user_activated')
     else
       not_authenticated
     end
@@ -35,11 +35,20 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
+    if User.exists?(email: @user.email)
+      u = User.find_by(email: @user.email)
+      if u.external? || u.activation_state == 'active'
+        return redirect_to login_path, notice: t('msg.account_exists')
+      else
+        User.where(email: @user.email).update_all(email: "@#{@user.email}")
+      end
+    end
+
     if @user.save
       if current_user && current_user.is_admin
-        redirect_to :users, notice: 'User was successfully created.'
+        redirect_to :users, notice: t('msg.user_created')
       else
-        redirect_to root_path, notice: "Thank you for signing up! We sent an E-mail to \"#{@user.email}\". Please check your mail box and activate your account."
+        redirect_to root_path, notice: t('msg.please_activate', email: @user.email)
       end
     else
       render :new
@@ -49,7 +58,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
-      redirect_to @user, notice: 'User was successfully updated.'
+      redirect_to @user, notice: t('msg.user_updated')
     else
       render :edit
     end
@@ -58,7 +67,7 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user.destroy
-    redirect_to users_url, notice: 'User was successfully destroyed.'
+    redirect_to users_url, notice: t('msg.user_destroyed')
   end
 
   private

@@ -11,12 +11,16 @@
             <div class="row">
               <div class="col-md-6">
                 <%= link_to '#', class: 'btn btn-primary btn-lg btn-block' do %>
-                  Step1<br><br><h3>Project Basics</h3>
+                  <%= t('project_edit.step_1') %>
+                  <br><br>
+                  <h3><%= t('project_edit.step_basics') %></h3>
                 <% end %>
               </div>
               <div class="col-md-6">
                 <%= f.button :submit, name: :edit_rewards, class: 'btn btn-default btn-lg btn-block' do %>
-                  Step2<br><br><h3>Rewards</h3>
+                  <%= t('project_edit.step_2') %>
+                  <br><br>
+                  <h3><%= t('project_edit.step_rewards') %></h3>
                 <% end %>
               </div>
             </div>
@@ -31,29 +35,29 @@
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
           <div class="form-group">
-            <%= f.label :main_language_id %>
+            <%= f.label :main_language_id, t('project_model.main_language') %>
             <%= f.select :main_language_id, Language.all.map{|l| [l.name_en, l.id]}, { selected: @project.main_language.id }, class: 'form-control' %>
           </div>
           <div class="form-group">
-            <%= f.label :category_id %>
+            <%= f.label :category_id, t('project_model.category') %>
             <%= f.select :category_id, Category.all.map{|c| [c.name(locale), c.id]}, {}, class: 'form-control' %>
           </div>
           <div class="form-group">
-            <%= f.label :goal_amount, 'Goal amount (USD)'%>
+            <%= f.label :goal_amount, t('project_model.goal_amount') %>
             <%= f.number_field :goal_amount, step: 1, value: @project.goal_amount.to_i, class: 'form-control' %>
           </div>
           <div class="form-group">
-            <%= f.label :duration_days, 'Duration days (1-60)' %>
+            <%= f.label :duration_days, t('project_model.duration_days') %>
             <%= f.number_field :duration_days, class: 'form-control' %>
           </div>
           <div class="form-group">
-            <%= f.label :applied_begin_date, 'Begin date' %>
+            <%= f.label :applied_begin_date, t('project_model.begin_date') %>
             <div class="form-inline">
               <%= f.date_select :applied_begin_date, {}, class: 'form-control' %>
             </div>
           </div>
           <div class="form-group">
-            <%= f.label :paypal_account, 'Paypal account(E-mail address)' %>
+            <%= f.label :paypal_account, t('project_model.paypal_account') %>
             <%= f.text_field :paypal_account, class: 'form-control' %>
           </div>
         </div>
@@ -78,10 +82,12 @@
           <div class="tab-content lang-tab-content">
             <% Language.sorted.each_with_index do |l, i| %>
               <div class="tab-pane <%= 'active' if i==0 %>" id="project_locale_<%= l.id %>">
+                <br>
                 <% pl = @project.get_or_new_locale(l.id) %>
                 <%= f.fields_for :project_locales, pl do |plf| %>
                   <%= render partial: "project_locale_form", locals: {f: plf, pl: pl} %>
                 <% end %>
+                <br>
                 <% ph = @project.get_or_new_header(l.id) %>
                 <%= f.fields_for :project_headers, ph do |phf| %>
                   <%= render partial: "project_header_form", locals: {f: phf} %>
@@ -105,17 +111,17 @@
         <div class="col-md-8 col-md-offset-2">
           <div class="row">
             <div class="col-md-6">
-              <%= f.submit 'Save Draft', name: :save_draft, class: 'btn btn-default btn-lg btn-block' %>
+              <%= f.submit t('project_edit.save_draft'), name: :save_draft, class: 'btn btn-default btn-lg btn-block' %>
             </div>
             <div class="col-md-6">
-              <%= f.submit 'Next', name: :edit_rewards, class: 'btn btn-info btn-lg btn-block'%>
+              <%= f.submit t('project_edit.next'), name: :edit_rewards, class: 'btn btn-info btn-lg btn-block'%>
             </div>
           </div>
           <h4 class="pt2">
             <% if @project.new_record? %>
-              <%= link_to 'Cancel', @project %>
+              <%= link_to t('project_edit.cancel'), @project %>
             <% else %>
-              <%= link_to 'Discard', discard_project_path(@project), data: { confirm: 'Are you sure?' } %>
+              <%= link_to t('project_edit.discard'), discard_project_path(@project), data: { confirm: t('project_edit.confirm_discard') } %>
             <% end %>
           </h4>
         </div>

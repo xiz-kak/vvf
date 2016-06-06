@@ -67,17 +67,17 @@
             </div>
           </div>
           <div class="project-hero-back pt4">
-            <a href="#rewards-list" class="btn btn-info btn-ghost  btn-lg">Back This Project</a>
+            <a href="#rewards-list" class="btn btn-info btn-ghost btn-block btn-lg"><%= t('prj_show_hero.back_prj') %></a>
           </div>
           <div class="py4">
             <div class="row">
               <div class="col col-md-12">
-                <h6 class="mb2">This project will end on <%= l p.end_at, format: :date %></h6>
+                <h6 class="mb2"><%= t('prj_show_hero.end_at', end_at: l(p.end_at, format: :date)) %></h6>
               </div>
               <div class="col col-md-8">
                 <h5 class="mb1"><%= p.user.name %></h5>
                 <p>
-                  <%= link_to 'See full bio', p.user %>
+                  <%= link_to t('prj_show_hero.see_bio'), p.user %>
                 </p>
               </div>
               <div class="col col-md-4">
@@ -98,25 +98,25 @@
       <div class="row">
         <div class="col col-md-8">
           <div class="mb4">
-            <h3>About this project</h3>
+            <h3><%= t('prj_show_detail.about_prj') %></h3>
           </div>
           <div class="project-content-body">
             <%= p.body(locale).html_safe %>
           </div>
           <div class="mb4">
-            <a href="#rewards-list" class= "btn btn-info btn-block">Back this project</a>
+            <a href="#rewards-list" class= "btn btn-info btn-block"><%= t('prj_show_detail.back_prj') %></a>
           </div>
         </div>
         <div class="col col-md-4">
           <div class="mb4">
-            <h3 id="rewards-list">Rewards</h3>
+            <h3 id="rewards-list"><%= t('prj_show_reward.rewards') %></h3>
           </div>
           <ul class="list-no-style pl0">
             <% p.rewards.each do |r| %>
               <li class="reward-tile-wrap">
                 <div class="reward-tile">
-                  <h3 class="mb1">Reward of $<%= r.price_f %></h3>
-                  <span class="block mb1"><%= r.left_count %> left of <%= r.count %></span>
+                  <h3 class="mb1"><%= t('prj_show_reward.reward_of', price: "$#{r.price_f}") %></h3>
+                  <span class="block mb1"><%= t('prj_show_reward.left_of', left_count: r.left_count, count: r.count) %></span>
                   <div class="reward-image mb1">
                     <%= image_tag r.image(locale) %>
                   </div>
@@ -125,16 +125,20 @@
                   </div>
                   <div class="reward-footer mb1">
                     <div class="reward-footer-item">
-                      <span class="item-label">Estimated delivery:</span>
-                      <span class="item-data"><%= l r.estimated_delivery, format: :date %></span>
+                      <span class="item-label">
+                        <%= t('prj_show_reward.estimated_delivery') %>
+                      </span>
+                      <span class="item-data">
+                        <%= l r.estimated_delivery, format: :y_m %>
+                      </span>
                     </div>
                     <div class="reward-footer-item">
-                      <span class="item-label">Ships to:</span>
+                      <span class="item-label"><%= t('prj_show_reward.ships_to') %></span>
                       <span class="item-data"><%= r.ships_to_div.t %></span>
                     </div>
                   </div>
                   <div class="pledge-button">
-                    <%= link_to 'Pledge this reward', '#pledge-modal',
+                    <%= link_to t('prj_show_reward.pledge_reward'), '#pledge-modal',
                       class: 'btn btn-info btn-block',
                       data: {toggle: 'modal', logged_in: logged_in?, reward_code: r.code} %>
                   </div>
@@ -167,22 +171,22 @@
   <% if (@project.user == current_user || current_user.is_admin) %>
     <div class="floating-panel-right">
       <% if @project.user == current_user && (@project.status_div_temp? || @project.status_div_draft? || @project.status_div_remanded?) %>
-        <h3 class="my1">This is<br>Preview</h3>
-        <%= link_to 'Edit', edit_project_path(@project), class: 'btn btn-default btn-lg my1' %>
-        <%= link_to 'Apply', apply_project_path(@project), class: 'btn btn-info btn-lg my1', data: { confirm: 'Are you sure?' } %>
+        <h3 class="my1"><%= t('prj_show_action.this_is', what: t('prj_show_action.preview')) %></h3>
+        <%= link_to t('prj_show_action.edit'), edit_project_path(@project), class: 'btn btn-default btn-lg my1' %>
+        <%= link_to t('prj_show_action.apply'), apply_project_path(@project), class: 'btn btn-info btn-lg my1', data: { confirm: t('prj_show_action.confirm_to', action: t('prj_show_action.apply')) } %>
       <% elsif current_user.is_admin && @project.status_div_applied? %>
-        <h3 class="my1">This is<br>Preview</h3>
-        <%= link_to 'Remand', remand_project_path(@project), class: 'btn btn-default btn-lg my1', data: { confirm: 'Are you sure?' } %>
-        <%= link_to 'Approve', approve_project_path(@project), class: 'btn btn-info btn-lg my1', data: { confirm: 'Are you sure?' } %>
+        <h3 class="my1"><%= t('prj_show_action.this_is', what: t('prj_show_action.preview')) %></h3>
+        <%= link_to t('prj_show_action.remand'), remand_project_path(@project), class: 'btn btn-default btn-lg my1', data: { confirm: t('prj_show_action.confirm_to', action: t('prj_show_action.remand')) } %>
+        <%= link_to t('prj_show_action.approve'), approve_project_path(@project), class: 'btn btn-info btn-lg my1', data: { confirm: t('prj_show_action.confirm_to', action: t('prj_show_action.approve')) } %>
       <% elsif @project.status_div_active? %>
-        <h3 class="my1">This is<br>your project</h3>
-        <%= link_to 'Suspend', suspend_project_path(@project), class: 'btn btn-danger btn-lg my1', data: { confirm: 'Are you sure?' } %>
+        <h3 class="my1"><%= t('prj_show_action.this_is', what: t('prj_show_action.your_project')) %></h3>
+        <%= link_to t('prj_show_action.suspend'), suspend_project_path(@project), class: 'btn btn-danger btn-lg my1', data: { confirm: t('prj_show_action.confirm_to', action: t('prj_show_action.suspend')) } %>
       <% elsif current_user.is_admin && @project.status_div_suspended? %>
-        <h3 class="my1">This is<br>your project</h3>
-        <%= link_to 'Drop', drop_project_path(@project), class: 'btn btn-danger btn-lg my1', data: { confirm: 'Are you sure?' } %>
-        <%= link_to 'Resume', resume_project_path(@project), class: 'btn btn-info btn-lg my1', data: { confirm: 'Are you sure?' } %>
+        <h3 class="my1"><%= t('prj_show_action.this_is', what: t('prj_show_action.your_project')) %></h3>
+        <%= link_to t('prj_show_action.drop'), drop_project_path(@project), class: 'btn btn-danger btn-lg my1', data: { confirm: t('prj_show_action.confirm_to', action: t('prj_show_action.drop')) } %>
+        <%= link_to t('prj_show_action.resume'), resume_project_path(@project), class: 'btn btn-info btn-lg my1', data: { confirm: t('prj_show_action.confirm_to', action: t('prj_show_action.resume')) } %>
       <% else %>
-        <h3 class="my1">This project is in <%= @project.status_div.t %> status</h3>
+        <h3 class="my1"><%= t('prj_show_action.this_project_is', status: @project.status_div.t) %></h3>
       <% end %>
     </div>
   <% end %>
