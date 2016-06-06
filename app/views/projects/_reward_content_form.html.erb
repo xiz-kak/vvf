@@ -1,9 +1,9 @@
 <div class="form-group">
-  <%= f.label :title %>
+  <%= f.label :title, t('reward_model.title') %>
   <%= f.text_field :title, class: 'form-control' %>
 </div>
 <div class="form-group">
-  <%= f.label :image %><br>
+  <%= f.label :image, t('reward_model.image') %>
   <% if f.object.image.present? %>
     <%= image_tag f.object.image.url, height: 300, class: 'mb1' %>
   <% end %>
@@ -11,7 +11,7 @@
   <%= f.hidden_field :image_cache %>
 </div>
 <div class="form-group">
-  <%= f.label :description %><br>
+  <%= f.label :description, t('reward_mode.description') %>
   <%= f.text_area :description, class: 'form-control', rows: '6' %>
 </div>
 <%= f.hidden_field :language_id %>

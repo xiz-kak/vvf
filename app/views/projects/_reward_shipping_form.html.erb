@@ -11,6 +11,6 @@
   <div class="col-md-5">
     <%= f.number_field :shipping_rate, step: 0.01, value: f.object.shipping_rate_z, disabled: disabled, class: 'form-control' %>
   </div>
-  <%= link_to_remove_field("Remove", f, {}) unless disabled %>
+  <%= link_to_remove_field(t('reward_edit.remove_nation'), f, {}) unless disabled %>
   <%= f.hidden_field :id %>
 </div>

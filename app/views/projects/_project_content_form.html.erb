@@ -1,5 +1,5 @@
 <div class="form-group">
-  <%= f.label :body %>
+  <%= f.label :body, t('project_model.body') %>
   <%= f.cktext_area :body, class: 'ckeditor', ckeditor: {toolbar: :mini, height: 500} %>
 </div>
 <%= f.hidden_field :language_id %>

@@ -5,36 +5,36 @@
 
   <div class="form-horizontal col-md-offset-2">
     <div class="form-group">
-      <%= f.label :name, class: 'control-label col-md-2' %>
+      <%= f.label :name, t('user_model.name'), class: 'control-label col-md-2' %>
       <div class="col-md-4">
         <%= f.text_field :name, class: 'form-control' %>
       </div>
     </div>
     <div class="form-group">
-      <%= f.label :email, class: 'control-label col-md-2' %>
+      <%= f.label :email, t('user_model.email'), class: 'control-label col-md-2' %>
       <div class="col-md-4">
         <%= f.text_field :email, value: @user.email, class: 'form-control' %>
       </div>
     </div>
     <div class="form-group">
-      <%= f.label :password, class: 'control-label col-md-2' %>
+      <%= f.label :password, t('user_model.password'), class: 'control-label col-md-2' %>
       <div class="col-md-4">
         <%= f.password_field :password, class: 'form-control' %>
       </div>
     </div>
     <div class="form-group">
-      <%= f.label :password_confirmation, class: 'control-label col-md-2' %>
+      <%= f.label :password_confirmation, t('user_model.password_confirmation'), class: 'control-label col-md-2' %>
       <div class="col-md-4">
         <%= f.password_field :password_confirmation, class: 'form-control' %>
       </div>
     </div>
     <div class="col-md-offset-2">
       <% if logged_in? %>
-        <%= f.submit 'Save settings', class: 'btn btn-info' %>
-        <span><%= link_to 'View profile', @user, class: 'ml2' %></span>
+        <%= f.submit t('settings.save_settings'), class: 'btn btn-info' %>
+        <span><%= link_to t('settings.view_profile'), @user, class: 'ml2' %></span>
       <% else %>
-        <%= f.submit 'Sign up', class: 'btn btn-info' %>
-        <span>&nbsp;or&nbsp;&nbsp;<%= link_to 'Login', login_path %></span>
+        <%= f.submit t('signup.signup'), class: 'btn btn-info' %>
+        <span>&nbsp;or&nbsp;&nbsp;<%= link_to t('signup.login'), login_path %></span>
       <% end %>
     </div>
   </div>

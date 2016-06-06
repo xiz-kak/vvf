@@ -75,7 +75,7 @@ class ProjectsController < ApplicationController
 
     if @project.save(validate: params[:save_draft].blank?)
       if params[:save_draft]
-        redirect_to :back, notice: 'Draft was successfully saved.'
+        redirect_to :back, notice: t('msg.draft_saved')
       elsif params[:edit_rewards]
         redirect_to edit_rewards_project_path(@project)
       end
@@ -100,7 +100,7 @@ class ProjectsController < ApplicationController
       if params[:edit_rewards]
         redirect_to edit_rewards_project_path(@project)
       elsif params[:save_draft]
-        redirect_to :back, notice: 'Draft was successfully saved.'
+        redirect_to :back, notice: t('msg.draft_saved')
       elsif params[:preview]
         redirect_to preview_project_path(@project)
       end
@@ -116,49 +116,49 @@ class ProjectsController < ApplicationController
   # GET /projects/1/discard
   def discard
     @project.discard!
-    redirect_to projects_url, notice: 'Project was discarded.'
+    redirect_to projects_url, notice: t('msg.project_discarded')
   end
 
   # GET /projects/1/apply
   def apply
     @project.apply!
-    redirect_to @project, notice: 'Project was successfully applied.'
+    redirect_to @project, notice: t('msg.project_applied')
   end
 
   # GET /projects/1/remand
   def remand
     @project.remand!
-    redirect_to @project, notice: 'Project was successfully remanded.'
+    redirect_to @project, notice: t('msg.project_remanded')
   end
 
   # GET /projects/1/approve
   def approve
     @project.approve!
-    redirect_to @project, notice: 'Project was successfully approved.'
+    redirect_to @project, notice: t('msg.project_approved')
   end
 
   # GET /projects/1/resume
   def resume
     @project.resume!
-    redirect_to @project, notice: 'Project was successfully resumed.'
+    redirect_to @project, notice: t('msg.project_resumed')
   end
 
   # GET /projects/1/suspend
   def suspend
     @project.suspend!
-    redirect_to @project, notice: 'Project was successfully suspended.'
+    redirect_to @project, notice: t('msg.project_suspended')
   end
 
   # GET /projects/1/drop
   def drop
     @project.drop!
-    redirect_to projects_url, notice: 'Project was successfully dropped.'
+    redirect_to projects_url, notice: t('msg.project_dropped')
   end
 
   # DELETE /projects/1
   def destroy
     @project.destroy
-    redirect_to projects_url, notice: 'Project was successfully destroyed.'
+    redirect_to projects_url, notice: t('msg.project_destroyed')
   end
 
   # GET /project/1/pay
@@ -172,7 +172,7 @@ class ProjectsController < ApplicationController
       end
     end
 
-    redirect_to projects_path, notice: "Payment completed [ Success: #{s_cnt}, Failure: #{f_cnt} ]"
+    redirect_to projects_path, notice: t('msg.payment_completed_cnt', s_cnt: s_cnt, f_cnt: f_cnt)
   end
 
   # GET /project/1/pay_back
@@ -186,17 +186,17 @@ class ProjectsController < ApplicationController
       end
     end
 
-    redirect_to projects_path, notice: "Back-payment completed [ Success: #{s_cnt}, Failure: #{f_cnt} ]"
+    redirect_to projects_path, notice: t('msg.back_payment_completed_cnt', s_cnt: s_cnt, f_cnt: f_cnt)
   end
 
   # GET /projects/complete
   def complete
-    redirect_to @project, notice: 'Payment is completed!'
+    redirect_to @project, notice: t('msg.payment_completed')
   end
 
   # GET /projects/cancel
   def cancel
-    redirect_to @project, notice: 'Payment is canceled!'
+    redirect_to @project, notice: t('msg.payment_canceled')
   end
 
   private
@@ -291,7 +291,7 @@ class ProjectsController < ApplicationController
     return render_404 unless @project.user == current_user || is_admin?
 
     unless @project.status_div_draft? || @project.status_div_remanded? || @project.status_div_active? || @project.status_div_temp?
-      redirect_to projects_url, alert: "This project is under #{@project.status_div.t}, then you cannot edit now."
+      redirect_to projects_url, alert: t('msg.project_not_editable_because', status: @project.status_div.t)
     end
   end
 end

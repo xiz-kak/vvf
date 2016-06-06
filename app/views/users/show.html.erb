@@ -5,12 +5,12 @@
         <%= @user.name %>
         <% if @user == current_user %>
           <small>
-            (<%= link_to 'Edit profile', edit_user_path(@user) %>)
+            (<%= link_to t('profile.edit_profile'), edit_user_path(@user) %>)
           </small>
         <% end %>
       </h2>
       <% backed_count = Project.backed_by(@user.id).count %>
-      <h4>backed <%= backed_count %>&nbsp;<%= 'project'.pluralize(backed_count) %></h4>
+      <h4><%= t('profile.backed_count', backed_count: backed_count, pluralized: 'project'.pluralize(backed_count)) %></h4>
       <div class="mt2">
         <% if auth_fb = @user.authentications.find_by(provider: :facebook) %>
           <%= link_to image_tag('icon_fb_48.png'), "http://facebook.com/#{auth_fb.uid.to_s}", target: '_blank' %>
@@ -27,7 +27,7 @@
   <div class="container">
 
     <div class="posted-projects py3">
-      <h3 class="my2">Posted projects</h3>
+      <h3 class="my2"><%= t('profile.posted_projects') %></h3>
       <% Project.posted_by(@user).each do |p| %>
         <div class="row project-card-wrap">
           <div class="col-md-10">
@@ -87,19 +87,19 @@
           </div>
           <div class="col-md-2">
             <p>
-              <h5>Status:</h5>
+              <h5><%= t('profile.status') %></h5>
               <h3 class="mt1 ml2">
                 <% if p.finished? %>
-                  <%= 'Finished' %>
+                  <%= t('profile.finished') %>
                 <% else %>
                   <%= p.status_div.t %>
                 <% end %>
               </h3>
             </p>
             <% if p.status_div_draft? || p.status_div_remanded? %>
-              <%= link_to 'Edit', edit_project_path(p), class: 'btn btn-default btn-block' %>
+              <%= link_to t('profile.edit'), edit_project_path(p), class: 'btn btn-default btn-block' %>
             <% elsif p.status_div_active? || p.status_div_suspended? %>
-              <%= link_to 'See pledges', '#pledge-list-modal',
+              <%= link_to t('profile.see_pledges'), '#pledge-list-modal',
                 class: 'btn btn-default btn-block',
                 data: {toggle: 'modal', project_code: p.code} %>
             <% end %>
@@ -109,7 +109,7 @@
     </div>
 
     <div class="backed-projects py3">
-      <h3 class="my2">Backed projects</h3>
+      <h3 class="my2"><%= t('profile.backed_projects') %></h3>
       <% Project.backed_by(@user).each do |p| %>
         <div class="row project-card-wrap">
           <div class="col-md-10">
@@ -165,17 +165,17 @@
           </div>
           <div class="col-md-2">
             <p>
-              <h5>Status:</h5>
+              <h5><%= t('profile.status') %></h5>
               <h3 class="mt1 ml2">
                 <% if p.finished? %>
-                  <%= 'Finished' %>
+                  <%= t('profile.finished') %>
                 <% else %>
                   <%= p.status_div.t %>
                 <% end %>
               </h3>
             </p>
             <% if p.status_div_active? || p.status_div_suspended? %>
-              <%= link_to 'See my pledges', '#pledge-list-modal',
+              <%= link_to t('profile.my_pledges'), '#pledge-list-modal',
                 class: 'btn btn-default btn-block',
                 data: {toggle: 'modal', project_code: p.code, pledged_by: 'me'} %>
             <% end %>
@@ -191,7 +191,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button class="close" data-dismiss="modal">&times;</button>
-        <h2 class="my2">Pledge List</h2>
+        <h2 class="my2"><%= t('profile_pledge_modal.pledge_list') %></h2>
       </div>
       <div class="modal-body" id="pledge-list-info">
         <!-- pledge list -->
@@ -209,7 +209,7 @@
       $.ajax({
         url: "/projects/pledge_list",
         type: "GET",
-        data: {project_code: project_code, pledged_by: pledged_by},
+        data: {locale: "<%= locale %>", project_code: project_code, pledged_by: pledged_by},
         dataType: "html",
         success: function(data, status, xhr) {
           return modal.find('#pledge-list-info').html(data);
