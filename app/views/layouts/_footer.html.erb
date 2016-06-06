@@ -4,17 +4,17 @@
       <div class="col col-md-6">
         <div class="row">
           <div class="col col-md-6">
-            <h3>Info</h3>
+            <h3><%= t('footer.info') %></h3>
             <ul class="list-vertical mt2">
-              <li><%= link_to 'What is Vin-Vin Funding?', 'http://lp.vinvin-funding.com', target: '_blank' %></li>
-              <li><%= link_to 'Terms of Use', image_url('terms_of_use_ja.pdf'), target: '_blank' %></li>
-              <li><%= link_to '特定商取引法に基づく表記', image_url('specified_commercial_transaction_law_ja.pdf'), target: '_blank' %></li>
+              <li><%= link_to t('footer.about_vvf'), 'http://lp.vinvin-funding.com', target: '_blank' %></li>
+              <li><%= link_to t('footer.terms'), image_url('terms_of_use_ja.pdf'), target: '_blank' %></li>
+              <li><%= link_to t('footer.com_law'), image_url('specified_commercial_transaction_law_ja.pdf'), target: '_blank' %></li>
             </ul>
           </div>
           <div class="col col-md-6">
-            <h3>Help</h3>
+            <h3><%= t('footer.help') %></h3>
             <ul class="list-vertical mt2">
-              <li><%= link_to 'FAQ', pages_faq_path %></li>
+              <li><%= link_to t('footer.faq'), pages_faq_path %></li>
             </ul>
           </div>
         </div>
@@ -22,7 +22,7 @@
       <div class="col col-md-6">
         <div class="row">
           <div class="col col-md-6">
-            <h3>Discover</h3>
+            <h3><%= t('footer.discover') %></h3>
             <ul class="list-vertical mt2">
               <% Category.sorted.each do |c| %>
                 <li><%= link_to c.name(locale), discover_category_path(c) %></li>
@@ -30,19 +30,20 @@
             </ul>
           </div>
           <div class="col col-md-6">
-            <h3>Who we are</h3>
+            <h3><%= t('footer.about_us') %></h3>
             <div class="about-company">
               <ul class="list-vertical">
                 <li>
                   <%= link_to 'http://www.jepco.org', target: '_blank' do %>
-                    <span class="h4">JEPCO, K.K.</span>
+                    <span class="h4"><%= t('footer.jepco_kk') %></span>
                     <span class="glyphicon glyphicon-new-window"></span>
                   <% end %>
                 </li>
-                <li>Since January 16, 2016</li>
+                <li><%= t('footer.jepco_since') %></li>
                 <br>
-                <li>Akasaka Kaikan Building B1F</li>
-                <li>Akasaka 2-13-5, Minato&nbsp;&nbsp;Tokyo</li>
+                <li><%= t('footer.jepco_address_1') %></li>
+                <li><%= t('footer.jepco_address_2') %></li>
+                <li><%= t('footer.jepco_address_3') %></li>
                 <br>
                 <li><%= mail_to 'info@vinvin-funding.com' %></li>
               </ul>

@@ -1,7 +1,7 @@
 <section>
   <div class="full-wide-header py4 px2">
     <div class="container">
-      <h2 class="mb1 col-md-offset-2">Password reset</h2>
+      <h2 class="mb1 col-md-offset-2"><%= t('password_reset.password_reset') %></h2>
     </div>
   </div>
 </section>
@@ -14,25 +14,25 @@
 
     <div class="form-horizontal col-md-offset-2">
       <div class="form-group">
-        <%= f.label :email, class: 'control-label col-md-2' %>
+        <%= f.label :email, t('user_model.email'), class: 'control-label col-md-2' %>
         <div class="col-md-4">
           <%= @user.email %>
         </div>
       </div>
       <div class="form-group">
-        <%= f.label :password, class: 'control-label col-md-2' %>
+        <%= f.label :password, t('user_model.password'), class: 'control-label col-md-2' %>
         <div class="col-md-4">
           <%= f.password_field :password, class: 'form-control' %>
         </div>
       </div>
       <div class="form-group">
-        <%= f.label :password_confirmation, class: 'control-label col-md-2' %>
+        <%= f.label :password_confirmation, t('user_model.password_confirmation'), class: 'control-label col-md-2' %>
         <div class="col-md-4">
           <%= f.password_field :password_confirmation, class: 'form-control' %>
         </div>
       </div>
       <div class="col-md-offset-2">
-        <%= f.submit 'Reset', class: 'btn btn-info' %>
+        <%= f.submit t('password_reset.reset'), class: 'btn btn-info' %>
       </div>
     </div>
   <% end %>

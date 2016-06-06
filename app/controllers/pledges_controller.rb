@@ -44,7 +44,7 @@ class PledgesController < ApplicationController
   # GET /pledges/1/edit
   def edit
     if !is_admin? && @pledge.pledge_payment.status != Divs::PledgePaymentStatus::UNPAID
-      return redirect_to @pledge, alert: 'This payment is proceeded. You cannot modify.'
+      return redirect_to @pledge, alert: t('msg.payment_proceeded')
     end
   end
 
@@ -53,7 +53,7 @@ class PledgesController < ApplicationController
     @pledge = Pledge.new(pledge_params)
 
     unless @pledge.reward.can_pledge_more?
-      flash.now[:danger] = 'Sorry. This reward is all gone...'
+      flash.now[:danger] = t('msg.reward_all_gone')
       return render :new
     end
 
@@ -61,18 +61,18 @@ class PledgesController < ApplicationController
     @pledge.pledged_at = Time.now
 
     if Rails.env.production?
-      return redirect_to :back, alert: 'Vin-Vin Funding is still in Beta. Pledge will be available after July.'
+      return redirect_to :back, alert: 'Vin-Vin Funding is still in Beta version. Pledge will be available after July.'
     end
 
     if @pledge.save
       if preapprove(@pledge)
         # redirected already to somewhere inside paypal
       else
-        flash[:danger] = 'Failed to preapprove the payment. Please try again.'
+        flash[:danger] = t('msg.preapproval_failed')
         redirect_to @pledge.reward.project
       end
     else
-      flash.now[:danger] = 'Failed to save. Please try again.'
+      flash.now[:danger] = t('msg.pledge_save_failed')
       render :new
     end
   end
@@ -80,18 +80,18 @@ class PledgesController < ApplicationController
   # PATCH/PUT /pledges/1
   def update
     if @pledge.pledge_payment.status != Divs::PledgePaymentStatus::UNPAID
-      return redirect_to :back, alert: 'This paymenr is proceeded already. You cannot modify.'
+      return redirect_to :back, alert: t('msg.payment_proceeded')
     end
 
     if @pledge.update(pledge_params)
       if preapprove(@pledge)
         # redirected already to somewhere inside paypal
       else
-        flash[:danger] = 'Failed to preapprove the payment. Please try again.'
+        flash[:danger] = t('msg.preapproval_failed')
         redirect_to @pledge.reward.project
       end
     else
-      flash.now[:danger] = 'Failed to save. Please try again.'
+      flash.now[:danger] = t('msg.pledge_save_failed')
       render :edit
     end
   end
@@ -99,7 +99,7 @@ class PledgesController < ApplicationController
   # DELETE /pledges/1
   def destroy
     @pledge.destroy
-    redirect_to pledges_url, notice: 'Pledge was successfully destroyed.'
+    redirect_to pledges_url, notice: t('msg.pledge_destroyed')
   end
 
   # GET /pledges/1/pay
@@ -111,12 +111,12 @@ class PledgesController < ApplicationController
 
     if payable_status.include?(@pledge.pledge_payment.status)
       if pay_to_creator(@pledge)
-        flash[:success] = "Payment successfully completed"
+        flash[:success] = t('msg.payment_completed')
       else
-        flash[:danger] = "Payment failed"
+        flash[:danger] = t('msg.payment_failed')
       end
     else
-      flash[:danger] = "\"#{@pledge.pledge_payment.status.t}\" cannot be executed payment."
+      flash[:danger] = t('msg.not_payable_status', status: @pledge.pledge_payment.status.t)
     end
     redirect_to action: :index
   end
@@ -130,12 +130,12 @@ class PledgesController < ApplicationController
 
     if payable_status.include?(@pledge.pledge_payment.status)
       if pay_back_to_backer(@pledge)
-        flash[:success] = "Back payment successfully completed"
+        flash[:success] = t('msg.back_payment_completed')
       else
-        flash[:danger] = "Back payment failed"
+        flash[:danger] = t('msg.back_payment_failed')
       end
     else
-      flash[:danger] = "\"#{@pledge.pledge_payment.status.t}\" cannot be executed back payment."
+      flash[:danger] = t('msg.not_back_payable_status', status: @pledge.pledge_payment.status.t)
     end
     redirect_to action: :index
   end
@@ -148,7 +148,7 @@ class PledgesController < ApplicationController
     RewardPledgeSummary.pledge(@pledge.reward.code)
 
     project = @pledge.reward.project
-    flash[:info] = 'Successfully pledged'
+    flash[:info] = t('msg.pledge_successful')
     redirect_to project
   end
 
@@ -156,7 +156,7 @@ class PledgesController < ApplicationController
   def cancel
     project = @pledge.reward.project
 
-    flash.now[:info] = 'Pledge canceled'
+    flash.now[:info] = t('msg.pledge_canceled')
     render :edit
   end
 

@@ -1,15 +1,10 @@
 <div class="hero-image hero-image-start">
   <div class="start-project-wrap">
-    <p class="project-start-message">Your Project Starts From Here</p>
-    <%= link_to 'Start a project', new_project_path, class: 'btn btn-white btn-ghost btn-xlg mt3' %>
+    <p class="project-start-message"><%= t('prj_start_hero.message_line_1') %></p>
+    <%= link_to t('prj_start_hero.start'), new_project_path, class: 'btn btn-white btn-ghost btn-xlg mt3' %>
   </div>
 </div>
 
 <div class="container">
   <%= image_tag("about_vvf_1_#{locale}.png", width: '100%', class: 'my4') %>
-</div>
-
-<div class="start-project-area">
-  <p class="project-start-message">Want to start?<br>Yes, you can start now.</p>
-  <%= link_to 'Start a project', start_projects_path, class: 'btn btn-white btn-ghost btn-lg mt2'%>
 </div>
