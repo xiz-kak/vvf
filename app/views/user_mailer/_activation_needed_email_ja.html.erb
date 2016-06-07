@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>
+      ようこそVin-Vin Fundingへ！
+    </h1>
+    <p>
+      ================================================================================
+    </p>
+    <p>
+      <%= @user.name %>様
+    </p>
+    <p>
+      <a href="<%= ENV['APP_URL']%>">Vin-Vin Funding</a>にご登録いただき、ありがとうございます。
+    </p>
+    <p>
+      下記のリンクよりアカウントのアクティベーションを行ってください。
+    </p>
+    <p>
+      <%= @url %>
+      <br>*このリンクは２４時間で無効になります。
+    </p>
+    <br>
+    <p>
+      身に覚えがない場合、このメールは破棄してください。
+    </p>
+  </body>
+</html>

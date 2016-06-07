@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>
+      ようこそVin-Vin Fundingへ！
+    </h1>
+    <p>
+      ================================================================================
+    </p>
+    <p>
+      <%= @user.name %>様
+    </p>
+    <p>
+      <a href="http://www.vinvin-funding.com">Vin-Vin Funding</a>のアカウントがアクティベーションされました。
+    </p>
+    <p>
+      ユーザー名は「<%= @user.email %>」です。
+    </p>
+    <p>
+      以下のリンクよりログインしてください。
+      <%= @url %>
+    </p>
+    <p>
+      Vin-Vin Fundingをどうぞお楽しみください。
+    </p>
+  </body>
+</html>

@@ -70,6 +70,10 @@ en:
     please_activate: 'Thank you for signing up! We sent an E-mail to "%{email}". Please check your mail box and activate your account.'
     user_updated: 'User info was successfully updated.'
     user_destroyed: 'User was successfully destroyed.'
+  mail_subject:
+    activation_needed: '[VinVin-Funding] Welcome to Vin-Vin Funding'
+    activation_success: '[VinVin-Funding] Your account is now activated'
+    reset_password: '[VinVin-Funding] Your password has been reset'
   user_model:
     name: 'Name'
     email: 'Email'

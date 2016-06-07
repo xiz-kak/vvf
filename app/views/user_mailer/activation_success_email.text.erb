@@ -1,12 +1,7 @@
-Congratulations!
-================================================================================
-
-Hello <%= @user.name %>,
-
-You have successfully activated your Vin-Vin Funding account.
-
-Your username is: <%= @user.email %>
-
-To login to the site, just follow this link: <%= @url %>.
-
-Thanks for joining and enjoy Vin-Vin Funding!
+<% if locale.to_s == 'vi' %>
+  <%= render 'activation_success_email_vi' %>
+<% elsif locale.to_s == 'ja' %>
+  <%= render 'activation_success_email_ja' %>
+<% else %>
+  <%= render 'activation_success_email_en' %>
+<% end %>

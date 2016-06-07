@@ -40,7 +40,7 @@ class UsersController < ApplicationController
       if u.external? || u.activation_state == 'active'
         return redirect_to login_path, notice: t('msg.account_exists')
       else
-        User.where(email: @user.email).update_all(email: "@#{@user.email}")
+        User.where(email: @user.email).update_all(email: "#{Time.now.strftime('%Y%m%d-%H%M%S%3N')}-#{@user.email}")
       end
     end
 
