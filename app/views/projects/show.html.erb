@@ -206,3 +206,28 @@
   <meta name="twitter:description" content="<%= p.blurb(locale) %>">
   <meta name="twitter:image" content="<%= p.image(locale) %>">
 <% end %>
+
+<script type="text/javascript">
+  $('#pledge-modal').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget);
+    if (button.data('logged-in') === false) {
+      document.location = '/login';
+      return;
+    }
+    var reward_code = button.data('reward-code');
+    var modal = $(this);
+    return $.ajax({
+      url: "/<%= locale %>/rewards/" + reward_code + "/new_pledge",
+      type: "GET",
+      data: {},
+      dataType: "html",
+      success: function(data, status, xhr) {
+        return modal.find('#pledge-info').html(data);
+      },
+      error: function(xhr, status, error) {
+        modal.modal('hide');
+        return alert('Failed to load pledge info!!\n[Error] '+error);
+      }
+    });
+  });
+</script>

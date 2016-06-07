@@ -156,8 +156,8 @@ class PledgesController < ApplicationController
   def cancel
     project = @pledge.reward.project
 
-    flash.now[:info] = t('msg.pledge_canceled')
-    render :edit
+    flash[:info] = t('msg.pledge_canceled')
+    redirect_to project
   end
 
   # POST rewards/1/shipping_rate

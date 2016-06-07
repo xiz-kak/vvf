@@ -2,6 +2,8 @@ class OauthsController < ApplicationController
   # sends the user on a trip to the provider,
   # and after authorizing there back to the callback url.
   def oauth
+    ::Sorcery::Controller::Config.facebook.callback_url = ENV["APP_URL"] + "/#{locale}/oauth/callback?provider=facebook"
+    ::Sorcery::Controller::Config.twitter.callback_url = ENV["APP_URL"] + "/#{locale}/oauth/callback?provider=twitter"
     login_at(params[:provider])
   end
 
