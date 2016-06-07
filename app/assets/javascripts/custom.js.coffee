@@ -63,6 +63,8 @@ exec_on_ready = ->
         scrollTop: 0
     }, 500)
     return false
+
+  ###
   $('#pledge-modal').on 'show.bs.modal', (event) ->
     button = $(event.relatedTarget)
     if button.data('logged-in') == false
@@ -80,6 +82,7 @@ exec_on_ready = ->
       error: (xhr, status, error) ->
         modal.modal('hide')
         alert('Failed to load pledge info!!\n[Error] '+error)
+  ###
 
 $(document).ready(exec_on_ready)
 $(document).on('page:load', exec_on_ready)
