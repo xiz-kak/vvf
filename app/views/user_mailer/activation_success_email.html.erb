@@ -1,29 +1,7 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  </head>
-  <body>
-    <h1>
-      Congratulations!
-    </h1>
-    <p>
-      ================================================================================
-    </p>
-    <p>
-      Hello <%= @user.name %>,
-    </p>
-    <p>
-      You have successfully activated your <a href="http://www.vinvin-funding.com">Vin-Vin Funding</a> account.
-    </p>
-    <p>
-      Your username is: <%= @user.email %>
-    </p>
-    <p>
-      To login to the site, just follow this link: <%= @url %>.
-    </p>
-    <p>
-      Thank you for joining and enjoy Vin-Vin Funding!
-    </p>
-  </body>
-</html>
+<% if locale.to_s == 'vi' %>
+  <%= render 'activation_success_email_vi' %>
+<% elsif locale.to_s == 'ja' %>
+  <%= render 'activation_success_email_ja' %>
+<% else %>
+  <%= render 'activation_success_email_en' %>
+<% end %>

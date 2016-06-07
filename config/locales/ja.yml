@@ -70,6 +70,10 @@ ja:
     please_activate: 'Vin-Vin Fundingへようこそ！"%{email}"にメールを送信しましので、手順に従ってアクティベーションを行ってください。 '
     user_updated: 'ユーザー情報を更新しました'
     user_destroyed: 'ユーザーを削除しました。'
+  mail_subject:
+    activation_needed: '[VinVin-Funding] Vin-Vin Fundingへようこそ'
+    activation_success: '[VinVin-Funding] アカウントが作成されました'
+    reset_password: '[VinVin-Funding] パスワードリセットのお知らせ'
   user_model:
     name: 'Name'
     email: 'Email'

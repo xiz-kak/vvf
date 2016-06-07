@@ -1,13 +1,7 @@
-Welcome to Vin-Vin Funding!
-================================================================================
-
-Hello <%= @user.name %>,
-
-You have successfully signed up to Vin-Vin Funding
-Now we are ready to activate your account.
-To activate your account, please follow this link.
-
-<%= @url %>
-*This link will be expired in 24 hours.
-
-If you didn't create a Vin-Vin Funding account, please just delete this email.
+<% if locale.to_s == 'vi' %>
+  <%= render 'activation_needed_email_vi' %>
+<% elsif locale.to_s == 'ja' %>
+  <%= render 'activation_needed_email_ja' %>
+<% else %>
+  <%= render 'activation_needed_email_en' %>
+<% end %>
