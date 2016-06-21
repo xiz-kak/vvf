@@ -1,0 +1,7 @@
+<% if locale.to_s == 'vi' %>
+  <%= render 'apply_email_to_creator_vi' %>
+<% elsif locale.to_s == 'ja' %>
+  <%= render 'apply_email_to_creator_ja' %>
+<% else %>
+  <%= render 'apply_email_to_creator_en' %>
+<% end %>
