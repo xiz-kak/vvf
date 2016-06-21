@@ -173,7 +173,7 @@ ja:
     apply: '申請'
     remand: '差戻し'
     approve: '承認'
-    suspend: '一時休止'
+    suspend: '保留'
     drop: '中止'
     resume: '再開'
     this_project_is: 'ステータス：[%{status}]のプロジェクトです'

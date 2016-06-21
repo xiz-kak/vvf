@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>
+      [ACTION REQUIRED]New project submitted
+    </h1>
+    <p>
+      ==================================================
+    </p>
+    <p>
+      Hello admin,
+    </p>
+    <p>
+      <%= @user.name %> submitted a new project, <%= @project.title(locale) %>.
+    </p>
+    <p>
+      Please access the link below to review the project.
+      <br><%= @review_url %>
+    </p>
+  </body>
+</html>

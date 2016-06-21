@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>
+      Thank you for submitting new project!
+    </h1>
+    <p>
+      ==================================================
+    </p>
+    <p>
+      Hello <%= @user.name %>,
+    </p>
+    <p>
+      Thank you for submitting new project, <%= @project.title(locale) %>.
+    </p>
+    <p>
+      Your project will be public after approved through the review process.
+      <br>This review usually tekes 5-10 days.
+    </p>
+    <p>
+      To check the status of your project, plese go to 'My Page' and find your project in the list of the 'Posted projects'.
+    </p>
+    <p>
+      If you didn't submit new project, please reply this email with a comment "I didn't submit anything".
+    </p>
+    <br>
+    <p>
+      Sincerely,
+    </p>
+    <p>
+      Vin-Vin Funding Application Review Team
+    </p>
+  </body>
+</html>
