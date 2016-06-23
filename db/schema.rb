@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160602032722) do
+ActiveRecord::Schema.define(version: 20160622063610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,24 @@ ActiveRecord::Schema.define(version: 20160602032722) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
+
+  create_table "news", force: :cascade do |t|
+    t.datetime "begin_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "news_contents", force: :cascade do |t|
+    t.integer  "news_id"
+    t.integer  "language_id"
+    t.string   "title"
+    t.string   "body"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "news_contents", ["language_id"], name: "index_news_contents_on_language_id", using: :btree
+  add_index "news_contents", ["news_id"], name: "index_news_contents_on_news_id", using: :btree
 
   create_table "payment_vendor_locales", force: :cascade do |t|
     t.integer  "payment_vendor_id"
@@ -306,6 +324,8 @@ ActiveRecord::Schema.define(version: 20160602032722) do
   add_foreign_key "category_locales", "languages"
   add_foreign_key "faq_contents", "faqs"
   add_foreign_key "faq_contents", "languages"
+  add_foreign_key "news_contents", "languages"
+  add_foreign_key "news_contents", "news"
   add_foreign_key "payment_vendor_locales", "languages"
   add_foreign_key "payment_vendor_locales", "payment_vendors"
   add_foreign_key "pledge_payments", "payment_vendors"
