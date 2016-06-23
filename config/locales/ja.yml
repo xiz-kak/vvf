@@ -74,6 +74,8 @@ ja:
     activation_needed: '[VinVin-Funding] Vin-Vin Fundingへようこそ'
     activation_success: '[VinVin-Funding] アカウントが作成されました'
     reset_password: '[VinVin-Funding] パスワードリセットのお知らせ'
+    apply_email_to_creator: '[VinVin-Funding] 新しいプロジェクトが投稿されました'
+    apply_email_to_admin: '[ACTION REQUIRED] 新しいプロジェクトが投稿されました'
   user_model:
     name: 'Name'
     email: 'Email'
@@ -130,6 +132,7 @@ ja:
     about_vvf: 'Vin-Vin Funding とは？'
     terms: '利用規約'
     com_law: '特定商取引法に基づく表記'
+    news: 'お知らせ一覧'
     help: 'ヘルプ'
     faq: 'よくある質問'
     discover: '探す'
@@ -183,6 +186,8 @@ ja:
     start: 'プロジェクトを始める'
   pages_faq:
     faq: 'よくある質問'
+  pages_news:
+    news: 'お知らせ一覧'
   login:
     login_title: 'ログイン'
     or: 'OR'

@@ -132,6 +132,7 @@ en:
     about_vvf: 'What is Vin-Vin Funding?'
     terms: 'Terms of use'
     com_law: 'Specified Commercial Transaction Law'
+    news: 'News'
     help: 'Help'
     faq: 'FAQ'
     discover: 'Discover'
@@ -185,6 +186,8 @@ en:
     start: 'Start a project'
   pages_faq:
     faq: 'Frequently Asked Questions'
+  pages_news:
+    news: 'News'
   login:
     login_title: 'Login'
     or: 'OR'

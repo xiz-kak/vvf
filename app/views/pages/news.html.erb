@@ -1,0 +1,74 @@
+<section>
+  <div class="full-wide-header py4 px2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-1 col-md-11">
+          <h2><%= t('pages_news.news') %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-offset-2 col-md-8">
+        <div class="news-list">
+          <% News.active.sorted.each do |n| %>
+            <dl>
+              <dt><%= l n.begin_at, format: :date %></dt>
+              <dd>
+                <%= link_to n.title(locale), '#news-modal',
+                  data: {toggle: 'modal', news_id: n.id} %>
+              </dd>
+            </dl>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="news-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="news-title"></h4>
+      </div>
+      <div class="modal-body">
+        <p id="news-begin-at" class="text-right"></p>
+        <p id="news-body"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#news-modal').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget);
+    var news_id = button.data('news-id');
+    var modal = $(this);
+    return $.ajax({
+      url: "/<%= locale %>/pages/news_body/" + news_id,
+      type: "GET",
+      data: {},
+      dataType: "json",
+      success: function(data, status, xhr) {
+        modal.find('#news-title').text(data.title);
+        modal.find('#news-begin-at').text(data.begin_at);
+        var body = data.body;
+        body = body.replace(/\r\n/g, "<br>");
+        body = body.replace(/(\n|\r)/g, "<br>");
+        return modal.find('#news-body').html(body);
+      },
+      error: function(xhr, status, error) {
+        modal.modal('hide');
+        return alert('Failed to load news!!\n[Error] '+error);
+      }
+    });
+  });
+</script>
