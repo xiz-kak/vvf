@@ -1,0 +1,23 @@
+<%= form_for(@news) do |f| %>
+  <% if @news.errors.any? %>
+    <%= render partial: 'layouts/error_container', locals: {errors: @news.errors} %>
+  <% end %>
+
+  <div class="field-group">
+    <div class="field">
+      <%= f.label :begin_at %><br>
+      <%= f.date_select :begin_at %>
+    </div>
+    <% Language.sorted.each do |l| %>
+      <hr>
+      <strong><%= f.label :language_id, l.name_en %></strong>
+      <% nc = @news.get_or_new_content(l.id) %>
+      <%= f.fields_for :news_contents, nc do |ncf| %>
+        <%= render partial: "news_content_form", locals: {f: ncf} %>
+      <% end %>
+    <% end %>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  </div>
+<% end %>

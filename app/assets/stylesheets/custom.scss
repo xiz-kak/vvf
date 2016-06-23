@@ -454,3 +454,36 @@ li.faq-item {
     }
   }
 }
+
+.news-list {
+  dl {
+    display: table;
+    width: 100%;
+    min-height: 60px;
+    border-bottom: 1px solid #e0e0e0;
+    position: relative;
+  }
+  dt {
+    display: table-cell;
+    height: 60px;
+    vertical-align: middle;
+    width: 130px;
+    padding-left: 0px;
+    font-weight: bold;
+    color: #505050;
+    font-size: 14px;
+    font-size: 1.4rem;
+    line-height: 18px;
+  }
+  dd {
+    display: table-cell;
+    height: 60px;
+    vertical-align: middle;
+    background: white;
+    padding-left: 0px;
+    line-height: 1.5em;
+    font-size: 15px;
+    font-size: 1.5rem;
+    margin-right: 10px;
+  }
+}
