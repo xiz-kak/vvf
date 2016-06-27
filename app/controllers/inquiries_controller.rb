@@ -1,5 +1,5 @@
 class InquiriesController < ApplicationController
-  before_action :require_admin
+  before_action :require_admin, except: [:create_from_modal]
   before_action :set_inquiry, only: [:show, :edit, :update, :destroy]
 
   # GET /inquiries
