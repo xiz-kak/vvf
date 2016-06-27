@@ -302,12 +302,12 @@ ActiveRecord::Schema.define(version: 20160627022135) do
     t.integer  "project_id"
     t.float    "price"
     t.integer  "count"
-    t.datetime "created_at",                                                             null: false
-    t.datetime "updated_at",                                                             null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.datetime "estimated_delivery"
     t.integer  "ships_to_div"
     t.float    "default_shipping_rate"
-    t.integer  "code",                  default: "nextval('reward_code_seq'::regclass)"
+    t.integer  "code",                  default: 0
   end
 
   add_index "rewards", ["project_id"], name: "index_rewards_on_project_id", using: :btree
