@@ -135,6 +135,7 @@ en:
     news: 'News'
     help: 'Help'
     faq: 'FAQ'
+    inquiry: 'Inquiry'
     discover: 'Discover'
     about_us: 'Who we are'
     jepco_kk: 'JEPCO, K.K.'
@@ -142,6 +143,14 @@ en:
     jepco_address_1: 'Akasaka Kaikan Building B1F'
     jepco_address_2: 'Akasaka 2-13-5, Minato  Tokyo'
     jepco_address_3: ''
+  inquiry_modal:
+    name: 'Name'
+    email: 'Email'
+    subject: 'Subject'
+    details: 'Details'
+    submit: 'Submit'
+    item_is_empty: '%{item} is empty.'
+    item_is_invalid: '%{item} is invalid.'
   top_favorite:
     favorites: 'Our Favorites'
     see_all_this_category: 'See all this category'

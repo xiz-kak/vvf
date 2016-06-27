@@ -135,6 +135,7 @@ ja:
     news: 'お知らせ一覧'
     help: 'ヘルプ'
     faq: 'よくある質問'
+    inquiry: 'お問い合わせ'
     discover: '探す'
     about_us: '運営会社について'
     jepco_kk: '株式会社JEPCO'
@@ -142,6 +143,14 @@ ja:
     jepco_address_1: '〒107-0052'
     jepco_address_2: '東京都港区赤坂2-13-5'
     jepco_address_3: '赤坂會舘ビルB1F'
+  inquiry_modal:
+    name: '氏名'
+    email: 'Email'
+    subject: '件名'
+    details: '詳細'
+    submit: '送信'
+    item_is_empty: '%{item}を入力してください。'
+    item_is_invalid: '正しい%{item}を入力してください。'
   top_favorite:
     favorites: 'Vin-Vin Funding のお気に入り'
     see_all_this_category: 'このカテゴリーをもっと見る'
