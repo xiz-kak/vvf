@@ -74,6 +74,8 @@ en:
     activation_needed: '[VinVin-Funding] Welcome to Vin-Vin Funding'
     activation_success: '[VinVin-Funding] Your account is now activated'
     reset_password: '[VinVin-Funding] Your password has been reset'
+    apply_email_to_creator: '[VinVin-Funding] New project submitted'
+    apply_email_to_admin: '[ACTION REQUIRED] New project submitted'
   user_model:
     name: 'Name'
     email: 'Email'
@@ -130,8 +132,10 @@ en:
     about_vvf: 'What is Vin-Vin Funding?'
     terms: 'Terms of use'
     com_law: 'Specified Commercial Transaction Law'
+    news: 'News'
     help: 'Help'
     faq: 'FAQ'
+    inquiry: 'Inquiry'
     discover: 'Discover'
     about_us: 'Who we are'
     jepco_kk: 'JEPCO, K.K.'
@@ -139,6 +143,14 @@ en:
     jepco_address_1: 'Akasaka Kaikan Building B1F'
     jepco_address_2: 'Akasaka 2-13-5, Minato  Tokyo'
     jepco_address_3: ''
+  inquiry_modal:
+    name: 'Name'
+    email: 'Email'
+    subject: 'Subject'
+    details: 'Details'
+    submit: 'Submit'
+    item_is_empty: '%{item} is empty.'
+    item_is_invalid: '%{item} is invalid.'
   top_favorite:
     favorites: 'Our Favorites'
     see_all_this_category: 'See all this category'
@@ -183,6 +195,8 @@ en:
     start: 'Start a project'
   pages_faq:
     faq: 'Frequently Asked Questions'
+  pages_news:
+    news: 'News'
   login:
     login_title: 'Login'
     or: 'OR'
