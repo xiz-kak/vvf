@@ -16,6 +16,7 @@
             <h3><%= t('footer.help') %></h3>
             <ul class="list-vertical mt2">
               <li><%= link_to t('footer.faq'), pages_faq_path %></li>
+              <li><%= link_to t('footer.inquiry'), '#inquiry-modal', data: {toggle: :modal} %></li>
             </ul>
           </div>
         </div>
@@ -99,3 +100,102 @@
         <span>&nbsp;&nbsp;<%= "Build: #{BUILD_INFO['build_date']}" %></span>
       </div>
 </footer>
+
+<div class="modal fade" id="inquiry-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title"><%= t('footer.inquiry') %></h2>
+      </div>
+      <div class="modal-body">
+        <div class="form-horizontal col-md-offset-1">
+          <div class="form-group">
+            <%= label_tag :name, t('inquiry_modal.name'), class: 'control-label col-md-2' %>
+            <div class="col-md-9">
+              <%= text_field_tag :name, nil, class: 'form-control', id: 'inquiry-name' %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :email, t('inquiry_modal.email'), class: 'control-label col-md-2' %>
+            <div class="col-md-9">
+              <%= email_field_tag :email, nil, class: 'form-control', id: 'inquiry-email' %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :subject, t('inquiry_modal.subject'), class: 'control-label col-md-2' %>
+            <div class="col-md-9">
+              <%= text_field_tag :subject, nil, class: 'form-control', id: 'inquiry-subject' %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :details, t('inquiry_modal.details'), class: 'control-label col-md-2' %>
+            <div class="col-md-9">
+              <%= text_area_tag :details, nil, class: 'form-control', rows: '10', id: 'inquiry-details' %>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-9">
+              <%= link_to t('inquiry_modal.submit'), '#',
+                id: 'inquiry-modal-submit', class: 'btn btn-info btn-block' %>
+            </div>
+          </div>
+          <% if logged_in? %>
+            <%= hidden_field_tag :user_id, current_user.id, id: 'inquiry-user-id' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="inquiry-complete-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title"><%= t('footer.inquiry') %></h2>
+      </div>
+      <div class="modal-body">
+        <h2 class="text-center mt2">Thank you for the inquiry.</h2>
+        <h4 class="text-center my4">The admin team will contact you via email in 72 hours.</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#inquiry-modal-submit').on('click', function() {
+    if($('#inquiry-name').val() == ""){
+      return alert('<%= t('inquiry_modal.item_is_empty', item: t('inquiry_modal.name')) %>');
+    } else if ($('#inquiry-email').val() == ""){
+      return alert('<%= t('inquiry_modal.item_is_empty', item: t('inquiry_modal.email')) %>');
+    } else if ($('#inquiry-subject').val() == ""){
+      return alert('<%= t('inquiry_modal.item_is_empty', item: t('inquiry_modal.subject')) %>');
+    } else if ($('#inquiry-details').val() == ""){
+      return alert('<%= t('inquiry_modal.item_is_empty', item: t('inquiry_modal.details')) %>');
+    } else if (!isValidEmailAddress($('#inquiry-email').val())){
+      return alert('<%= t('inquiry_modal.item_is_invalid', item: t('inquiry_modal.email')) %>');
+    }
+
+    return $.ajax({
+      url: "/inquiries/create_from_modal",
+      type: "POST",
+      data: {
+        user_id: $('#inquiry-user-id').val(),
+        name: $('#inquiry-name').val(),
+        email: $('#inquiry-email').val(),
+        subject: $('#inquiry-subject').val(),
+        details: $('#inquiry-details').val()
+      },
+      dataType: "",
+      success: function(data, status, xhr) {
+        $('#inquiry-modal').modal('hide');
+        return $('#inquiry-complete-modal').modal('show');
+      },
+      error: function(xhr, status, error) {
+        return alert('Failed to send your inquiry!!\n[Error] ' + error);
+      }
+    });
+  });
+</script>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160622063610) do
+ActiveRecord::Schema.define(version: 20160627022135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,18 @@ ActiveRecord::Schema.define(version: 20160622063610) do
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
   end
+
+  create_table "inquiries", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "email"
+    t.string   "subject"
+    t.string   "details"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "inquiries", ["user_id"], name: "index_inquiries_on_user_id", using: :btree
 
   create_table "languages", force: :cascade do |t|
     t.string   "code"
@@ -324,6 +336,7 @@ ActiveRecord::Schema.define(version: 20160622063610) do
   add_foreign_key "category_locales", "languages"
   add_foreign_key "faq_contents", "faqs"
   add_foreign_key "faq_contents", "languages"
+  add_foreign_key "inquiries", "users"
   add_foreign_key "news_contents", "languages"
   add_foreign_key "news_contents", "news"
   add_foreign_key "payment_vendor_locales", "languages"
