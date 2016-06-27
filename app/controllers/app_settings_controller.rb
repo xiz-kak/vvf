@@ -1,4 +1,5 @@
 class AppSettingsController < ApplicationController
+  before_action :require_admin
   before_action :set_app_setting, only: [:show, :edit, :update]
 
   # GET /app_settings
