@@ -1,0 +1,41 @@
+
+<nav class="navbar navbar-white">
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <li class="dropdown">
+        <% projects = Project.active.where(user_id: current_user.id).where.not(id: @project.id).order(end_at: :DESC)%>
+        <a href="#" class="h4 dropdown-toggle" data-toggle="dropdown">
+          <span class="ellipsis-300"><%= @project.title(locale) %> </span>
+          <%= '<span class="caret"></span>'.html_safe if projects.size > 0 %>
+        </a>
+        <% if projects.size > 0 %>
+          <ul class="dropdown-menu">
+            <% projects.each do |p| %>
+              <li>
+                <%= link_to dashboard_analytics_path(p.id), class: 'h4' do %>
+                  <span class="ellipsis-300"><%= p.title(locale) %></span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </li>
+      <li><%= link_to t('dashboard_header.analytics'), dashboard_analytics_path(@project) %></li>
+      <li><%= link_to t('dashboard_header.notifications'), dashboard_notifications_path(@project) %></li>
+      <!--
+      <li><%= link_to 'Messages', '#' %></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          Manage Project <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><%= link_to 'Activity Reports', '#' %></li>
+          <li><%= link_to 'Pledge Comments', '#' %></li>
+          <li><%= link_to 'Rewards', '#' %></li>
+          <li><%= link_to 'Members', '#' %></li>
+        </ul>
+      </li>
+      -->
+    </ul>
+  </div>
+</nav>

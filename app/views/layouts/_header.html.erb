@@ -53,6 +53,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><%= link_to t('header.mypage'), current_user %></li>
+            <li><%= link_to t('header.dashboard'), dashboard_path %></li>
             <li><%= link_to t('header.settings'), edit_user_path(current_user) %></li>
             <li class="divider"></li>
             <li><%= link_to t('header.logout'), :logout, method: :post %></li>

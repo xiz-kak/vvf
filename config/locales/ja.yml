@@ -118,6 +118,7 @@ ja:
     login: 'ログイン'
     logout: 'ログアウト'
     mypage: 'マイページ'
+    dashboard: 'ダッシュボード'
     settings: '設定'
     admin: '管理者'
   signup_modal:
@@ -251,3 +252,6 @@ ja:
     add_nation: '追加'
     remove_nation: '削除'
     remove: '削除'
+  dashboard_header:
+    analytics: '統計'
+    notifications: 'お知らせ'

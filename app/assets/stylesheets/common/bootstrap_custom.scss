@@ -66,6 +66,24 @@
   margin-right: 10px;
 }
 
+.navbar-white {
+  border-bottom: 1px solid #e7e7e7;
+  a {
+    color: #777;
+  }
+  .dropdown-menu {
+    // border: none;
+    // box-shadow: none;
+    > li > a {
+      color: #777;
+      &:hover {
+        // background: transparent;
+        // text-decoration: underline;
+      }
+    }
+  }
+}
+
 .navbar-toggle, .icon-bar {
   border: 1px solid white;
 }
