@@ -118,6 +118,7 @@ en:
     login: 'Login'
     logout: 'Logout'
     mypage: 'My page'
+    dashboard: 'Dashboard'
     settings: 'Settings'
     admin: 'Admin'
   signup_modal:
@@ -251,3 +252,6 @@ en:
     add_nation: 'Add nation'
     remove_nation: 'Remove'
     remove: 'Remove'
+  dashboard_header:
+    analytics: 'Analytics'
+    notifications: 'Notifications'

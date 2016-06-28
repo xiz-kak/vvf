@@ -128,3 +128,11 @@ p {
 .bold {
   font-weight: bold;
 }
+
+span.ellipsis-300 {
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block
+}
