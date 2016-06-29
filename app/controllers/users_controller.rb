@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_admin, only: [:index, :destroy]
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :profile]
   before_action :require_self, only: [:edit, :update, :destroy]
 
   # GET /users/1/activate
@@ -10,6 +10,15 @@ class UsersController < ApplicationController
       redirect_to login_path, notice: t('msg.user_activated')
     else
       not_authenticated
+    end
+  end
+
+  # GET /profile/1
+  def profile
+    if logged_in? && @user == current_user
+      redirect_to controller: :mypage, action: :profile
+    else
+      render :show
     end
   end
 

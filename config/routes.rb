@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         get :activate
       end
     end
+    get 'profile/:id' => 'users#profile', as: :profile
     resources :languages
     resources :categories
     resources :nations
