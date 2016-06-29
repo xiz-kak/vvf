@@ -71,6 +71,8 @@ Rails.application.routes.draw do
     get 'dashboard' => 'dashboard#index'
     get 'dashboard/analytics/:id' => 'dashboard#analytics', as: :dashboard_analytics
     get 'dashboard/notifications/:id' => 'dashboard#notifications', as: :dashboard_notifications
+    get 'mypage/profile'
+    get 'mypage/notifications'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
