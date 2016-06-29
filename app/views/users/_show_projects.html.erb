@@ -1,0 +1,224 @@
+<section>
+  <div class="profile-header py4 px2">
+    <div class="container">
+      <h2 class="mb1">
+        <%= @user.name %>
+        <% if @user == current_user %>
+          <small>
+            (<%= link_to t('profile.edit_profile'), edit_user_path(@user) %>)
+          </small>
+        <% end %>
+      </h2>
+      <% backed_count = Project.backed_by(@user.id).count %>
+      <h4><%= t('profile.backed_count', backed_count: backed_count, pluralized: 'project'.pluralize(backed_count)) %></h4>
+      <div class="mt2">
+        <% if auth_fb = @user.authentications.find_by(provider: :facebook) %>
+          <%= link_to image_tag('icon_fb_48.png'), "http://facebook.com/#{auth_fb.uid.to_s}", target: '_blank' %>
+        <% end %>
+        <% if auth_tw = @user.authentications.find_by(provider: :twitter) %>
+          <%= link_to image_tag('icon_tw_48.png'), "https://twitter.com/intent/user?user_id=#{auth_tw.uid.to_s}", target: '_blank' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-white">
+  <div class="container">
+
+    <div class="posted-projects py3">
+      <h3 class="my2"><%= t('profile.posted_projects') %></h3>
+      <% Project.posted_by(@user).each do |p| %>
+        <div class="row project-card-wrap">
+          <div class="col-md-10">
+            <div class="project-card">
+              <div class="project-image">
+                <% if p.status_div_draft? || p.status_div_remanded? %>
+                  <%= image_tag(p.image(locale)) %>
+                <% else %>
+                  <%= link_to image_tag(p.image(locale)), project_by_code_path(p.code) %>
+                <% end %>
+              </div>
+              <div class="project-card-description">
+                <% sum = p.summary %>
+                <h4><%= link_to p.title(locale), project_by_code_path(p.code) %></h4>
+                <p><%= link_to p.user.name, p.user %></p>
+                <p class="grey-dark"><%= p.blurb(locale) %></p>
+                <div class="project-card-footer">
+                  <div class="project-location-category">
+                    <%= link_to discover_category_path(p.category), class: 'mr2' do %>
+                      <i class="glyphicon glyphicon-tag"></i>
+                      <%= p.category.name(locale) %>
+                    <% end %>
+                    <i class="glyphicon glyphicon-globe"></i>
+                    <% p.project_locales.each do |l|%>
+                      <kbd><%= l.language.code %></kbd>
+                    <% end %>
+                  </div>
+                  <div class="project-status-wrap absolute-bottom">
+                    <div class="project-progress mb1">
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-info" style="width:<%= sum.achieved %>%">
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="project-status list-inline">
+                      <li class="mr2">
+                        <strong class="block h4"><%= sum.achieved %>%</strong>
+                        <span class="grey-dark">funded</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4">$<%= sum.funded_amount_f %></strong>
+                        <span class="grey-dark">pledged</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4"><%= sum.funded_count %></strong>
+                        <span class="grey-dark">backers</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4"><%= p.days_to_go %></strong>
+                        <span class="grey-dark">days to go</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <p>
+              <h5><%= t('profile.status') %></h5>
+              <h3 class="mt1 ml2">
+                <% if p.finished? %>
+                  <%= t('profile.finished') %>
+                <% else %>
+                  <%= p.status_div.t %>
+                <% end %>
+              </h3>
+            </p>
+            <% if p.status_div_draft? || p.status_div_remanded? %>
+              <%= link_to t('profile.edit'), edit_project_path(p), class: 'btn btn-default btn-block' %>
+            <% elsif p.status_div_active? || p.status_div_suspended? %>
+              <%= link_to t('profile.see_pledges'), '#pledge-list-modal',
+                class: 'btn btn-default btn-block',
+                data: {toggle: 'modal', project_code: p.code} %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="backed-projects py3">
+      <h3 class="my2"><%= t('profile.backed_projects') %></h3>
+      <% Project.backed_by(@user).each do |p| %>
+        <div class="row project-card-wrap">
+          <div class="col-md-10">
+            <div class="project-card">
+              <div class="project-image">
+                <%= link_to image_tag(p.image(locale)), project_by_code_path(p.code) %>
+              </div>
+              <div class="project-card-description">
+                <% sum = p.summary %>
+                <h4><%= link_to p.title(locale), project_by_code_path(p.code) %></h4>
+                <p><%= link_to p.user.name, p.user %></p>
+                <p class="grey-dark">Short description about the project. This should be taken from the database. Then it needs to be developed!</p>
+                <div class="project-card-footer">
+                  <div class="project-location-category">
+                    <%= link_to discover_category_path(p.category), class: 'mr2' do %>
+                      <i class="glyphicon glyphicon-tag"></i>
+                      <%= p.category.name(locale) %>
+                    <% end %>
+                    <i class="glyphicon glyphicon-globe"></i>
+                    <% p.project_locales.each do |l|%>
+                      <kbd><%= l.language.code %></kbd>
+                    <% end %>
+                  </div>
+                  <div class="project-status-wrap absolute-bottom">
+                    <div class="project-progress mb1">
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-info" style="width:<%= sum.achieved %>%">
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="project-status list-inline">
+                      <li class="mr2">
+                        <strong class="block h4"><%= sum.achieved %>%</strong>
+                        <span class="grey-dark">funded</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4">$<%= sum.funded_amount_f %></strong>
+                        <span class="grey-dark">pledged</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4"><%= sum.funded_count %></strong>
+                        <span class="grey-dark">backers</span>
+                      </li>
+                      <li class="mr2">
+                        <strong class="block h4"><%= p.days_to_go %></strong>
+                        <span class="grey-dark">days to go</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <p>
+              <h5><%= t('profile.status') %></h5>
+              <h3 class="mt1 ml2">
+                <% if p.finished? %>
+                  <%= t('profile.finished') %>
+                <% else %>
+                  <%= p.status_div.t %>
+                <% end %>
+              </h3>
+            </p>
+            <% if p.status_div_active? || p.status_div_suspended? %>
+              <%= link_to t('profile.my_pledges'), '#pledge-list-modal',
+                class: 'btn btn-default btn-block',
+                data: {toggle: 'modal', project_code: p.code, pledged_by: 'me'} %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="pledge-list-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h2 class="my2"><%= t('profile_pledge_modal.pledge_list') %></h2>
+      </div>
+      <div class="modal-body" id="pledge-list-info">
+        <!-- pledge list -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    $('#pledge-list-modal').on('show.bs.modal', function(event) {
+      var project_code = $(event.relatedTarget).data('project-code');
+      var pledged_by = $(event.relatedTarget).data('pledged-by');
+      var modal = $(this);
+      $.ajax({
+        url: "/projects/pledge_list",
+        type: "GET",
+        data: {locale: "<%= locale %>", project_code: project_code, pledged_by: pledged_by},
+        dataType: "html",
+        success: function(data, status, xhr) {
+          return modal.find('#pledge-list-info').html(data);
+        },
+        error: function(xhr, status, error) {
+          modal.modal('hide');
+          return alert('Failed to load pledge list!!\n[Error] ' + error);
+        }
+      });
+    });
+  });
+</script>

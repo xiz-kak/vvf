@@ -255,3 +255,7 @@ en:
   dashboard_header:
     analytics: 'Analytics'
     notifications: 'Notifications'
+  mypage_header:
+    mypage: 'My Page'
+    profile: 'Profile'
+    notifications: 'Notifications'

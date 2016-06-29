@@ -255,3 +255,7 @@ ja:
   dashboard_header:
     analytics: '統計'
     notifications: 'お知らせ'
+  mypage_header:
+    mypage: 'マイページ'
+    profile: 'プロフィール'
+    notifications: 'お知らせ'
